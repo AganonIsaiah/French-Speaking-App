@@ -9,8 +9,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/audio/**")
-                .addResourceLocations("classpath:/audio/");
+        registry.addResourceHandler("/static/audio/**").addResourceLocations("classpath:/audio/");
     }
 }
+

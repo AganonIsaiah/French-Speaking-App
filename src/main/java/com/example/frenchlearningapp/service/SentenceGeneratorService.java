@@ -19,7 +19,12 @@ public class SentenceGeneratorService {
 
 
     public String generateSentence(String proficiencyLevel){
-        return "Je suis allé.";
+
+        String test1 = "Je suis allé.";
+        String test2 = "J'ai mangé des pommes.";
+        String test3 = "Je vais à l'école, aujourd'hui.";
+
+        return "sur le pont, d'avignon, L'on y danse tous en rond";
     }
 
 

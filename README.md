@@ -29,5 +29,6 @@
 ### Launch Instructions
 
 ### Testing Instructions
-- http://localhost:8080
+- http://localhost:8080/
 - http://localhost:8080/language
+- http://localhost:8080/showRecordings

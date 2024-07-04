@@ -6,8 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 
 @Controller
 public class LevelController {
@@ -20,7 +31,7 @@ public class LevelController {
      * Injects SentenceGeneratorService dependency.
      *
      * @param sentenceGeneratorService For generating written sentences
-     * @param ttsService For generating sound recordings
+     * @param ttsService               For generating sound recordings
      */
     @Autowired
     public LevelController(SentenceGeneratorService sentenceGeneratorService, TextToSpeechService ttsService) {
@@ -38,31 +49,45 @@ public class LevelController {
         return "index";
     }
 
-    /**
-     * Redirects the user to the showRecordings page - which includes the generated sentence,
-     * text-to-speech recording, and record button
-     *
-     * @param proficiency Hold's the user's proficiency level
-     * @param model Model to add attributes
-     *
-     * @return The records.html template
-     */
-    @PostMapping("/language")
-    public String showRecordings(@RequestParam String proficiency, Model model){
-        /* Preparing sentence and audio */
-        String generatedSentence =  sentenceGeneratorService.generateSentence(proficiency);  // Get sentence based on proficiency using the injected service instance
-        String audioFile = "audio/output.mp3"; // Where the audio file will be saved
 
-        // Generates text-to-speech and saves audio file
-        ttsService.generateSpeech(generatedSentence, audioFile);
+    @PostMapping("/generate")
+    public String generateAudio(@RequestParam String proficiency, RedirectAttributes redirectAttributes) {
+        String generatedSentence = sentenceGeneratorService.generateSentence(proficiency);
+        String audioFileName = "output.mp3";
+        String audioDirectory = "src/main/resources/static/audio";
+        String audioFilePath = audioDirectory + "/" + audioFileName;
 
-        /* Saves user's proficiency level, the generated sentence, and audio file */
-        model.addAttribute("proficiency", proficiency);
-        model.addAttribute("generatedSentence", generatedSentence );
-        model.addAttribute("audioFile",audioFile);
+        // Ensure the directory exists, create if not
+        Path directoryPath = Paths.get(audioDirectory);
+        if (!Files.exists(directoryPath)) {
+            try {
+                Files.createDirectories(directoryPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-        System.out.println("Level: " + proficiency + "\nSentence: " + generatedSentence);
+        // Generate the audio file
+        ttsService.generateSpeech(generatedSentence, audioFilePath);
+
+        // Add attributes to redirect
+        redirectAttributes.addFlashAttribute("proficiency", proficiency);
+        redirectAttributes.addFlashAttribute("generatedSentence", generatedSentence);
+        redirectAttributes.addFlashAttribute("audioFileName", audioFileName);
+
+        return "redirect:/showRecordings";
+
+    }
+
+
+    @GetMapping("/showRecordings")
+    public String showRecordings(@ModelAttribute("audioFileName") String audioFileName, Model model) {
+
+        String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
+        model.addAttribute("audioFile", audioFile);
 
         return "records";
     }
+
+
 }
