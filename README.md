@@ -11,7 +11,7 @@
 - User presses button to next segment.
 
 #### 2. Generate Written Sentences (With Tatoeba https://tatoeba.org/en)
-- 10 Written sentences are generated with Tatoeba based on the users chosen level.
+- Written sentences are generated with Tatoeba based on the users chosen level.
 - Difficulty scalar determines number of words generated in each sentence, and quality of words generated.
 
 #### 3. Create Speech Recordings of Generated Sentences (With Google Cloud Text-to-Speech)
@@ -31,3 +31,4 @@
 ### Testing Instructions
 - http://localhost:8080
 - http://localhost:8080/language
+- http://localhost:8080/show-recordings
