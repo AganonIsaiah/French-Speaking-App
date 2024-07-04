@@ -11,17 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
-
+/**
+ * Manages the generation and display of language proficiency-based audio recordings.
+ */
 @Controller
-public class LevelController {
+public class MenuController {
 
     // Holds instance of SentenceGeneratorService and TextToSpeechService
     private final SentenceGeneratorService sentenceGeneratorService;
@@ -34,7 +32,7 @@ public class LevelController {
      * @param ttsService               For generating sound recordings
      */
     @Autowired
-    public LevelController(SentenceGeneratorService sentenceGeneratorService, TextToSpeechService ttsService) {
+    public MenuController(SentenceGeneratorService sentenceGeneratorService, TextToSpeechService ttsService) {
         this.ttsService = ttsService;
         this.sentenceGeneratorService = sentenceGeneratorService;
     }
@@ -49,7 +47,13 @@ public class LevelController {
         return "index";
     }
 
-
+    /**
+     * Handles POST requests to generate audio based on proficiency level
+     *
+     * @param proficiency        User's selected proficiency
+     * @param redirectAttributes Redirect attributes for flash attributes
+     * @return /showRecordings page after generating audio clip
+     */
     @PostMapping("/generate")
     public String generateAudio(@RequestParam String proficiency, RedirectAttributes redirectAttributes) {
         String generatedSentence = sentenceGeneratorService.generateSentence(proficiency);
@@ -79,10 +83,16 @@ public class LevelController {
 
     }
 
-
+    /**
+     * Handles GET requests to show recording
+     *
+     * @param audioFileName Name of file
+     * @param model         Model to add attributes for rendering
+     * @return records.html
+     */
     @GetMapping("/showRecordings")
     public String showRecordings(@ModelAttribute("audioFileName") String audioFileName, Model model) {
-
+        /* Prevents caching */
         String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
         model.addAttribute("audioFile", audioFile);
 

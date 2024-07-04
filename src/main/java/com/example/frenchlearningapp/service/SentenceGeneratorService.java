@@ -3,29 +3,24 @@ package com.example.frenchlearningapp.service;
 import org.springframework.stereotype.Service;
 
 /**
- * Pattern Structures
- *
- * A1: Subject + verb + noun
- * A2:
- * B1:
- * B2:
- * C1:
- * C2:
+ * Utilizes logic within the "logic" package to construct appropriate and grammatically sound French sentences
  */
 @Service
 public class SentenceGeneratorService {
 
-
-
-
+    /**
+     * Crafts a written French sentence
+     *
+     * @param proficiencyLevel Used as a scalar for sentence generation
+     * @return French sentence
+     */
     public String generateSentence(String proficiencyLevel){
 
         String test1 = "Je suis allé.";
         String test2 = "J'ai mangé des pommes.";
         String test3 = "Je vais à l'école, aujourd'hui.";
 
-        return "sur le pont, d'avignon, L'on y danse tous en rond";
+        return test1;
     }
-
 
 }
