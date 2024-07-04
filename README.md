@@ -10,11 +10,11 @@
 - Level is saved to the computer.
 - User presses button to next segment.
 
-#### 2. Generate Written Sentences (With Tatoeba https://tatoeba.org/en)
-- Written sentences are generated with Tatoeba based on the users chosen level.
+#### 2. Generate Written Sentences  
+- Employs a, self-made, algorithm to generate grammatically sound sentences.
 - Difficulty scalar determines number of words generated in each sentence, and quality of words generated.
 
-#### 3. Create Speech Recordings of Generated Sentences (With Google Cloud Text-to-Speech)
+#### 3. Create Speech Recordings of Generated Sentences (With https://rapidapi.com Text-to-Speech API)
 - Convert text to speech and create playable recordings for the User.
 - Used as a reference point for the user and for the machine to make comparisons.
 
@@ -31,4 +31,3 @@
 ### Testing Instructions
 - http://localhost:8080
 - http://localhost:8080/language
-- http://localhost:8080/show-recordings

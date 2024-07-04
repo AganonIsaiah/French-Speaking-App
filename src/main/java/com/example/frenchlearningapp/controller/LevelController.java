@@ -1,6 +1,7 @@
 package com.example.frenchlearningapp.controller;
 
 import com.example.frenchlearningapp.service.SentenceGeneratorService;
+import com.example.frenchlearningapp.service.TextToSpeechService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +12,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LevelController {
 
-    // Holds instance of SentenceGeneratorService
+    // Holds instance of SentenceGeneratorService and TextToSpeechService
     private final SentenceGeneratorService sentenceGeneratorService;
+    private final TextToSpeechService ttsService;
 
     /**
      * Injects SentenceGeneratorService dependency.
      *
-     * @param sentenceGeneratorService For generating sentences
+     * @param sentenceGeneratorService For generating written sentences
+     * @param ttsService For generating sound recordings
      */
     @Autowired
-    public LevelController(SentenceGeneratorService sentenceGeneratorService) {
+    public LevelController(SentenceGeneratorService sentenceGeneratorService, TextToSpeechService ttsService) {
+        this.ttsService = ttsService;
         this.sentenceGeneratorService = sentenceGeneratorService;
     }
 
@@ -34,7 +38,6 @@ public class LevelController {
         return "index";
     }
 
-
     /**
      * Redirects the user to the showRecordings page - which includes the generated sentence,
      * text-to-speech recording, and record button
@@ -46,19 +49,20 @@ public class LevelController {
      */
     @PostMapping("/language")
     public String showRecordings(@RequestParam String proficiency, Model model){
-        // Get sentence based on proficiency using the injected service instance
-        String generatedSentence =  sentenceGeneratorService.generateSentence(proficiency);
+        /* Preparing sentence and audio */
+        String generatedSentence =  sentenceGeneratorService.generateSentence(proficiency);  // Get sentence based on proficiency using the injected service instance
+        String audioFile = "audio/output.mp3"; // Where the audio file will be saved
 
-        // Saves user's proficiency level and the generated sentence
+        // Generates text-to-speech and saves audio file
+        ttsService.generateSpeech(generatedSentence, audioFile);
+
+        /* Saves user's proficiency level, the generated sentence, and audio file */
         model.addAttribute("proficiency", proficiency);
         model.addAttribute("generatedSentence", generatedSentence );
+        model.addAttribute("audioFile",audioFile);
 
-        System.out.println("Level: " + proficiency + "\nSentence: " + generatedSentence );
+        System.out.println("Level: " + proficiency + "\nSentence: " + generatedSentence);
 
         return "records";
     }
-
-
-
-
 }
