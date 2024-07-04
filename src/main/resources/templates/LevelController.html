@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Language Proficiency</title>
+</head>
+<body>
+<h1>Choose Your Language Proficiency Level</h1>
+<form action="#" th:action="@{/language}" method="post">
+    <label for="proficiency">Select Level:</label>
+    <select id="proficiency" name="proficiency">
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="B1">B1</option>
+        <option value="B2">B2</option>
+        <option value="C1">C1</option>
+        <option value="C2">C2</option>
+    </select>
+    <br><br>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
