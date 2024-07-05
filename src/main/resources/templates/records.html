@@ -5,13 +5,19 @@
     <title>Generated Sentence</title>
 </head>
 <body>
-    <h1>Generated Sentence</h1>
+    <h1>Proficiency Level: </h1>
+    <h1 th:text="${proficiency}"></h1>
+    <h2>Generated Sentence: </h2>
     <p th:text="${generatedSentence}"> </p>
-
 
     <audio th:if="${audioFile}" controls>
         <source th:src="${audioFile}" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+    <br><br>
+
+
+    <h2>Record Your Speech</h2>
+
 </body>
 </html>

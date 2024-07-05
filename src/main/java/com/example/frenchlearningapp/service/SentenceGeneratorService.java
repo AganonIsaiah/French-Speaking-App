@@ -16,11 +16,11 @@ public class SentenceGeneratorService {
      */
     public String generateSentence(String proficiencyLevel){
 
-        String test1 = "Je suis allé.";
+        String test1 = "Est-ce que vous avez un stylo pour moi, s'il vous plaît?";
         String test2 = "J'ai mangé des pommes.";
         String test3 = "Je vais à l'école, aujourd'hui.";
 
-        return test1;
+        return test3;
     }
 
 }

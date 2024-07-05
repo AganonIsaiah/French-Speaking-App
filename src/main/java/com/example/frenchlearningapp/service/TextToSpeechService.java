@@ -21,7 +21,7 @@ public class TextToSpeechService {
     public void generateSpeech(String text, String outputFile) {
         /* From api.voicerss */
         String apiKey = "491c7457e821467d8d4ef98b5a450268";
-        String languageCode = "fr-ca"; // French (Canada) language code
+        String languageCode = "fr-fr"; // fr-ca French Canada, fr-fr French France
         String voiceRssEndpoint = "http://api.voicerss.org/";
 
         try {

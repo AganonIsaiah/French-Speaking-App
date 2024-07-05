@@ -17,10 +17,10 @@ public class PresentConjugations {
     public String Group2(String pn, String v){
         /* General conjugation pattern for verbs ending in ...ir */
         StringBuilder verb = new StringBuilder(v);
-
         verb.delete(verb.length() - 2, verb.length()); // Remove last two letters
 
         switch (pn) {
+
             case "je", "j'", "tu", "t'" -> verb.append("is");
             case "il", "elle","on" -> verb.append("it");
             case "nous" -> verb.append("issons");

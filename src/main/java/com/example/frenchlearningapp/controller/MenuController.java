@@ -2,6 +2,7 @@ package com.example.frenchlearningapp.controller;
 
 import com.example.frenchlearningapp.service.SentenceGeneratorService;
 import com.example.frenchlearningapp.service.TextToSpeechService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,7 +75,7 @@ public class MenuController {
         // Generate the audio file
         ttsService.generateSpeech(generatedSentence, audioFilePath);
 
-        // Add attributes to redirect
+        /* Passes attributes to the next page */
         redirectAttributes.addFlashAttribute("proficiency", proficiency);
         redirectAttributes.addFlashAttribute("generatedSentence", generatedSentence);
         redirectAttributes.addFlashAttribute("audioFileName", audioFileName);
@@ -87,14 +88,18 @@ public class MenuController {
      * Handles GET requests to show recording
      *
      * @param audioFileName Name of file
+     * @param proficiency   User's selected proficiency level
      * @param model         Model to add attributes for rendering
      * @return records.html
      */
     @GetMapping("/showRecordings")
-    public String showRecordings(@ModelAttribute("audioFileName") String audioFileName, Model model) {
+    public String showRecordings(@ModelAttribute("audioFileName") String audioFileName, @ModelAttribute("proficiency") String proficiency, Model model) {
         /* Prevents caching */
         String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
+
+        /* Adding attributes to template */
         model.addAttribute("audioFile", audioFile);
+        model.addAttribute("proficiency",proficiency);
 
         return "records";
     }

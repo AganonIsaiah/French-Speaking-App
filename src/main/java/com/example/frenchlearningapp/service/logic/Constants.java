@@ -6,8 +6,8 @@ package com.example.frenchlearningapp.service.logic;
 public final class Constants {
 
     public static final String[] PRONOUNS = {
-            "je",
-            "tu",
+            "je", "j'",
+            "tu", "t'",
             "il", "elle", "on",
             "nous",
             "vous",
@@ -25,9 +25,9 @@ public final class Constants {
     };
     // Reflexive Pronouns
     public static final String[] REFLEXIVE_PN = {
-            "je",
-            "te",
-            "se", // Il/Elle/On/Ils/Elles
+            "je", "j'",
+            "te", "t'",
+            "se", "s'",// Il/Elle/On/Ils/Elles
             "nous",
             "vous",
     };
@@ -36,7 +36,7 @@ public final class Constants {
     public static final String[] INDEFINITE_A = { "un","une","des" };
     // Partitive Articles
     public static final String[] PARTITIVE_A = {"du","de la","des","de l'"};
-    // Definite Articles
+    // Definite Articles, M,F,V,P
     public static final String[] DEFINITE_A = {"le","la","l'","les"};
     // Possessive Adjectives
     public static final String[] POSSESSIVE_ADJ = {
