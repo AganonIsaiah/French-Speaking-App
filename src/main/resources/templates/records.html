@@ -16,8 +16,65 @@
     </audio>
     <br><br>
 
+    <h2>Record: </h2>
+    <button id="startRecordingBtn" onclick="startRecording()">Start Recording</button>
+    <button id="stopRecordingBtn" onclick="stopRecording()" disabled>Stop Recording</button>
+    <br><br>
 
-    <h2>Record Your Speech</h2>
+    <audio id="recordedAudio" controls style="display: none;"></audio>
+    <br><br>
 
+    <form id="saveRecordingForm" action="/saveRecording" method="post">
+        <input type="hidden" id="recordedAudioInput" name="recordedAudio">
+        <button type="submit" id="saveRecordingBtn" disabled>Save Recording</button>
+    </form>
+
+    <script>
+        let mediaRecorder;
+        let recordedChunks = [];
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(function(stream) {
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.start();
+
+                    mediaRecorder.addEventListener("dataavailable", function(event) {
+                        recordedChunks.push(event.data);
+                    });
+
+                    document.getElementById("startRecordingBtn").disabled = true;
+                    document.getElementById("stopRecordingBtn").disabled = false;
+                })
+                .catch(function(error) {
+                    console.error('Error accessing microphone:', error);
+                });
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+
+            mediaRecorder.addEventListener("stop", function() {
+                const recordedBlob = new Blob(recordedChunks, { type: "audio/webm" });
+                const recordedUrl = URL.createObjectURL(recordedBlob);
+                document.getElementById("recordedAudio").src = recordedUrl;
+                document.getElementById("recordedAudio").style.display = "block";
+
+                // Convert recorded audio blob to base64 string
+                const reader = new FileReader();
+                reader.readAsDataURL(recordedBlob);
+                reader.onloadend = function() {
+                    const base64data = reader.result;
+                    document.getElementById("recordedAudioInput").value = base64data;
+
+                    document.getElementById("startRecordingBtn").disabled = false;
+                    document.getElementById("stopRecordingBtn").disabled = true;
+                    document.getElementById("saveRecordingBtn").disabled = false;
+                };
+
+                recordedChunks = [];
+            });
+        }
+    </script>
 </body>
 </html>

@@ -3,13 +3,25 @@ The proceeding level includes topics from the previous.
 
 ## A1
 - Présent
+  - Subject + Verb + Article + Noun
+  - Article + Adjective + Noun + Verb
+  - Article + Noun + Être + Adjective
+  - Subject + Verb + Preposition + Article + Noun (Place)
 
 ## A2
 - Passé Composé
+  - Subject + Auxiliary Verb (Avoir/Être) + Past Participle Verb + Article + Noun
+  - Subject + Être + Past Participle Verb + Preposition + Article + Noun (Place)
 - Futur Proche
+  - Subject + Aller (Present Conjugation) + Infinitive Verb + Article + Noun
+- Futur Simple
+  - Subject + Verb (Infinitive Form + Avoir Ending) + Article + Noun
 - L'impératif
+  - Verb (Conjugated Form Tu/Vous/Nous) + Possessive Adjective + Noun
 - Imparfait
+  - Subject + Verb (Remove Last Two Letters + Imperfect endings) + Article + Noun
 - Verbe Réflexif
+  - Subject + Reflexive Noun + Verb (Conjugated) + O/C
 
 ## B1
 - Conditionnel Présent
