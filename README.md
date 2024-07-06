@@ -20,7 +20,7 @@
 
 #### 4. Record the User's Oral Production
 - Records the user's rendition of the text-to-speech sentences.
-- Assess the user's oral production and returns a score based on pitch and intonation, fluency, pronunciation accuracy, and overall accuracy.
+- Assess the user's oral production and returns a Phonetic Score, Fluency Score, Prononciation Score, Intonation Score, and Overall Score.
 
 # To Run
 ### Install Instructions
