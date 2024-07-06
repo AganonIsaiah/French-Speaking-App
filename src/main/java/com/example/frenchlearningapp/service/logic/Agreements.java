@@ -22,7 +22,7 @@ public class Agreements {
 
     /**
      * Follows agreement pattern for inanimate nouns
-     *
+     * eau --> eaux or s
      * @param n The inanimate noun
      * @param type S for singular, P for plural
      * @return Plural form of noun
