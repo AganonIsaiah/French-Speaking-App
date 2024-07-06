@@ -41,7 +41,7 @@ public class MenuController {
     }
 
     /**
-     * Displays language proficiency selection form
+     * Handles GET requests to display the language proficiency selection form
      *
      * @return The index.html template
      */
@@ -60,7 +60,7 @@ public class MenuController {
     @PostMapping("/generate")
     public String generateAudio(@RequestParam String proficiency, RedirectAttributes redirectAttributes) {
         String generatedSentence = sentenceGeneratorService.generateSentence(proficiency);
-        String audioFileName = "output.mp3";
+        String audioFileName = "sample.mp3";
         String audioDirectory = "src/main/resources/static/audio";
         String audioFilePath = audioDirectory + "/" + audioFileName;
 
@@ -83,7 +83,6 @@ public class MenuController {
         redirectAttributes.addFlashAttribute("audioFileName", audioFileName);
 
         return "redirect:/showRecordings";
-
     }
 
     /**
@@ -100,6 +99,7 @@ public class MenuController {
         String recordedFilePath = audioDirectory + "/" + recordedFileName;
 
         Path directoryPath = Paths.get(audioDirectory);
+
         if (!Files.exists(directoryPath)) {
             try {
                 Files.createDirectories(directoryPath);
@@ -117,11 +117,8 @@ public class MenuController {
         }
 
         redirectAttributes.addFlashAttribute("recordedFileName", recordedFileName);
-
         return "redirect:/showRecordings";
     }
-
-
 
     /**
      * Handles GET requests to show recording
@@ -137,7 +134,7 @@ public class MenuController {
                                  @ModelAttribute("proficiency") String proficiency,
                                  @ModelAttribute("recordedFileName") String recordedFileName,
                                  Model model) {
-        /* Prevents caching */
+        /* Audio files */
         String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
         String recordedFile = "/audio/" + recordedFileName + "?t=" + System.currentTimeMillis();
 

@@ -1,6 +1,9 @@
 # Level Overview (A1,A2,...,C2)
 The proceeding level includes topics from the previous.
 
+# Resources
+1. Nouns - Masculine, Feminine, Plural
+2. Places - 
 ## A1
 - Présent
   - Subject + Verb + Article + Noun

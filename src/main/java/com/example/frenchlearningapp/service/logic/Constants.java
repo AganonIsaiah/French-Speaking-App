@@ -47,6 +47,15 @@ public final class Constants {
             "votre","vos",
             "leur","leurs"
     };
+    // Possessive Pronouns
+    public static final String[] POSSESSIVE_PN = {
+            "mien","mienne","miens","miennes", // mine
+            "tien","tienne","tiens","tiennes", // yours
+            "sien","sienne","siens","siennes", // his/hers/its
+            "nôtre","nôtres",
+            "vôtre","vôtres",
+            "leur","leurs"
+    };
     // Prepositions
     public static final String[] PREPOSITIONS = {
             "à","en","au","aux",

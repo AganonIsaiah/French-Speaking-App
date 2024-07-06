@@ -20,7 +20,7 @@ public class SentenceGeneratorService {
         String test2 = "J'ai mangé des pommes.";
         String test3 = "Je vais à l'école, aujourd'hui.";
 
-        return test3 + " "+test1;
+        return test2;
     }
 
 }

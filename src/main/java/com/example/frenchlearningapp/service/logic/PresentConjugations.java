@@ -1,11 +1,9 @@
 package com.example.frenchlearningapp.service.logic;
 
+/**
+ * For regular_verbs.csv file, follows conjugation pattern for verbs in Group 1 and 2
+ */
 public class PresentConjugations {
-
-    public PresentConjugations(){
-
-
-    }
 
     /**
      * Conjugates verbs in the second group in present tense
@@ -70,10 +68,4 @@ public class PresentConjugations {
 
         return verb.toString();
     }
-
-    public static void main(String[] args) {
-        new PresentConjugations();
-    }
-
-
 }
