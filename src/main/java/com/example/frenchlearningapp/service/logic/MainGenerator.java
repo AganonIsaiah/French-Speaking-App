@@ -1,73 +1,132 @@
 package com.example.frenchlearningapp.service.logic;
 
-import java.util.HashMap;
+
 import java.util.Random;
 
-/**
- * A1: SVO
- */
 public class MainGenerator {
 
-    private String level;
+    private Random rand = new Random();
 
-    private String[] sampleVerbs = {"manger","parler","aller","ajouter","apporter","gagner","penser","garder","visiter","donner","acheter"};
-
-    HashMap<Character,String> nounMap = new HashMap<>(); // Character --> gender: M,F,P
-                                                         // String --> Noun
-
-    Random rand = new Random();
-    PresentConjugations pc = new PresentConjugations();
-
-    // Char listing
-    /*
-        S = Subject
-        V = Verb
-        A = Article
-        N = Noun
+    /**
+     * S + V + A + O
+     * Present Tense
      */
-
-
-    // Je vais à l'ecole
-    // Je mange les pommes
-    // Subject + verb + article + noun
-    // Article + adjective + noun + verb: gender of noun affects article and adjectives
-    // Article + noun + être + adjective
-
-    private String LevelA1(StringBuilder sb, char nextType, String currentWord){
-        if (nextType == 'V') {
-
-                LevelA1(sb.append(currentWord+" "),'A',pc.Group1(currentWord,sampleVerbs[rand.nextInt(sampleVerbs.length)]));
-        }
-        if (nextType == 'A')
-            LevelA1(sb.append(currentWord+" "),'N',Constants.DEFINITE_A[rand.nextInt(2)]);
-        if (nextType == 'N'){
-            sb.append(currentWord+" ");
-
-            switch(currentWord){
-                case "le" -> sb.append(nounMap.get('M'));
-                case "la" -> sb.append(nounMap.get('F'));
-            }
-        }
-
-        return sb.toString()+".";
+    private String simpleSentence(){
+        return getVerb(getSubject(),"present") + " " +getNouns()[0]+".";
     }
 
-    public MainGenerator(String proficiency){
-        this.level = proficiency;
+    /**
+     * Randomizes a subject
+     *
+     * @return Subject
+     */
+    private String getSubject(){
+        rand = new Random();
+        int n = rand.nextInt(9); // 0 - Je, 1 - Tu, 2,3,4 - Il/Elle/On, 5 - Nous, 6 - Vous, 7,8 - Ils/Elles
+        return Constants.Pronouns.PRONOUNS[n];
+    }
 
-        nounMap.put('M',"livre");
-        nounMap.put('M',"stylo");
-        nounMap.put('M',"chat");
+    /**
+     * Conjugates the verb based on the subject
+     *
+     * @param subject The subject
+     * @param tense The tense for conjugation
+     * @return New sentence with Subject + Verb
+     */
+    private String getVerb(String subject, String tense){
+        rand = new Random();
 
-        nounMap.put('F',"table");
-        nounMap.put('F',"chaise");
-        nounMap.put('F',"voiture");
+        /* Generate a noun from the animate/inanimate files */
+        int genre = rand.nextInt(2); // 0 for regular_verbs, 1 for irregular_verbs
+        String fileName = (genre == 0) ? "regular_verbs" : "irregular_verbs";
+        String[] readCsv = ReadCSV.readRow(fileName);
+        assert readCsv != null;
+        String conjugateVerb;
+
+        /* Conjugates verb */
+        if (genre == 0){ // Verbs that follow the regular pattern
+            String verb = readCsv[0];
+            conjugateVerb = (verb.substring(verb.length()-2,verb.length()-1).equals("ir")) ? PresentConjugations.Group2(subject, verb) : PresentConjugations.Group1(subject, verb);
+        } else { // Irregular verbs
+            int n = (subject.equals ("je")) ?  1 : (subject.equals("tu")) ? 2 : (subject.equals("nous")) ? 4 : (subject.equals("vous")) ? 5 : (subject.equals("ils") || subject.equals("elles")) ? 6 : 3;
+            conjugateVerb = readCsv[n];
+        }
+        return (Agreements.startsWithVowel(conjugateVerb) && (subject.equals("je") || subject.equals("te"))) ? subject.charAt(0)+"'"+conjugateVerb : subject + " "+conjugateVerb;
+    }
+    private String getAdverb(){return "";}
+
+    /**
+     * Adjectives agree with noun (In gender and quantity)
+     *
+     * Most Follow This Pattern: Article + Noun + Adjective
+     * B.A.N.G.S (Beauty/Age/Number/Goodness/Size Adjectives): Article + Adjective + Noun
+     *
+     * @param typeNoun Type of Noun L (Lieu), O (Objet), P (Personne)
+     * @param s The sentence with the Noun
+     * @param gender Adjective must agree with Noun
+     * @return Sentence with adjectives
+     */
+    private String getAdjectives(char typeNoun, String s, char gender){
+         rand = new Random();
+        String[] readCsv = ReadCSV.readRow("adjectives");
+        assert readCsv != null;
 
 
-        for (int i = 0; i < 6; i++) {
-            this.rand = new Random();
-            StringBuilder sb = new StringBuilder();
-            System.out.println("Sentence "+i+": "+LevelA1(sb,'V',Constants.PRONOUNS[rand.nextInt(11)]));
+        // Before a noun: Article + Adjective + Noun
+        if (readCsv[1].equals("B")){
+
+        }
+
+        // After a noun: Article + Noun + Adjective
+        else {
+
+
+        }
+        return "";
+    }
+
+    /**
+     * Generates a noun with respect to its article
+     *
+     * @return A string containing an Article and Noun, and the Gender
+     */
+    private String[] getNouns() {
+        rand = new Random();
+
+        /* Generate a noun from the animate/inanimate files */
+        int genre = rand.nextInt(2); // 0 for inanimate, 1 for animate
+        String fileName = (genre == 0) ? "nouns_inanimate" : "nouns_animate";
+        String[] readCsv = ReadCSV.readRow(fileName);
+        assert readCsv != null;
+
+        // System.out.print(fileName + ": ");
+        /* Correct the noun with the proper agreement */
+        if (genre == 0) {
+            String noun = readCsv[0];
+            char type = readCsv[1].charAt(0);
+            char gender = readCsv[2].charAt(0);
+            int genderN = (gender == 'M') ? 0 : (gender == 'F') ? 1 : 2;
+
+            // Article + Object
+            // Preposition + Article + Place
+            if (Agreements.startsWithVowel(noun) && gender != 2) genderN = 3;
+            return new String[] {Agreements.articleCorrection(noun, genderN, type), String.valueOf(gender)};
+        } else {
+            // Article + Subject
+            int col = rand.nextInt(2, 5); // For animate objects - 2 for masculine, 3 for feminine, 4 for plural
+            String noun = readCsv[col];
+            int genderN = col - 2;
+
+            String gender = (genderN == 0) ? "M" : (genderN == 1) ? "F" : (genderN == 2) ? "P" : "V";
+            if (Agreements.startsWithVowel(noun) && genderN != 2) genderN = 3;
+
+            return new String[] {Agreements.articleCorrection(readCsv[col], genderN, 'P'),gender};
+        }
+    }
+
+    public MainGenerator(String proficiency) {
+        for (int i = 0; i < 10; i++) {
+            System.out.println(simpleSentence());
         }
     }
 

@@ -1,0 +1,116 @@
+Noun (Both M/F Singular --> Add 'S' For Plural),Type,Gender
+restaurant,L,M
+bureau,L,M
+magasin,L,M
+supermarché,L,M
+musée,L,M
+hôtel,L,M
+collège,L,M
+lycée,L,M
+hôpital,L,M
+théâtre,L,M
+parc,L,M
+jardin,L,M
+piscine,L,F
+zoo,L,M
+stade,L,M
+gare,L,F
+aéroport,L,M
+port,L,M
+banque,L,F
+bibliothèque,L,F
+pharmacie,L,F
+boulangerie,L,F
+épicerie,L,F
+cinéma,L,M
+université,L,F
+café,L,M
+pizzeria,L,F
+boutique,L,F
+table,O,F
+chaise,O,F
+lit,O,M
+canapé,O,M
+armoire,O,F
+étagère,O,F
+télévision,O,F
+ordinateur,O,M
+téléphone,O,M
+réfrigérateur,O,M
+serviette,O,F
+drap,O,M
+couverture,O,F
+oreiller,O,M
+bougie,O,F
+journal,O,M
+magazine,O,M
+carte,O,F
+montre,O,F
+écouteurs,O,M
+chargeur,O,M
+école,L,F
+mairie,L,F
+poste,L,F
+église,L,F
+mosquée,L,F
+temple,L,M
+synagogue,L,F
+parc d'attractions,L,M
+bibliothèque universitaire,L,F
+centre commercial,L,M
+centre-ville,L,M
+hôtel de ville,L,M
+office du tourisme,L,M
+salle de sport,L,F
+patinoire,L,F
+parc national,L,M
+gare routière,L,F
+station-service,L,F
+aéroport international,L,M
+cimetière,L,M
+parc aquatique,L,M
+station de métro,L,F
+commissariat de police,L,M
+caserne de pompiers,L,F
+parking,L,M
+kiosque,L,M
+terrain de golf,L,M
+parc à chiens,L,M
+centre communautaire,L,M
+centre culturel,L,M
+station de ski,L,F
+parc industriel,L,M
+terrain de football,L,M
+centre de recyclage,L,M
+table basse,O,F
+lampe,O,F
+plante,O,F
+bureau d'ordinateur,O,M
+chaise de bureau,O,F
+fenêtre,O,F
+rideau,O,M
+tapis,O,M
+bouteille,O,F
+verre,O,M
+assiette,O,F
+fourchette,O,F
+couteau,O,M
+cuillère,O,F
+douche,O,F
+baignoire,O,F
+miroir,O,M
+lavabo,O,M
+brosse à dents,O,F
+peigne,O,M
+shampooing,O,M
+savon,O,M
+serviette de bain,O,F
+ordinateur portable,O,M
+clé usb,O,F
+souris,O,F
+clavier,O,M
+écran,O,M
+enceinte,O,F
+imprimante,O,F
+scanner,O,M
+appareil photo,O,M

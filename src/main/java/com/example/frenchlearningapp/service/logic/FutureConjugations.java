@@ -9,8 +9,8 @@ public class FutureConjugations {
 
     public FutureConjugations(){
 
-        for (int i = 0; i < Constants.PRONOUNS.length   ; i++)
-            System.out.println(FutureSimple(Constants.PRONOUNS[i],"finir"));
+        for (int i = 0; i < Constants.Pronouns.PRONOUNS.length   ; i++)
+            System.out.println(FutureSimple(Constants.Pronouns.PRONOUNS[i],"finir"));
     }
 
     public static void main(String[] args) {

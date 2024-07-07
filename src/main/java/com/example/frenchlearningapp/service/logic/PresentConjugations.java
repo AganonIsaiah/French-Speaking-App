@@ -12,7 +12,7 @@ public class PresentConjugations {
      * @param v The verb (Lowercase)
      * @return Conjugated verb
      */
-    public String Group2(String pn, String v){
+    public static String Group2(String pn, String v){
         /* General conjugation pattern for verbs ending in ...ir */
         StringBuilder verb = new StringBuilder(v);
         verb.delete(verb.length() - 2, verb.length()); // Remove last two letters
@@ -35,7 +35,7 @@ public class PresentConjugations {
      * @param v The verb (Lowercase)
      * @return Conjugated verb
      */
-    public String Group1(String pn, String v){
+    public static String Group1(String pn, String v){
 
         // Edge case for only irregular first group verb
         if (v.equals("aller")) {

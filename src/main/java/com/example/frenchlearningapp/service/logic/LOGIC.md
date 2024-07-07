@@ -1,6 +1,10 @@
 # Level Overview (A1,A2,...,C2)
 The proceeding level includes topics from the previous.
 
+
+  - give opinions
+  - make comparisons
+  - give hypotheticals
 # Resources
 1. Nouns - Masculine, Feminine, Plural
 2. Places - 
