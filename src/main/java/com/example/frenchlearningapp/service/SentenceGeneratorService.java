@@ -1,5 +1,6 @@
 package com.example.frenchlearningapp.service;
 
+import com.example.frenchlearningapp.service.generatorlogic.MainGenerator;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,12 +16,7 @@ public class SentenceGeneratorService {
      * @return French sentence
      */
     public String generateSentence(String proficiencyLevel){
-
-        String test1 = "Est-ce que vous avez un stylo pour moi, s'il vous plaît?";
-        String test2 = "J'ai mangé des pommes.";
-        String test3 = "Je vais à l'école, aujourd'hui.";
-
-        return test2;
+        return MainGenerator.getSentence(proficiencyLevel);
     }
 
 }

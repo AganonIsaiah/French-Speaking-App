@@ -1,4 +1,4 @@
-package com.example.frenchlearningapp.service.logic;
+package com.example.frenchlearningapp.service.generatorlogic;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;

@@ -1,17 +1,17 @@
-package com.example.frenchlearningapp.service.logic;
+package com.example.frenchlearningapp.service.generatorlogic;
 
 
 import java.util.Random;
 
 public class MainGenerator {
 
-    private Random rand = new Random();
+    private static Random rand = new Random();
 
     /**
      * S + V + A + O
      * Present Tense
      */
-    private String simpleSentence(){
+    private static String simpleSentence(){
         return getVerb(getSubject(),"present") + " " +getNouns()[0]+".";
     }
 
@@ -20,7 +20,7 @@ public class MainGenerator {
      *
      * @return Subject
      */
-    private String getSubject(){
+    private static String getSubject(){
         rand = new Random();
         int n = rand.nextInt(9); // 0 - Je, 1 - Tu, 2,3,4 - Il/Elle/On, 5 - Nous, 6 - Vous, 7,8 - Ils/Elles
         return Constants.Pronouns.PRONOUNS[n];
@@ -33,7 +33,7 @@ public class MainGenerator {
      * @param tense The tense for conjugation
      * @return New sentence with Subject + Verb
      */
-    private String getVerb(String subject, String tense){
+    private static String getVerb(String subject, String tense){
         rand = new Random();
 
         /* Generate a noun from the animate/inanimate files */
@@ -53,7 +53,7 @@ public class MainGenerator {
         }
         return (Agreements.startsWithVowel(conjugateVerb) && (subject.equals("je") || subject.equals("te"))) ? subject.charAt(0)+"'"+conjugateVerb : subject + " "+conjugateVerb;
     }
-    private String getAdverb(){return "";}
+    private static String getAdverb(){return "";}
 
     /**
      * Adjectives agree with noun (In gender and quantity)
@@ -66,7 +66,7 @@ public class MainGenerator {
      * @param gender Adjective must agree with Noun
      * @return Sentence with adjectives
      */
-    private String getAdjectives(char typeNoun, String s, char gender){
+    private static String getAdjectives(char typeNoun, String s, char gender){
          rand = new Random();
         String[] readCsv = ReadCSV.readRow("adjectives");
         assert readCsv != null;
@@ -90,7 +90,7 @@ public class MainGenerator {
      *
      * @return A string containing an Article and Noun, and the Gender
      */
-    private String[] getNouns() {
+    private static String[] getNouns() {
         rand = new Random();
 
         /* Generate a noun from the animate/inanimate files */
@@ -124,6 +124,9 @@ public class MainGenerator {
         }
     }
 
+    public static String getSentence(String proficiency){
+        return simpleSentence();
+    }
     public MainGenerator(String proficiency) {
         for (int i = 0; i < 10; i++) {
             System.out.println(simpleSentence());

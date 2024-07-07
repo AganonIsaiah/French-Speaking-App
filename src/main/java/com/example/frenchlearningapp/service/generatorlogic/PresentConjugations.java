@@ -1,4 +1,4 @@
-package com.example.frenchlearningapp.service.logic;
+package com.example.frenchlearningapp.service.generatorlogic;
 
 /**
  * For regular_verbs.csv file, follows conjugation pattern for verbs in Group 1 and 2

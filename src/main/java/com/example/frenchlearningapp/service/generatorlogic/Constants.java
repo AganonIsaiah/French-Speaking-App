@@ -1,6 +1,4 @@
-package com.example.frenchlearningapp.service.logic;
-
-import java.util.ArrayList;
+package com.example.frenchlearningapp.service.generatorlogic;
 
 /**
  * Constants class
@@ -35,6 +33,17 @@ public final class Constants {
             "derrière","entre"
     };
 
+    // Past/Present/Future Tense of Être, Avoir, Aller, Venir
+    public final static class VerbsForTenses {
+            // Irregular verb stems for Futur Simple/Futur Antérieur and Conditionnel Présent
+            public static final String [] FUTURE_TENSE = {"ser","aur","ir","viendr"}; // Etre, Avoir, Aller, Venir
+            // For Futur Proche
+            public static final String [] ALLER_CON = {"vais","vas","va","allons","allez","vont"};
+            // For Passé Récent
+            public static final String [] VENIR_CON = {"viens","viens","vient","venons","venez","viennent"};
+
+    }
+
     public final static class Articles{
        // Indefinite Articles
        public static final String[] INDEFINITE_A = { "un","une","des" };
@@ -43,7 +52,6 @@ public final class Constants {
        // Definite Articles, M,F,V,P
        public static final String[] DEFINITE_A = {"le","la","les","l'"};
    }
-
     public final static class Pronouns {
         public static final String[] PRONOUNS = {
                 "je",

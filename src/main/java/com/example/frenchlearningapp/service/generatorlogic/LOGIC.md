@@ -1,13 +1,12 @@
 # Level Overview (A1,A2,...,C2)
 The proceeding level includes topics from the previous.
-
-
   - give opinions
   - make comparisons
   - give hypotheticals
 # Resources
 1. Nouns - Masculine, Feminine, Plural
-2. Places - 
+2. Places - General Places
+3. Verbs - Irregular, Regular
 ## A1
 - Présent
   - Subject + Verb + Article + Noun
@@ -38,7 +37,7 @@ The proceeding level includes topics from the previous.
 ## B2
 - Subjonctif Présent
 - Subjonctif Passé
-- Futur Antérieur
+- Futur Antérieur 
 - Conditionnel Passé
 - Gérondif
 ## C1
