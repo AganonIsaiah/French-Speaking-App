@@ -1,25 +1,74 @@
 package com.example.frenchlearningapp.service.generatorlogic;
 
 /**
- * For regular_verbs.csv file, follows conjugation pattern for verbs in Group 1 and 2
+ * All classes only return the conjugated verb
+ * Determines the present conjugation for the verbs
+ *
+ * Just returns the verb, no subject
  */
 public class PresentConjugations {
+
+
+    /**
+     * Determines the group of the verb and returns the conjugated verb
+     *
+     * @param pn The pronoun
+     * @param v The verb
+     * @return The conjugated verb
+     */
+    public static String getPresentVerb(String pn, String v){
+        StringBuilder verb = new StringBuilder(v);
+        String s = " ";
+
+        // Remove last two letters of verb
+        String check = verb.substring(verb.length()-2);
+        verb.delete(verb.length()-2,verb.length());
+
+        /* Get verb */
+        if (ReadCSV.isFileType(v,"irregular_verbs")[0] == 1 ) {s = Group3(pn,v, ReadCSV.isFileType(v,"irregular_verbs")[1]);}
+        else if (check.equals("ir")) {s = Group2(pn,verb);}
+        else if (check.equals("er")) {s = Group1(pn,verb);}
+
+        return s;
+    }
+
+
+
+    /**
+     * Conjugates verbs in the third group in present tense
+     *
+     * @param pn The pronoun
+     * @param v The verb
+     * @param indexRow The row containing the verb
+     * @return The conjugated verb
+     */
+    private static String Group3(String pn, String v, int indexRow){
+
+        /* Find column */
+        int col = -1;
+        switch (pn){
+            case "je" -> {col = 2;}
+            case "tu" -> {col = 3;}
+            case "il","elle","on" -> {col=4;}
+            case "nous" -> {col = 5;}
+            case "vous" -> {col = 6;}
+            case "ils","elles" -> {col = 7;}
+        }
+
+        return ReadCSV.getFileItem("irregular_verbs",indexRow,col);
+    }
 
     /**
      * Conjugates verbs in the second group in present tense
      *
      * @param pn The pronoun (Lowercase)
-     * @param v The verb (Lowercase)
+     * @param verb The verb (Lowercase)
      * @return Conjugated verb
      */
-    public static String Group2(String pn, String v){
+    private static String Group2(String pn, StringBuilder verb){
         /* General conjugation pattern for verbs ending in ...ir */
-        StringBuilder verb = new StringBuilder(v);
-        verb.delete(verb.length() - 2, verb.length()); // Remove last two letters
-
         switch (pn) {
-
-            case "je", "j'", "tu", "t'" -> verb.append("is");
+            case "je", "tu" -> verb.append("is");
             case "il", "elle","on" -> verb.append("it");
             case "nous" -> verb.append("issons");
             case "vous" -> verb.append("issez");
@@ -32,31 +81,17 @@ public class PresentConjugations {
      * Conjugates verbs in the first group in present tense
      *
      * @param pn The pronoun (Lowercase)
-     * @param v The verb (Lowercase)
+     * @param verb The verb (Lowercase)
      * @return Conjugated verb
      */
-    public static String Group1(String pn, String v){
-
-        // Edge case for only irregular first group verb
-        if (v.equals("aller")) {
-            switch (pn) {
-                case "je", "j'" -> {return "vais";}
-                case "tu", "t'" -> {return "vas";}
-                case "il", "elle", "on" -> {return "va";}
-                case "nous" -> {return "allons";}
-                case "vous" -> {return "allez";}
-                case "ils", "elles" -> {return "vont";}
-            }
-        }
+    private static String Group1(String pn, StringBuilder verb){
 
         /* General conjugation pattern for verbs ending in ...er */
-        StringBuilder verb = new StringBuilder(v);
-        char c = verb.charAt(verb.length()-3); // For special cases where the verb ends with ...cer or ...ger
-        verb.delete(verb.length() - 2, verb.length());
+        char c = verb.charAt(verb.length()-1); // For special cases where the verb ends with ...cer or ...ger
 
         switch (pn) {
-            case "je", "j'", "il", "elle", "on" -> verb.append('e');
-            case "tu", "t'" -> verb.append("es");
+            case "je", "il", "elle", "on" -> verb.append('e');
+            case "tu" -> verb.append("es");
             case "nous" -> {
                 if (c == 'g') verb.append('e');
                 if (c == 'c') verb.replace(verb.length()-1,verb.length(),"ç");
@@ -68,4 +103,6 @@ public class PresentConjugations {
 
         return verb.toString();
     }
+
+
 }

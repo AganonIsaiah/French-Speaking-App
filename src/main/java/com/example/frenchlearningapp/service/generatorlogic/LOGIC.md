@@ -39,7 +39,8 @@ The proceeding level includes topics from the previous.
 - Subjonctif Passé
 - Futur Antérieur 
 - Conditionnel Passé
-- Gérondif
+- Gérondif - Describes current action being done -ing
+  - En + Verb (Remove Last Two Letters + ant)
 ## C1
 - Subjonctif Imparfait
 - Subjonctif Plus-que-Parfait

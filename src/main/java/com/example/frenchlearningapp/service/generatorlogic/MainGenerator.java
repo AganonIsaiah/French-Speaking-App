@@ -1,19 +1,15 @@
 package com.example.frenchlearningapp.service.generatorlogic;
 
-
+import java.util.Objects;
 import java.util.Random;
 
+/**
+ * NOTE - Conjugations are good, connections need work
+ */
 public class MainGenerator {
 
     private static Random rand = new Random();
 
-    /**
-     * S + V + A + O
-     * Present Tense
-     */
-    private static String simpleSentence(){
-        return getVerb(getSubject(),"present") + " " +getNouns()[0]+".";
-    }
 
     /**
      * Randomizes a subject
@@ -33,25 +29,42 @@ public class MainGenerator {
      * @param tense The tense for conjugation
      * @return New sentence with Subject + Verb
      */
-    private static String getVerb(String subject, String tense){
+    private static String getVerb(String subject, String tense) {
+        /* Generate a verb */
         rand = new Random();
+        int n = rand.nextInt(3);
+        String fileName = (n == 0) ? "irregular_verbs" : "regular_verbs"; // 0 for irregular_verbs, 1,2 for regular_verbs
+        String infinitiveVerb = Objects.requireNonNull(ReadCSV.readFile(fileName))[0]; // Verb from irregular/regular
 
-        /* Generate a noun from the animate/inanimate files */
-        int genre = rand.nextInt(2); // 0 for regular_verbs, 1 for irregular_verbs
-        String fileName = (genre == 0) ? "regular_verbs" : "irregular_verbs";
-        String[] readCsv = ReadCSV.readRow(fileName);
-        assert readCsv != null;
-        String conjugateVerb;
+        /* For tenses which require Avoir/Etre auxiliary verb */
+        String vandertrampVerb = Objects.requireNonNull(ReadCSV.readFile("vandertramp_verbs"))[0];
+        int typeInt = rand.nextInt(2);
+        String verbType = (typeInt == 0) ? infinitiveVerb : vandertrampVerb; // 0 for avoir, 1 for être
 
-        /* Conjugates verb */
-        if (genre == 0){ // Verbs that follow the regular pattern
-            String verb = readCsv[0];
-            conjugateVerb = (verb.substring(verb.length()-2,verb.length()-1).equals("ir")) ? PresentConjugations.Group2(subject, verb) : PresentConjugations.Group1(subject, verb);
-        } else { // Irregular verbs
-            int n = (subject.equals ("je")) ?  1 : (subject.equals("tu")) ? 2 : (subject.equals("nous")) ? 4 : (subject.equals("vous")) ? 5 : (subject.equals("ils") || subject.equals("elles")) ? 6 : 3;
-            conjugateVerb = readCsv[n];
+        if (tense.equals("present")) {
+            /* Get verb */
+            String conjugateVerb = PresentConjugations.getPresentVerb(subject, infinitiveVerb);
+            return Agreements.elision(subject, conjugateVerb,subject.equals("je"));
+        } else if (tense.equals("future")){
+            switch (rand.nextInt(3)) {
+                case 0 -> {return FutureConjugations.futureSimple(subject,infinitiveVerb);}
+                case 1 -> {return FutureConjugations.futureProche(subject,infinitiveVerb);}
+                case 2 -> {return FutureConjugations.futureAnterieur(subject,verbType,typeInt);}
+            }
+        } else if (tense.equals("past")){
+            switch (rand.nextInt(6)) {
+                case 0 -> {return PastConjugations.imparfait(subject,infinitiveVerb);}
+                case 1 -> {return PastConjugations.passeRecent(subject,infinitiveVerb);}
+
+                case 2 -> {return PastConjugations.passeCompose(subject,verbType,typeInt);}
+                case 3 -> {return PastConjugations.plusQueParfait(subject,verbType,typeInt);}
+
+                /* Written past tenses */
+                case 4 -> {return PastConjugations.passeSimple(subject,infinitiveVerb);}
+                case 5 -> {return PastConjugations.passeAnterieur(subject,verbType,typeInt);}
+            }
         }
-        return (Agreements.startsWithVowel(conjugateVerb) && (subject.equals("je") || subject.equals("te"))) ? subject.charAt(0)+"'"+conjugateVerb : subject + " "+conjugateVerb;
+        return " ";
     }
     private static String getAdverb(){return "";}
 
@@ -68,7 +81,7 @@ public class MainGenerator {
      */
     private static String getAdjectives(char typeNoun, String s, char gender){
          rand = new Random();
-        String[] readCsv = ReadCSV.readRow("adjectives");
+        String[] readCsv = ReadCSV.readFile("adjectives");
         assert readCsv != null;
 
 
@@ -96,7 +109,7 @@ public class MainGenerator {
         /* Generate a noun from the animate/inanimate files */
         int genre = rand.nextInt(2); // 0 for inanimate, 1 for animate
         String fileName = (genre == 0) ? "nouns_inanimate" : "nouns_animate";
-        String[] readCsv = ReadCSV.readRow(fileName);
+        String[] readCsv = ReadCSV.readFile(fileName);
         assert readCsv != null;
 
         // System.out.print(fileName + ": ");
@@ -125,11 +138,13 @@ public class MainGenerator {
     }
 
     public static String getSentence(String proficiency){
-        return simpleSentence();
+        return " ";
     }
     public MainGenerator(String proficiency) {
         for (int i = 0; i < 10; i++) {
-            System.out.println(simpleSentence());
+            int n = rand.nextInt(3);
+            String tense = (n == 0) ? "present" : (n == 1) ? "past" : "future";
+            System.out.println("Tense: " + tense + "; "+getVerb(getSubject(),tense));
         }
     }
 

@@ -19,7 +19,7 @@ public class Agreements {
      */
     public static String elision(String s1, String s2, boolean flag){
         StringBuilder sb1 = new StringBuilder(s1);
-        if (startsWithVowel(s2) && !startsWithVowel(String.valueOf(sb1.deleteCharAt(s1.length()-1)))) return sb1.toString()+"'"+s2;
+        if (startsWithVowel(s2) && !startsWithVowel(String.valueOf(sb1.deleteCharAt(s1.length()-1))) && flag) return sb1.toString()+"'"+s2;
         else return s1 + " "+s2;
     }
     /**
@@ -29,7 +29,7 @@ public class Agreements {
      * @return True if String starts with a vowel or h
      */
     public static boolean startsWithVowel(String s) {
-        return (s.charAt(0) == 'è' || s.charAt(0) == 'é' || s.charAt(0) == 'à' || s.charAt(0) == 'a' || s.charAt(0) == 'e'
+        return (s.charAt(0) == 'ê' || s.charAt(0) == 'è' || s.charAt(0) == 'é' || s.charAt(0) == 'à' || s.charAt(0) == 'a' || s.charAt(0) == 'e'
                 || s.charAt(0) == 'i' || s.charAt(0) == 'o'
                 || s.charAt(0) == 'u' || s.charAt(0) == 'h');
     }
@@ -105,26 +105,40 @@ public class Agreements {
     }
 
     /**
+     * Adjusts the quantity/gender of a vandertramp verb for être case
+     *
+     * @param pastPart The past participle verb
+     * @param pn The pronoun
+     * @return The past participle verb, amplified with a new gender and quantity
+     */
+    public static String getRandVanderTramp(String pastPart, String pn){
+        /* Randomizing gender and quantity */
+        Random rand = new Random();
+        char g = (rand.nextInt(2) == 0) ? 'F' : 'M';
+        char q = (rand.nextInt(2) == 0) ? 'P' : 'S';
+
+        /* Past participle verb agreement - tu, il, vous stays the same*/
+        switch(pn){
+            case "je" -> {pastPart = Agreements.etreAmplifier(pastPart,"S"+g);}
+            case "elle" -> {pastPart = Agreements.etreAmplifier(pastPart,"SF");}
+            case "on" ->  {pastPart = Agreements.etreAmplifier(pastPart,(q+g)+"");}
+            case "nous" -> {pastPart = Agreements.etreAmplifier(pastPart,"P"+g);}
+            case "ils" -> {pastPart = Agreements.etreAmplifier(pastPart,"PM");}
+            case "elles" -> {pastPart = Agreements.etreAmplifier(pastPart,"PF");}
+        }
+
+        return pastPart;
+    }
+
+    /**
      * Follows agreement pattern for Dr Mrs Vandertramp verbs
      *
      * @param v    The verb (In past participle form)
      * @param type SM,SF,PM,PF
      * @return Correct form of past participle verb
      */
-    public static String vanderTramp(String v, String type) {
+    public static String etreAmplifier(String v, String type) {
         return (type.equals("SF")) ? v + "e" : (type.equals("PM")) ? v + "s" : (type.equals("PF")) ? v + "es" : v;
     }
 
-    /**
-     * Follows agreement pattern for inanimate nouns
-     * eau --> eaux or s
-     *
-     * @param n             The inanimate noun
-     * @param type          S for singular, P for plural
-     * @param typePluralEnd If last three letters end with eau --> eaux
-     * @return Plural form of noun
-     */
-    public String inNouns(String n, char type, String typePluralEnd) {
-        return (type == 'P' && typePluralEnd.equals("eau")) ? n + "x" : (type == 'P') ? n + "s" : n;
-    }
 }
