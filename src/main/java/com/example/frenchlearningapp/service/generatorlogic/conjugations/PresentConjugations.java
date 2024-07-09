@@ -1,4 +1,6 @@
-package com.example.frenchlearningapp.service.generatorlogic;
+package com.example.frenchlearningapp.service.generatorlogic.conjugations;
+
+import com.example.frenchlearningapp.service.generatorlogic.ReadCSV;
 
 /**
  * All classes only return the conjugated verb

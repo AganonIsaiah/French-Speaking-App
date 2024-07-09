@@ -1,4 +1,7 @@
-package com.example.frenchlearningapp.service.generatorlogic;
+package com.example.frenchlearningapp.service.generatorlogic.conjugations;
+
+import com.example.frenchlearningapp.service.generatorlogic.Agreements;
+import com.example.frenchlearningapp.service.generatorlogic.ReadCSV;
 
 /**
  * Methods return the Subject + Conjugated Verb(s)
@@ -130,7 +133,7 @@ public class PastConjugations {
      * @return Subject + venir (present conjugation) + de + verb (infinitive)
      */
     public static String passeRecent(String pn, String v){
-        return Agreements.elision(pn,PresentConjugations.getPresentVerb(pn,"venir"),pn.equals("je")) + " "+Agreements.elision("de",v,true);
+        return Agreements.elision(pn, PresentConjugations.getPresentVerb(pn,"venir"),pn.equals("je")) + " "+Agreements.elision("de",v,true);
     }
 
     /**

@@ -10,6 +10,17 @@ public class Agreements {
 
 
     /**
+     * Checks to see if the String contains an apostrophe, returns position
+     * @param s The string
+     * @return -1 if false, the column position if true
+     */
+    public static int checkElision(String s){
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '\'') return i;
+        }
+        return -1;
+    }
+    /**
      * Checks if there is a double vowel when connecting Strings
      *
      * @param s1 String 1

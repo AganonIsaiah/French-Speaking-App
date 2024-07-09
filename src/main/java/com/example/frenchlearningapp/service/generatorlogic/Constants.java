@@ -29,8 +29,8 @@ public final class Constants {
     public static final String[] PREPOSITIONS = {
             "au","à la","aux","à l'", // à + definite article, au/aux no article
             "du","de la","des","de l'", // de + definite article, du/des no articles
-            "dans", "sur", "sous", "devant",
-            "derrière","entre"
+            "dans", "sur", "sous", "devant", // 8 - 15
+            "derrière","entre","par","vers"
     };
 
 

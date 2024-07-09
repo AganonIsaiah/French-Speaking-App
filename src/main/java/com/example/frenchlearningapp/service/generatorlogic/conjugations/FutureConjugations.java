@@ -1,6 +1,7 @@
-package com.example.frenchlearningapp.service.generatorlogic;
+package com.example.frenchlearningapp.service.generatorlogic.conjugations;
 
-import java.util.Random;
+import com.example.frenchlearningapp.service.generatorlogic.Agreements;
+import com.example.frenchlearningapp.service.generatorlogic.ReadCSV;
 
 /**
  * Methods return the Subject + Conjugated Verb(s)
@@ -20,7 +21,7 @@ public class FutureConjugations {
      * @return Subject + Aller (Conjugated) + Verb (Infinitive)
      */
     public static String futureProche(String pn, String v){
-        return pn + " "+PresentConjugations.getPresentVerb(pn,"aller") + " "+ v;
+        return pn + " "+ PresentConjugations.getPresentVerb(pn,"aller") + " "+ v;
     }
 
     /**
