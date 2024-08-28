@@ -1,7 +1,8 @@
 package com.example.frenchlearningapp.service;
 
-import com.example.frenchlearningapp.service.generatorlogic.MainGenerator;
 import org.springframework.stereotype.Service;
+
+import com.example.frenchlearningapp.service.generatorlogic.MainGenerator;
 
 /**
  * Utilizes logic within the "logic" package to construct appropriate and grammatically sound French sentences
@@ -16,7 +17,9 @@ public class SentenceGeneratorService {
      * @return French sentence
      */
     public String generateSentence(String proficiencyLevel){
-        return MainGenerator.getSentence(proficiencyLevel);
+        String s = MainGenerator.getSentence(proficiencyLevel);
+
+        return "je vais à l'école!";
     }
 
 }

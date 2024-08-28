@@ -1,7 +1,10 @@
 package com.example.frenchlearningapp.controller;
 
-import com.example.frenchlearningapp.service.SentenceGeneratorService;
-import com.example.frenchlearningapp.service.TextToSpeechService;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
+import com.example.frenchlearningapp.service.SentenceGeneratorService;
+import com.example.frenchlearningapp.service.TextToSpeechService;
 
 /**
  * Manages the generation and display of language proficiency-based audio recordings.
@@ -27,6 +27,7 @@ public class MenuController {
     // Holds instance of SentenceGeneratorService and TextToSpeechService
     private final SentenceGeneratorService sentenceGeneratorService;
     private final TextToSpeechService ttsService;
+    private String sentence;
 
     /**
      * Injects SentenceGeneratorService dependency.
@@ -85,6 +86,36 @@ public class MenuController {
         return "redirect:/showRecordings";
     }
 
+     /* 
+     * Handles GET requests to show recording
+     *
+     * @param audioFileName Name of file
+     * @param proficiency   User's selected proficiency level
+     * @param recordedFileName For user's recorded file
+     * @param model         Model to add attributes for rendering
+     * @return records.html
+     */
+    @GetMapping("/showRecordings")
+    public String showRecordings(@ModelAttribute("audioFileName") String audioFileName,
+                                 @ModelAttribute("proficiency") String proficiency,
+                                 @ModelAttribute("recordedFileName") String recordedFileName, 
+                                 @ModelAttribute("generatedSentence") String generatedSentence,
+                                 Model model) {
+        /* Audio files */
+        String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
+        String recordedFile = "/audio/" + recordedFileName + "?t=" + System.currentTimeMillis();
+
+        /* Adding attributes to template */
+        model.addAttribute("audioFile", audioFile);
+        model.addAttribute("recordedFile", recordedFile);
+        model.addAttribute("proficiency",proficiency);
+        model.addAttribute("generatedSentence", generatedSentence); 
+
+
+        this.sentence = generatedSentence;
+        return "records";
+    }
+
     /**
      * Handles the POST request to save the recorded audio data
      *
@@ -97,53 +128,57 @@ public class MenuController {
         String audioDirectory = "src/main/resources/static/audio";
         String recordedFileName = "recorded.mp3";
         String recordedFilePath = audioDirectory + "/" + recordedFileName;
-
+    
         Path directoryPath = Paths.get(audioDirectory);
-
         if (!Files.exists(directoryPath)) {
             try {
                 Files.createDirectories(directoryPath);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
+                redirectAttributes.addFlashAttribute("error", "Failed to create directory");
+                return "redirect:/showRecordings";
             }
         }
-
+    
         // Save the recorded audio file
         try {
-            byte[] audioBytes = Base64.getDecoder().decode(recordedAudio.split(",")[1]);
+            String base64Audio = recordedAudio.split(",")[1];
+            byte[] audioBytes = Base64.getDecoder().decode(base64Audio);
             Files.write(Paths.get(recordedFilePath), audioBytes);
         } catch (IOException e) {
             e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to save recorded audio");
+            return "redirect:/showRecordings";
         }
+    
+        // Print to console for testing
+        System.out.println("Testing: Audio saved successfully.");
 
+        String generatedSentence = (String) redirectAttributes.getFlashAttributes().get("generatedSentence");
         redirectAttributes.addFlashAttribute("recordedFileName", recordedFileName);
-        return "redirect:/showRecordings";
+        redirectAttributes.addFlashAttribute("generatedSentence", generatedSentence);  
+    
+        redirectAttributes.addFlashAttribute("recordedFileName", recordedFileName);
+        return "redirect:/analysis";
     }
+    
 
-    /**
-     * Handles GET requests to show recording
+      /**
+     * Handles GET requests to show the analysis page
      *
-     * @param audioFileName Name of file
-     * @param proficiency   User's selected proficiency level
-     * @param recordedFileName For user's recorded file
-     * @param model         Model to add attributes for rendering
-     * @return records.html
+     * @param model Model to add attributes for rendering
+     * @return analysis.html
      */
-    @GetMapping("/showRecordings")
-    public String showRecordings(@ModelAttribute("audioFileName") String audioFileName,
-                                 @ModelAttribute("proficiency") String proficiency,
-                                 @ModelAttribute("recordedFileName") String recordedFileName,
-                                 Model model) {
-        /* Audio files */
-        String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
-        String recordedFile = "/audio/" + recordedFileName + "?t=" + System.currentTimeMillis();
+    @GetMapping("/analysis")
+    public String showAnalysis(Model model) {
+        String sampleFilePath = (String) model.asMap().get("sampleFilePath");
+        String recordedFilePath = (String) model.asMap().get("recordedFilePath");
 
-        /* Adding attributes to template */
-        model.addAttribute("audioFile", audioFile);
-        model.addAttribute("recordedFile", recordedFile);
-        model.addAttribute("proficiency",proficiency);
+        model.addAttribute("generatedSentence", sentence);
+        model.addAttribute("sampleFilePath", sampleFilePath);
+        model.addAttribute("recordedFilePath", recordedFilePath);
 
-        return "records";
+        return "analysis";
     }
 
 

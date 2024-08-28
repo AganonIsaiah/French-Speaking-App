@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis</title>
+</head>
+<body>
+    <h1>Analysis Page</h1>
+
+    <h2>Generated Sentence:</h2>
+    <p th:text="${generatedSentence}"> </p>
+    
+    <h2>Sample Audio:</h2>
+    <audio controls>
+        <source th:src="@{/audio/sample.mp3}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <h2>Recorded Audio:</h2>
+    <audio controls>
+        <source th:src="@{/audio/recorded.mp3}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+  
+</body>
+</html>
