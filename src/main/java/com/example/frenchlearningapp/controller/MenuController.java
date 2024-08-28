@@ -150,9 +150,6 @@ public class MenuController {
             redirectAttributes.addFlashAttribute("error", "Failed to save recorded audio");
             return "redirect:/showRecordings";
         }
-    
-        // Print to console for testing
-        System.out.println("Testing: Audio saved successfully.");
 
         String generatedSentence = (String) redirectAttributes.getFlashAttributes().get("generatedSentence");
         redirectAttributes.addFlashAttribute("recordedFileName", recordedFileName);

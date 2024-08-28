@@ -18,8 +18,8 @@ public class SentenceGeneratorService {
      */
     public String generateSentence(String proficiencyLevel){
         String s = MainGenerator.getSentence(proficiencyLevel);
-
-        return "je vais à l'école!";
+       // s = "je vais à l'école!";
+        return s;
     }
 
 }
