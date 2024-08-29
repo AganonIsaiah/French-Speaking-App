@@ -26,18 +26,25 @@
 
     <form id="saveRecordingForm" action="/saveRecording" method="post">
         <input type="hidden" id="recordedAudioInput" name="recordedAudio">
+        <input type="hidden" id="recordingDurationInput" name="recordingDuration">
+        
         <button type="submit" id="saveRecordingBtn" disabled>Save Recording</button>
     </form>
 
     <script>
         let mediaRecorder;
         let recordedChunks = [];
+        let startTime;
+        let endTime;
 
         function startRecording() {
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then(function(stream) {
                     mediaRecorder = new MediaRecorder(stream);
                     mediaRecorder.start();
+
+                      // Start the timer
+                      startTime = new Date().getTime();
 
                     mediaRecorder.addEventListener("dataavailable", function(event) {
                         recordedChunks.push(event.data);
@@ -54,6 +61,12 @@
         function stopRecording() {
             mediaRecorder.stop();
 
+
+            // Stop the timer and calculate the duration
+            endTime = new Date().getTime();
+            const duration = endTime - startTime; // Duration in milliseconds
+
+            console.log(duration)
             mediaRecorder.addEventListener("stop", function() {
                 const recordedBlob = new Blob(recordedChunks, { type: "audio/webm" });
                 const recordedUrl = URL.createObjectURL(recordedBlob);
@@ -66,6 +79,10 @@
                 reader.onloadend = function() {
                     const base64data = reader.result;
                     document.getElementById("recordedAudioInput").value = base64data;
+
+                     // Set the duration input field
+                     document.getElementById("recordingDurationInput").value = duration;
+
 
                     document.getElementById("startRecordingBtn").disabled = false;
                     document.getElementById("stopRecordingBtn").disabled = true;

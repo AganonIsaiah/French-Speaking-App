@@ -1,16 +1,15 @@
 package com.example.frenchlearningapp.controller;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Clears the cache for audio generation, ensuring the correct audio file is created.
@@ -41,6 +40,7 @@ public class AudioController {
 
         // Set cache control headers
         CacheControl cacheControl = CacheControl.maxAge(0, TimeUnit.SECONDS).mustRevalidate();
+
         return ResponseEntity.ok().cacheControl(cacheControl).body(audioBytes);
     }
 }

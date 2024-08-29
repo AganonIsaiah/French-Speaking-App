@@ -1,14 +1,14 @@
 package com.example.frenchlearningapp.service.generatorlogic;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 
 /**
  * For generating nouns, adjectives and verbs from the resources folder

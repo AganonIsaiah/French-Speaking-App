@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.frenchlearningapp.service.ScoreService;
 import com.example.frenchlearningapp.service.SentenceGeneratorService;
 import com.example.frenchlearningapp.service.TextToSpeechService;
 
@@ -27,6 +28,7 @@ public class MenuController {
     // Holds instance of SentenceGeneratorService and TextToSpeechService
     private final SentenceGeneratorService sentenceGeneratorService;
     private final TextToSpeechService ttsService;
+    private final ScoreService scoreService;
     private String sentence;
 
     /**
@@ -36,9 +38,10 @@ public class MenuController {
      * @param ttsService               For generating sound recordings
      */
     @Autowired
-    public MenuController(SentenceGeneratorService sentenceGeneratorService, TextToSpeechService ttsService) {
+    public MenuController(SentenceGeneratorService sentenceGeneratorService, TextToSpeechService ttsService, ScoreService scoreService) {
         this.ttsService = ttsService;
         this.sentenceGeneratorService = sentenceGeneratorService;
+        this.scoreService = scoreService;
     }
 
     /**
@@ -76,44 +79,15 @@ public class MenuController {
         }
 
         // Generate the audio file
-        ttsService.generateSpeech(generatedSentence, audioFilePath);
+        Long sampleDuration = ttsService.generateSpeech(generatedSentence, audioFilePath);
 
         /* Passes attributes to the next page */
         redirectAttributes.addFlashAttribute("proficiency", proficiency);
         redirectAttributes.addFlashAttribute("generatedSentence", generatedSentence);
         redirectAttributes.addFlashAttribute("audioFileName", audioFileName);
+        redirectAttributes.addFlashAttribute("sampleDuration",sampleDuration);
 
         return "redirect:/showRecordings";
-    }
-
-     /* 
-     * Handles GET requests to show recording
-     *
-     * @param audioFileName Name of file
-     * @param proficiency   User's selected proficiency level
-     * @param recordedFileName For user's recorded file
-     * @param model         Model to add attributes for rendering
-     * @return records.html
-     */
-    @GetMapping("/showRecordings")
-    public String showRecordings(@ModelAttribute("audioFileName") String audioFileName,
-                                 @ModelAttribute("proficiency") String proficiency,
-                                 @ModelAttribute("recordedFileName") String recordedFileName, 
-                                 @ModelAttribute("generatedSentence") String generatedSentence,
-                                 Model model) {
-        /* Audio files */
-        String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
-        String recordedFile = "/audio/" + recordedFileName + "?t=" + System.currentTimeMillis();
-
-        /* Adding attributes to template */
-        model.addAttribute("audioFile", audioFile);
-        model.addAttribute("recordedFile", recordedFile);
-        model.addAttribute("proficiency",proficiency);
-        model.addAttribute("generatedSentence", generatedSentence); 
-
-
-        this.sentence = generatedSentence;
-        return "records";
     }
 
     /**
@@ -124,7 +98,7 @@ public class MenuController {
      * @return Redirects to "/showRecordings" page after saving recorded audio
      */
     @PostMapping("/saveRecording")
-    public String saveRecording(@RequestParam String recordedAudio, RedirectAttributes redirectAttributes) {
+    public String saveRecording(@RequestParam String recordedAudio, @RequestParam String recordingDuration, RedirectAttributes redirectAttributes) {
         String audioDirectory = "src/main/resources/static/audio";
         String recordedFileName = "recorded.mp3";
         String recordedFilePath = audioDirectory + "/" + recordedFileName;
@@ -152,15 +126,47 @@ public class MenuController {
         }
 
         String generatedSentence = (String) redirectAttributes.getFlashAttributes().get("generatedSentence");
+
+        Long recordedDuration = Long.parseLong(recordingDuration);
+        System.out.println("recorded.mp3 file duration: "+recordedDuration+ " milliseconds");
+
         redirectAttributes.addFlashAttribute("recordedFileName", recordedFileName);
         redirectAttributes.addFlashAttribute("generatedSentence", generatedSentence);  
-    
+        redirectAttributes.addFlashAttribute("recordedDuration", recordedDuration);     
         redirectAttributes.addFlashAttribute("recordedFileName", recordedFileName);
         return "redirect:/analysis";
     }
-    
 
-      /**
+     /* 
+     * Handles GET requests to show recording
+     *
+     * @param audioFileName Name of file
+     * @param proficiency   User's selected proficiency level
+     * @param recordedFileName For user's recorded file
+     * @param model         Model to add attributes for rendering
+     * @return records.html
+     */
+    @GetMapping("/showRecordings")
+    public String showRecordings(@ModelAttribute("audioFileName") String audioFileName,
+                                 @ModelAttribute("proficiency") String proficiency,
+                                 @ModelAttribute("recordedFileName") String recordedFileName, 
+                                 @ModelAttribute("generatedSentence") String generatedSentence,
+                                 Model model) {
+        /* Audio files */
+        String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
+        String recordedFile = "/audio/" + recordedFileName + "?t=" + System.currentTimeMillis();
+
+        /* Adding attributes to template */
+        model.addAttribute("audioFile", audioFile);
+        model.addAttribute("recordedFile", recordedFile);
+        model.addAttribute("proficiency",proficiency);
+        model.addAttribute("generatedSentence", generatedSentence); 
+
+        this.sentence = generatedSentence;
+        return "records";
+    }
+    
+    /**
      * Handles GET requests to show the analysis page
      *
      * @param model Model to add attributes for rendering
@@ -168,12 +174,30 @@ public class MenuController {
      */
     @GetMapping("/analysis")
     public String showAnalysis(Model model) {
+        /* Set attributes on page */
         String sampleFilePath = (String) model.asMap().get("sampleFilePath");
         String recordedFilePath = (String) model.asMap().get("recordedFilePath");
 
+        /* 1. Get file durations for fluency scores, x/100 */
+        Long sampleDuration = (Long) model.asMap().get("sampleDuration");
+        Long recordedDuration = (Long)model.asMap().get("recordedDuration");
+        scoreService.setLengths(sampleDuration, recordedDuration);
+        int fluencyScore = scoreService.calcFluencyScore();
+    
+        
+
+
+
+        /* Testing */
+        System.out.println("1. Fluency Score: "+fluencyScore);
+
+        /* To model */
         model.addAttribute("generatedSentence", sentence);
         model.addAttribute("sampleFilePath", sampleFilePath);
         model.addAttribute("recordedFilePath", recordedFilePath);
+
+
+
 
         return "analysis";
     }

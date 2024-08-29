@@ -1,12 +1,11 @@
 package com.example.frenchlearningapp.service.generatorlogic;
 
+import java.util.Objects;
+import java.util.Random;
+
 import com.example.frenchlearningapp.service.generatorlogic.conjugations.FutureConjugations;
 import com.example.frenchlearningapp.service.generatorlogic.conjugations.PastConjugations;
 import com.example.frenchlearningapp.service.generatorlogic.conjugations.PresentConjugations;
-import org.apache.tomcat.util.bcel.Const;
-
-import java.util.Objects;
-import java.util.Random;
 
 /**
  * NOTE - Conjugations are good, connections need work
@@ -14,6 +13,7 @@ import java.util.Random;
 public class MainGenerator {
 
     private static Random rand = new Random();
+    private static String proficiency;
 
     /**
      * Randomizes a subject
@@ -223,8 +223,7 @@ public class MainGenerator {
         return getVerb(subject, "random") + " "+ getAdjectives(article,s[2]);
     }
     public MainGenerator(String proficiency) {
-
-
+        this.proficiency = proficiency;
         for (int i = 0; i < 10; i++) {
             System.out.println(getSentence("a1"));
         }

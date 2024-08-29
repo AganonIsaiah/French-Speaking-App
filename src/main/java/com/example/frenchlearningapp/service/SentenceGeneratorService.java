@@ -19,6 +19,7 @@ public class SentenceGeneratorService {
     public String generateSentence(String proficiencyLevel){
         String s = MainGenerator.getSentence(proficiencyLevel);
        // s = "je vais à l'école!";
+
         return s;
     }
 
