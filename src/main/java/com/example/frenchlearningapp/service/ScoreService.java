@@ -29,15 +29,17 @@ public class ScoreService {
     public double calcFluencyScore(){
         int sample = sampleLength.intValue();
         int recorded = recordedLength.intValue();
+        int difference = Math.abs(sample - recorded);
         double score = 0;
 
-        if (sample + 1000 > recorded && sample - 1000 < recorded) score = 0.15;
-        else if (sample + 500 > recorded && sample - 500 < recorded) score = 0.30;
-        else if (sample + 200 > recorded && sample - 200 < recorded) score = 0.5;
-        else if (score + 100 > recorded && sample - 100 < recorded) score = 0.70;
-        else if (score + 50 > recorded && sample - 50 < recorded) score = 0.90;
-        else if (score + 25 > recorded && sample - 25 < recorded) score = 1.00;
-        else return 0.0;
+        if (difference > 1000) score = 0.25;
+        if (difference < 750) score = 0.5;
+        if (difference < 500) score = 0.75;
+        if (difference < 250) score = 0.8;
+        if (difference < 175) score = 0.9;
+        if (difference < 100 ) score = 1.0;
+
+        System.out.println("Fluency Score: "+score+"\tDifference: "+difference);
 
         return (score+grammarScore)/2;
     }
