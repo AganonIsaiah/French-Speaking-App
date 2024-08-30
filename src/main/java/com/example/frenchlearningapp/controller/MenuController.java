@@ -30,6 +30,7 @@ public class MenuController {
     private final TextToSpeechService ttsService;
     private final ScoreService scoreService;
     private String sentence;
+    private Long sampleDuration;
 
     /**
      * Injects SentenceGeneratorService dependency.
@@ -80,6 +81,7 @@ public class MenuController {
 
         // Generate the audio file
         Long sampleDuration = ttsService.generateSpeech(generatedSentence, audioFilePath);
+        this.sampleDuration = sampleDuration;
 
         /* Passes attributes to the next page */
         redirectAttributes.addFlashAttribute("proficiency", proficiency);
@@ -150,7 +152,8 @@ public class MenuController {
     public String showRecordings(@ModelAttribute("audioFileName") String audioFileName,
                                  @ModelAttribute("proficiency") String proficiency,
                                  @ModelAttribute("recordedFileName") String recordedFileName, 
-                                 @ModelAttribute("generatedSentence") String generatedSentence,
+                                 @ModelAttribute("generatedSentence") String generatedSentence, 
+                                 @ModelAttribute("sampleDuration") Long sampleDuration,
                                  Model model) {
         /* Audio files */
         String audioFile = "/audio/" + audioFileName + "?t=" + System.currentTimeMillis();
@@ -161,6 +164,7 @@ public class MenuController {
         model.addAttribute("recordedFile", recordedFile);
         model.addAttribute("proficiency",proficiency);
         model.addAttribute("generatedSentence", generatedSentence); 
+        model.addAttribute("sampleDuration", sampleDuration);
 
         this.sentence = generatedSentence;
         return "records";
@@ -171,25 +175,29 @@ public class MenuController {
      *
      * @param model Model to add attributes for rendering
      * @return analysis.html
+     * @throws Exception 
      */
     @GetMapping("/analysis")
-    public String showAnalysis(Model model) {
+    public String showAnalysis(  Model model) throws Exception {
         /* Set attributes on page */
         String sampleFilePath = (String) model.asMap().get("sampleFilePath");
         String recordedFilePath = (String) model.asMap().get("recordedFilePath");
 
         /* 1. Get file durations for fluency scores, x/100 */
-        Long sampleDuration = (Long) model.asMap().get("sampleDuration");
         Long recordedDuration = (Long)model.asMap().get("recordedDuration");
-        scoreService.setLengths(sampleDuration, recordedDuration);
-        int fluencyScore = scoreService.calcFluencyScore();
+        
+       
+        scoreService.set(sampleDuration, recordedDuration, sentence);
+        double grammarScore = scoreService.calcGrammarScore();
+        double fluencyScore = scoreService.calcFluencyScore();
+      
     
         
 
 
 
         /* Testing */
-        System.out.println("1. Fluency Score: "+fluencyScore);
+        System.out.println("\n******************\nFluency Score: "+fluencyScore+"\nGrammar Score: "+grammarScore+"\n******************\n");
 
         /* To model */
         model.addAttribute("generatedSentence", sentence);
