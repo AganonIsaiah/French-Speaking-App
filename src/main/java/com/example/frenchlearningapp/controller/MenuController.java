@@ -182,27 +182,33 @@ public class MenuController {
         /* Set attributes on page */
         String sampleFilePath = (String) model.asMap().get("sampleFilePath");
         String recordedFilePath = (String) model.asMap().get("recordedFilePath");
-
-        /* 1. Get file durations for fluency scores, x/100 */
         Long recordedDuration = (Long)model.asMap().get("recordedDuration");
         
-       
+        /* Get scores, x/100 %*/
         scoreService.set(sampleDuration, recordedDuration, sentence);
-        double grammarScore = scoreService.calcGrammarScore();
-        double fluencyScore = scoreService.calcFluencyScore();
-      
+        String transcription = scoreService.getTranscript();
+        double grammarScore = scoreService.calcGrammarScore()*100;
+        double fluencyScore = scoreService.calcFluencyScore()*100;
     
         
-
-
-
+        double totalScore = scoreService.calcTotalScore()*100;
+    
         /* Testing */
-        System.out.println("\n******************\nFluency Score: "+fluencyScore+"\nGrammar Score: "+grammarScore+"\n******************\n");
+        System.out.println("\n******************\nFluency Score: "+fluencyScore+
+        "\nGrammar Score: "+grammarScore
+        +"\nTotal Score: "+totalScore+"\n******************\n");
 
         /* To model */
         model.addAttribute("generatedSentence", sentence);
+        model.addAttribute("userTranscript",transcription);
         model.addAttribute("sampleFilePath", sampleFilePath);
         model.addAttribute("recordedFilePath", recordedFilePath);
+        // Add Scores
+        model.addAttribute("fluencyScore",fluencyScore);
+        model.addAttribute("grammarScore",grammarScore);
+
+
+        model.addAttribute("totalScore",totalScore);
 
 
 

@@ -16,11 +16,12 @@ public class ScoreService {
     private String genSentence;
     private String transcription;
     private static final String filePath = "src/main/resources/static/audio/recorded.mp3";
-    private double grammarScore;
+    private double grammarScore, fluencyScore;
 
     @Autowired
     private TranscriptionService transcriptionService;
 
+    /** CALCULATING SCORES METHODS **/
     /**
      * Based on length difference between the sample.mp3 and recorded.mp3 files
      * Based on recorded.mp3 transcript vs generated sentence
@@ -29,19 +30,23 @@ public class ScoreService {
     public double calcFluencyScore(){
         int sample = sampleLength.intValue();
         int recorded = recordedLength.intValue();
-        int difference = Math.abs(sample - recorded);
-        double score = 0;
+        int difference = sample - recorded;
+        double score = 0.00;
 
-        if (difference > 1000) score = 0.25;
-        if (difference < 750) score = 0.5;
-        if (difference < 500) score = 0.75;
-        if (difference < 250) score = 0.8;
-        if (difference < 175) score = 0.9;
-        if (difference < 100 ) score = 1.0;
+
+        if (difference < 1000) score = 0.15;
+        if (difference < 750) score = 0.25;
+        if (difference < 500) score = 0.5;
+        if (difference < 250) score = 0.65;
+        if (difference < 100) score = 0.7;
+        if (difference < -175) score = 0.85;
+        if (difference < -250) score = 0.9;
+        if (difference < -500) score = 1.00;
 
         System.out.println("Fluency Score: "+score+"\tDifference: "+difference);
 
-        return (score+grammarScore)/2;
+        this.fluencyScore = (score+grammarScore)/2;
+        return fluencyScore;
     }
 
     /**
@@ -52,7 +57,7 @@ public class ScoreService {
         HashMap<Integer,String> genMap = getMapString(genSentence);
         HashMap<Integer, String> transcriptMap = getMapString(transcription);
         double totalScore = genMap.size();
-        double newScore = 0;
+        double newScore = 0.00;
 
 
         for (int i = 0; i < totalScore; i++) {
@@ -68,6 +73,17 @@ public class ScoreService {
         this.grammarScore = newScore/totalScore;
         return grammarScore;
     }
+
+
+    public double calcTotalScore(){
+        return (grammarScore+fluencyScore)/2;
+    }
+
+    /** HELPER METHODS **/
+    /**
+     * @return The user's transcribed speech
+     */
+    public String getTranscript(){return transcription;}
 
     /**
      * For calculating grammar
@@ -116,9 +132,7 @@ public class ScoreService {
         this.recordedLength = recordedLength;
         this.genSentence = genSentence;
         this.transcription = transcriptionService.transcribe(filePath);
-
-        System.out.println("\n******************\nSETTERS for SCORESERVICE\nSample: "+sampleLength+"\nRecorded: "+recordedLength+"\nSentence: "+genSentence+"\nTranscript: "+transcription+"\n******************\n");
-    }
+   }
 
 
 }

@@ -18,7 +18,7 @@
 - Convert text to speech and create playable recordings for the User.
 - Used as a reference point for the user and for the machine to make comparisons.
 
-#### 4. Record the User's Oral Production (with https://www.assemblyai.com/ Speech-to-Text API )
+#### 4. Record the User's Oral Production (With https://www.assemblyai.com/ Speech-to-Text API )
 - Records the user's rendition of the text-to-speech sentences.
 - Create transcript of user's recorded speech.
 
