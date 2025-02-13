@@ -26,11 +26,9 @@
 - Assess the user's oral production and returns a Phonetic Score, Fluency Score, Prononciation Score, Intonation Score, and Overall Score.
 
 # To Run
-### Install Instructions
-
-
 ### Launch Instructions
-
+- mvn spring-boot:run
+  
 ### Testing Instructions
 - http://localhost:8080/
 - http://localhost:8080/language
