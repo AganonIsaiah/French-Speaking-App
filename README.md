@@ -25,10 +25,14 @@ Have a setting where people can communicate globally with other countries in the
 ## Storage and Display
 Persistently store info (i.e., username (public), passcode (private), points (public), proficiency level (public), region (public))
 - Display this handle (username, points, proficiency level, region):
+  
   1. For Single-Chat, display points for singleChatPoints
+     
   2. For Multi-Chat, display points for multiChatPoints
 
 ## Leaderboard Pages
-Two different leaderboard pages
+Two different leaderboard pages:
+
   1. For Single-Chat, displays handle where points = singleChatPoints
+     
   2. For Multi-Chat, displays handle where points = multiChatPoints 
