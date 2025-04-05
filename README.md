@@ -7,7 +7,7 @@ Have a setting where the conversations are rapid fire and unlimited (generated b
   
     a) Type chat (based off my webpage), A.I. generates text messages, user writes back text messages (point system)
   
-    b) Speak chat, A.I., generates vocal messages, user speaks back (point system)
+    b) Speak chat, A.I. generates vocal messages, user speaks back (point system)
 
 ## Multi-Chat
 Have a setting where people can communicate globally with other countries in the rooms (kinda like COC global chat, but with voice)
