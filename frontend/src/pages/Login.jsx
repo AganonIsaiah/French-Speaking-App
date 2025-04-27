@@ -22,7 +22,6 @@ const Login = () => {
         navigate("/signup");
     };
 
-
     return (
         <>
             <h1>Login</h1>

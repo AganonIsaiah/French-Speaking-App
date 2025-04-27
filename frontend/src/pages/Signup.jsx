@@ -1,25 +1,28 @@
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-    const [formData, setformData] = useState({
+    const [formData, setFormData] = useState({
         username: "",
         email: "",
         password: "",
         points: 0,
-        proficiency: "", // Based on CEFR A1-C2
-        region: "", // Countries
+        proficiency: "", 
+        region: "", 
     });
 
     const [countries, setCountries] = useState([]);
     const [filteredCountries, setFilteredCountries] = useState([]);
     const proficiencyLevels = ["A1","A2","B1","B2","C1","C2"];
+    const navigate = useNavigate();
+    const [regionErr, setRegionErr] = useState("");
 
     useEffect(() => {
         fetch("https://restcountries.com/v3.1/all")
         .then((response) => response.json())
         .then((data) => {
             const countryNames = data.map((country) => country.name.common);
+            countryNames.sort();
             setCountries(countryNames);
         })
         .catch((error) => console.error("Error fetching countries:", error));
@@ -28,26 +31,68 @@ const Signup = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        if (name === "region"){
-            const filtered = countries.filter((country) => 
-                country.toLowerCase().includes(value.toLowerCase())
+        if (name === "region") {
+            const filtered = countries.filter((country) =>
+                country.toLowerCase().startsWith(value.toLowerCase())
             );
             setFilteredCountries(filtered);
         }
 
-        setformData({
+        setFormData({
             ...formData,
             [name]: value,
         });
     }
 
+    const handleSignup = (e) => {
+        e.preventDefault();
+
+        if (!countries.includes(formData.region)) {
+            setRegionErr("Please select a valid country from the list.");
+            return;
+        }
+        
+        setRegionErr("");
+        navigate("/home")
+    }
 
     return (
         <>
             <h1>Sign Up</h1>
-
-            <form>
+            
+            <form onSubmit={handleSignup}>
                 <div className="user-info">
+                <div>
+                    <label>Region: </label>
+                        <input
+                            type="text"
+                            id="region"
+                            name="region"
+                            value={formData.region}
+                            onChange={handleChange}
+                            placeholder="Search for a Country"
+                            required
+                        />
+                        {filteredCountries.length > 0 && (
+                            <ul>
+                                {filteredCountries.map((country) => (
+                                    <li
+                                        key={country}
+                                        onClick={() => {
+                                            setFormData({ ...formData, region: country });
+                                            setFilteredCountries([]);  
+                                        }}
+                                    >
+                                        {country}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {regionErr &&
+                            <p>{regionErr}</p>
+                        }
+                    </div>
+
                     <div>
                         <label>Proficiency: </label>
                         <select 
@@ -71,7 +116,7 @@ const Signup = () => {
                     </div>
                 </div>
 
-                <div className="login-info">
+            <div className="login-info">
                     <div>
                         <label>Username: </label>
                         <input 
