@@ -10,8 +10,29 @@ const Login = () => {
     /**
      * For login
      */
-    const handleSubmit = (e) => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
+        try {
+            const response = await fetch("http://localhost:8080/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username: formData.username, password: formData.password }),
+            });
+    
+            if (response.ok) {
+                alert("Login successful!");
+                navigate("/home"); // Redirect to home page
+            } else {
+                const errorMessage = await response.text();
+                alert(`Error: ${errorMessage}`);
+            }
+        } catch (err) {
+            console.error("Error during login: ", err);
+            alert("An error has occurred, please try again.");
+        }
     }
 
     /**
@@ -25,7 +46,7 @@ const Login = () => {
     return (
         <>
             <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
                 <div className="username">
                 <label>Username: </label>
                 <input

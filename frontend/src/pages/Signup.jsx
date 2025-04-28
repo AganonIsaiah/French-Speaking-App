@@ -44,16 +44,47 @@ const Signup = () => {
         });
     }
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
 
         if (!countries.includes(formData.region)) {
             setRegionErr("Please select a valid country from the list.");
             return;
         }
-        
         setRegionErr("");
-        navigate("/home")
+        
+
+        try {
+            console.log("Info: ",JSON.stringify(formData))
+            const res = await fetch("http://localhost:8080/api/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (res.ok) {
+                alert("Account created successfully!");
+                setFormData({
+                    username: "",
+                    email: "",
+                    password: "",
+                    points: 0,
+                    proficiency: "",
+                    region: "",
+                });
+                navigate("/login");
+            } else {
+                const errMsg = await res.text();
+                alert(`Error: ${errMsg}`);
+            }
+
+        } catch (err) {
+            console.error("Error during signup: ",err);   
+            alert("An error occurred, please try again,");
+        }
+            
     }
 
     return (
@@ -102,7 +133,7 @@ const Signup = () => {
                             onChange={handleChange}
                             required 
                         >
-                            <option value="" disable>Select CEFR Level</option>
+                            <option>Select CEFR Level</option>
                             {proficiencyLevels.map((level) => (
                                 <option key={level} value={level}>
                                     {level}
