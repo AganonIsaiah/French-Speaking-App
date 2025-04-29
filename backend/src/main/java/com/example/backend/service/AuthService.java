@@ -27,10 +27,10 @@ public class AuthService {
     }
 
     public Optional<Account> loginUser(String username, String password) {
-        Account user = userRepo.findByUsername(username);
+        Optional <Account> user = userRepo.findByUsername(username);
        
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            return Optional.of(user);
+        if (user != null && passwordEncoder.matches(password, user.get().getPassword())) {
+            return user;
         }
         return Optional.empty();
     }

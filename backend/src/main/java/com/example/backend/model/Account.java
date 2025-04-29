@@ -39,7 +39,7 @@ public class Account {
     private String region;
 
     // SETTERS
-    public void setID(Long id) {this.id=id;}
+    public void setId(Long id) {this.id=id;}
     public void setUsername(String s) {this.username=s;}
     public void setEmail(String s) {this.email=s;}
     public void setPassword(String s) {this.password=s;}
@@ -48,7 +48,7 @@ public class Account {
     public void setRegion(String s) {this.region=s;}
 
     // GETTERS
-    public Long getID() {return id;}
+    public Long getId() {return id;}
     public String getUsername() {return username;}
     public String getEmail() {return email;}
     public String getPassword() {return password;}

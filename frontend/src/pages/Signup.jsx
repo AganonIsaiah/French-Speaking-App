@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { signUpAuth } from "../services/authService";
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -53,38 +54,23 @@ const Signup = () => {
         }
         setRegionErr("");
         
-
-        console.log("Form Data: ", formData);
-
         try {
             console.log("Info: ",JSON.stringify(formData))
-            const res = await fetch("http://localhost:8080/api/auth/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
+            await signUpAuth(formData);
+            
+            //alert("Account created successfully!");
+            setFormData({
+                username: "",
+                email: "",
+                password: "",
+                points: 0,
+                proficiency: "",
+                region: "",
             });
-
-            if (res.ok) {
-                alert("Account created successfully!");
-                setFormData({
-                    username: "",
-                    email: "",
-                    password: "",
-                    points: 0,
-                    proficiency: "",
-                    region: "",
-                });
-                navigate("/login");
-            } else {
-                const errMsg = await res.text();
-                alert(`Error: ${errMsg}`);
-            }
-
+            navigate("/login");
         } catch (err) {
             console.error("Error during signup: ",err);   
-            alert("An error occurred, please try again,");
+         //   alert("An error occurred, please try again,");
         }
             
     }

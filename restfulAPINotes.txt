@@ -1,0 +1,6 @@
+REST Methods
+GET - Read Data         @GetMapping
+POST - Create Data      @PostMapping
+PUT - Update Whole Item @PutMapping
+PATCH - Partial Update  @PatchMapping
+DELETE - Delete Data    @DeleteMapping

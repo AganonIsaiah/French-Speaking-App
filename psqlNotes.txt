@@ -1,3 +1,7 @@
+Login:
+- isa
+- pass
+
 1. psql -U isaie                    #Open psql
 2. \l                               #View all available databases
 3. \c <table_name>                  #Connect to a specific database
