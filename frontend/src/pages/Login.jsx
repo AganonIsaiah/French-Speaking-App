@@ -19,12 +19,12 @@ const Login = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ username: formData.username, password: formData.password }),
+                body: JSON.stringify({ username, password }),
             });
     
             if (response.ok) {
                 alert("Login successful!");
-                navigate("/home"); // Redirect to home page
+                navigate("/home"); 
             } else {
                 const errorMessage = await response.text();
                 alert(`Error: ${errorMessage}`);

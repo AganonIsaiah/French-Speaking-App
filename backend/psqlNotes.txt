@@ -1,5 +1,6 @@
 1. psql -U isaie            #Open psql
 2. \l                       #View all available databases
-3. \c                       #Connect to a specific database 
+3. \c <table_name>          #Connect to a specific database 
 4. \dt                      #List all tables in current db 
 5. select * from account;   #View all elements in table
+
