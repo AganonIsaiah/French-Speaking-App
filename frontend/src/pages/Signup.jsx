@@ -54,6 +54,8 @@ const Signup = () => {
         setRegionErr("");
         
 
+        console.log("Form Data: ", formData);
+
         try {
             console.log("Info: ",JSON.stringify(formData))
             const res = await fetch("http://localhost:8080/api/auth/signup", {

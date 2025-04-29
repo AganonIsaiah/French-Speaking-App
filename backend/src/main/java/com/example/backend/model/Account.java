@@ -1,35 +1,41 @@
 package com.example.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
+@Table(name = "account")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Primary key
+    private Long id;
 
     @Column(nullable = false, unique = true)
+    @NotNull
+    @Size(min = 3, max = 50)
     private String username;
 
     @Column(nullable = false, unique = true)
+    @NotNull
+    @Size(max = 100)
     private String email;
 
     @Column(nullable = false)
     @NotNull
-    @JsonIgnore
     private String password;
 
     @Column(nullable = false)
-    private int points;
+    private int points = 0;
 
     @Column(nullable = false)
+    @NotNull
     private String proficiency;
 
     @Column(nullable = false)
+    @NotNull
     private String region;
 
     // SETTERS
