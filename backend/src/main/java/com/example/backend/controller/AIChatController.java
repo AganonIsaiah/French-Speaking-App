@@ -1,22 +1,20 @@
 package com.example.backend.controller;
 
-import org.springframework.ai.chat.client.ChatClient;
+import com.example.backend.service.AIChatService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/chat")
 public class AIChatController {
 
-    private final ChatClient chatclient;
+    private final AIChatService chatService;
 
-    public AIChatController(ChatClient.Builder chatclient) {
-        this.chatclient = chatclient.build();
+    public AIChatController(AIChatService chatService) {
+        this.chatService = chatService;
     }
 
-    @GetMapping("")
-    public String chat() {
-        return chatclient.prompt().user("parlez francaise avec moi").call().content();
+    @PostMapping("/generate")
+    public String generateResponse(@RequestBody String prompt) {
+        return chatService.generateResponse(prompt);
     }
-
-
 }
