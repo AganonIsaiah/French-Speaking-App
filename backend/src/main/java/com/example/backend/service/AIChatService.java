@@ -21,9 +21,10 @@ public class AIChatService {
         this.chatClient = chatClient.build();
     }
 
-    public String generateResponse(String userPrompt) {
+    public String generateSimpleResponse(String userPrompt) {
         String formattedPrompt = """
-            Répondez en français avec **au maximum deux phrases**. Voici le message de l'utilisateur :
+            Répondez en français avec **au maximum deux phrases**. 
+            Voici le message de l'utilisateur :
             %s
         """.formatted(userPrompt);
 

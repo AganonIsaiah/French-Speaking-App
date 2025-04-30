@@ -13,8 +13,8 @@ public class AIChatController {
         this.chatService = chatService;
     }
 
-    @PostMapping("/generate")
-    public String generateResponse(@RequestBody String prompt) {
-        return chatService.generateResponse(prompt);
+    @PostMapping("/generate/simple")
+    public String generateSimpleResponse(@RequestBody String prompt) {
+        return chatService.generateSimpleResponse(prompt);
     }
 }

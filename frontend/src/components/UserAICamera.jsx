@@ -1,4 +1,5 @@
-import { useSpeechRecognition } from "../services/speechService";
+import { useState } from "react";
+import { useSpeechRecognition } from "../utils/useSpeechService";
 
 const UserAICamera = ({ onTranscript }) => {
   const { startListening, stopListening, listening } = useSpeechRecognition(onTranscript);

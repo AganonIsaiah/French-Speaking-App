@@ -2,17 +2,30 @@ import { useState } from "react";
 import { useNav } from "../utils/useNav";
 import UserAICamera from "../components/UserAICamera";
 import UserAIMessages from "../components/UserAIMessages";
+import { simpleGenerate } from "../services/speechService";
+import { useSpeechSynthesis } from "react-speech-kit";
 
 const SingleChat = () => {
   const { handleHome } = useNav();
   const [messages, setMessages] = useState([]);
+  const { speak, voices } = useSpeechSynthesis();
 
-  // Function to handle the transcript update
-  const handleTranscript = (sender, text) => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { sender, text },
-    ]);
+  const handleTranscript = async (transcript) => {
+    const userMsg = { sender: "user", text: transcript };
+    setMessages((prev) => [...prev, userMsg]);
+
+    try {
+      const aiText = await simpleGenerate(transcript);
+      const aiMsg = { sender: "ai", text: aiText };
+      setMessages((prev) => [...prev, aiMsg]);
+
+      const frenchVoice = voices.find((v) => v.lang.startsWith("fr"));
+      if (frenchVoice) {
+        speak({ text: aiText, voice: frenchVoice });
+      }
+    } catch (err) {
+      console.error("Error fetching AI response:", err);
+    }
   };
 
   return (
