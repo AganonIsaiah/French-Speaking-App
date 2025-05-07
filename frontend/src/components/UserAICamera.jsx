@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSpeechRecognition } from "../utils/useSpeechService";
 
 const UserAICamera = ({ onTranscript }) => {
@@ -7,7 +6,7 @@ const UserAICamera = ({ onTranscript }) => {
   return (
     <div>
       <button onClick={listening ? stopListening : startListening}>
-        {listening ? "Stop Talking" : "Speak to AI"}
+        {listening ? "Arrêtez de Parler" : "Parler avec L'IA"}
       </button>
     </div>
   );

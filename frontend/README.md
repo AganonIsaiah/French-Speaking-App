@@ -1,12 +1,7 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Feature Board
+- Single chat 
+1. Single casual mode - No point system, user can speak with the AI about anything
+2. Prepare for oral DELF exam - Simulates oral questions from DELF exam
+3. Single competitive mode - Point system, AI begins interactions, AI starts conversation on a specific topic, user continues, if they miss something, points deducted else add points
+4. Teacher mode, teaches users on French plan
+5. Phone call round, lasts 30 mins points based?
