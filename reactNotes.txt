@@ -1,6 +1,0 @@
-Folders in src
-- assets            # Images, audio, icons
-- components        # Reusable components
-- features          # 
-- pages             
-- services          # API calls to Springboot backend
