@@ -1,8 +1,17 @@
-<h1>Accueil</h1>
+<div class="home-container">
+    <h1>Accueil</h1>
 
-<nav>
-    <ul>
-        <li class="nav-item"><a routerLink="/single" routerLinkActive="active" class="nav-link">Single</a></li>
-        <li class="nav-item"><a href="/multi" routerLinkActive="active" class="nav-link">Multi</a></li>
-    </ul>
-</nav>
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item"><a routerLink="/single" routerLinkActive="active" class="nav-link">Chat Simple</a></li>
+            <li class="nav-item"><a href="/multi" routerLinkActive="active" class="nav-link">Chat Multiple</a></li>
+        </ul>
+    </nav>
+
+    <div class="user-info">
+        <p>Bienvenue, {{ user.username }}!</p>
+        <p>Points: {{ user.points }} </p>
+        <p>Région: {{ user.region }} </p>
+        <p>Compétence: {{ user.proficiency }} </p>
+    </div>
+</div>
