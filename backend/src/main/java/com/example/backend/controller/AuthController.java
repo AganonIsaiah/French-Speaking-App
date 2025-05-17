@@ -1,39 +1,45 @@
 package com.example.backend.controller;
 
-import com.example.backend.model.Account;
-import com.example.backend.service.AuthService;
 import com.example.backend.dto.LoginRequest;
-
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.backend.dto.LoginResponse;
+import com.example.backend.dto.SignupRequest;
+import com.example.backend.dto.UserResponse;
+import com.example.backend.model.User;
+import com.example.backend.service.AuthService;
+import com.example.backend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    
-    @Autowired
-    private AuthService authService;
+
+    private final UserService userService;
+    private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody Account user) {
-        System.out.println("Incoming request: " + user);
-        try {
-            Account u = authService.registerUser(user);
-            return ResponseEntity.ok(u);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<UserResponse> signup(@RequestBody SignupRequest request) {
+        User user = userService.registerUser(request);
+        return ResponseEntity.ok(toResponse(user));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
-        Optional<Account> u = authService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
-        if (u.isPresent()) return ResponseEntity.ok(u.get());
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        LoginResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
+    }
 
-        return ResponseEntity.status(401).body("Invalid username or password.");
+    private UserResponse toResponse(User user) {
+        return UserResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .points(user.getPoints())
+                .proficiency(user.getProficiency())
+                .region(user.getRegion())
+                .build();
     }
 }
