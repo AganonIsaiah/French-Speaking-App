@@ -1,4 +1,12 @@
+header {
+    display: flex;
+    justify-content: center;
+}
+
 .main-content {
     display: flex;
     flex-direction: row;
+    gap: 10rem;
+    justify-content: center;
+    
 }

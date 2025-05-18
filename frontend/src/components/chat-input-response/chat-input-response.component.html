@@ -1,0 +1,17 @@
+
+
+<div class="chat-container">
+    <div class="response-view">
+        <div *ngFor="let msg of messages" [ngClass]="msg.sender">
+            <strong *ngIf="msg.sender === 'Vous'">Vous:</strong>
+            <strong *ngIf="msg.sender === 'IA' ">L'IA:</strong>
+            {{ msg.text }}
+        </div>
+    </div>
+
+
+    <div class="input-view">
+        <input type="text" [(ngModel)]="input" (keydown.enter)="sendMessage()" placeholder="Entrez le message ici..." />
+        <button (click)="sendMessage()">Envoyer</button>
+    </div>
+</div>

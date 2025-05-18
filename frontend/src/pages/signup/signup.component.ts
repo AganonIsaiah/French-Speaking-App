@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SignupData } from '../../models/signup-data';
 import { NgFor, NgIf } from '@angular/common';
 import { countries } from 'countries-list'
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

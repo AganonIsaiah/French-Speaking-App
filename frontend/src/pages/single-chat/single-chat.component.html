@@ -1,22 +1,18 @@
-<div class="single-chat-container">
+<header>
     <h1>Chat Simple</h1>
+</header>
 
-    <div class="main-content">
-        <nav class="sidebar">
-            <a routerLink="/home" routerLinkActive="active">Accueil</a>
-        </nav>
 
-        <div class="screens">
-            Screens
-        </div>
+<div class="main-content">
+    <nav class="sidebar">
+        <a routerLink="/home" routerLinkActive="active">Accueil</a>
+    </nav>
 
-        <div class="text-chat">
-            <div class="response-view">
-                Response
-            </div>
-            <div class="input-view">
-                Input
-            </div>
-        </div>
+    <div class="screens">
+        Screens
+    </div>
+
+    <div class="text-chat">
+        <app-chat-input-response />
     </div>
 </div>
