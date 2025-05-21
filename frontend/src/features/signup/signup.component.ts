@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { SignupData } from '../../models/signup-data';
+import { SignupData } from '../../core/models/signup-data';
 import { NgFor, NgIf } from '@angular/common';
 import { countries } from 'countries-list'
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

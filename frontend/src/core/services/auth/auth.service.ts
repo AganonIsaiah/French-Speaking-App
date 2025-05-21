@@ -26,7 +26,9 @@ export class AuthService {
   }
 
   getUser() {
-    return JSON.parse(localStorage.getItem('user') || '{}')
+    if (typeof localStorage !== 'undefined')
+      return JSON.parse(localStorage.getItem('user') || '{}')
+    return {}
   }
 
   logout() {

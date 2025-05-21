@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SingleChatComponent } from '../single-chat/single-chat.component';
 import { MultiChatComponent } from '../multi-chat/multi-chat.component';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-home',

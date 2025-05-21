@@ -3,10 +3,9 @@ import { RouterOutlet } from '@angular/router';
 
 
 // Components
-import { HomeComponent } from '../pages/home/home.component';
-import { LoginComponent } from '../pages/login/login.component';
-import { SignupComponent } from '../pages/signup/signup.component';
-
+import { HomeComponent } from '../features/home/home.component';
+import { LoginComponent } from '../features/login/login.component';
+import { SignupComponent } from '../features/signup/signup.component';
 
 @Component({
   selector: 'app-root',
