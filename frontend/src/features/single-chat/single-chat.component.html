@@ -1,14 +1,22 @@
 <div class="main-content">
     <div class="sidebar">
-        <app-sidebar 
-            [title]="pageTitle" 
-            [links]="modes"
-        />
+        <app-sidebar [title]="pageTitle" [links]="modes" />
     </div>
 
     <div class="screens">
-        <app-screen />
+        <app-screen 
+            class="screen-vous" 
+            username="Vous" />
+
+
+        <app-screen 
+            class="screen-ia"
+            username="L\'IA" />
+
+
+    
     </div>
+
 
     <div class="text-chat">
         <app-chat-input-response />

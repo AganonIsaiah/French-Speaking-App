@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-screen',
@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './screen.component.scss'
 })
 export class ScreenComponent {
+  @Input() username!: string;
+    
 
 }

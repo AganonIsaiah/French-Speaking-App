@@ -12,10 +12,21 @@ export class ChatService {
   constructor(private http: HttpClient) { }
 
   conversation(message: string, level: string, username: string): Observable<any> {
-    return this.http.post(`${this.url}/conversation`, { message, level, username }, { responseType: 'text' });
+    const body = { username, message, level };
+
+    return this.http.post(`${this.url}/conversation`, body, {
+      headers: { 'Content-Type': 'application/json' },
+      responseType: 'text'
+    });
   }
 
+
   learning(message: string, level: string, username: string): Observable<any> {
-    return this.http.post(`${this.url}/learning`, { message, level, username }, { responseType: 'text' });
+     const body = { username, message, level };
+
+    return this.http.post(`${this.url}/learning`, body, {
+      headers: { 'Content-Type': 'application/json' },
+      responseType: 'text'
+    });
   }
 }
