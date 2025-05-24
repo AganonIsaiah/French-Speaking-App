@@ -16,11 +16,12 @@
     gap: 1rem;
 }
 
-.response-view, .input-view {
+.response-view,
+.input-view {
     background-color: #2B2D31;
     width: 95%;
     border-radius: 10px;
-    color:  #FFFFFF;
+    color: #FFFFFF;
     box-sizing: border-box;
 }
 
@@ -28,6 +29,11 @@
     flex: 1;
     overflow-y: auto;
     padding: 1rem;
+
+    display: flex;
+    overflow: auto;
+    flex-direction: column;
+    gap: 0.3rem;
 
 }
 
@@ -75,6 +81,6 @@
 }
 
 .IA {
-  color: #5865F2;
-  font-weight: bolder;
+    color: #5865F2;
+    font-weight: bolder;
 }

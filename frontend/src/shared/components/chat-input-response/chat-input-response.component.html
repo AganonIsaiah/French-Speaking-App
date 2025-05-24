@@ -1,5 +1,5 @@
 <div class="chat-container">
-    <div class="response-view">
+    <div class="response-view" #scrollContainer>
         <div *ngFor="let msg of messages" [ngClass]="msg.sender">
             <strong *ngIf="msg.sender === 'Vous'">Vous:</strong>
             <strong *ngIf="msg.sender === 'IA' ">L'IA:</strong>

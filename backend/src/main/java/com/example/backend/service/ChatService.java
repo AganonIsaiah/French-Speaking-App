@@ -14,6 +14,8 @@ public class ChatService {
     // Store previous conversation messages
     private final List<String> memory = new ArrayList<>();
 
+    private final int maxMemory = 100;
+
     public ChatService(ChatClient.Builder chatClient) {
         this.chatClient = chatClient.build();
     }
@@ -38,6 +40,7 @@ Réponds toujours en français.
 Si tu ne sais pas la réponse, dis simplement : "Je ne sais pas."
 Ne prétends pas connaître des faits sur l'utilisateur, sauf s'il les partage avec toi.
 Sois drôle, gentil et détendu quand c’est approprié. Le but est de rendre la conversation agréable et vivante.
+Ne pas dire bonjour plus de deux fois.
 """.formatted(username, userLevel);
 
 
@@ -56,7 +59,7 @@ Sois drôle, gentil et détendu quand c’est approprié. Le but est de rendre l
 
 
     private void trimMemory() {
-        int maxEntries = 10;
+        int maxEntries = maxMemory;
         if (memory.size() > maxEntries) {
             memory.subList(0, memory.size() - maxEntries).clear();
         }

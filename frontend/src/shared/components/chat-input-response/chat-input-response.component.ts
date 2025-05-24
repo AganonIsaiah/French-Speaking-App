@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ChatMessage } from '../../../core/models/chat-message';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
@@ -12,13 +12,25 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
   templateUrl: './chat-input-response.component.html',
   styleUrl: './chat-input-response.component.scss'
 })
-export class ChatInputResponseComponent {
+export class ChatInputResponseComponent implements AfterViewChecked {
+  @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
+
   input: string = '';
   messages: ChatMessage[] = [];
   mode: 'conversation' | 'learning' = 'conversation';
 
   constructor(private chatService: ChatService, private authService: AuthService) { }
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
 
+  scrollToBottom(): void {
+    try {
+      this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+    } catch (err) {
+
+    }
+  }
 
   sendMessage() {
     if (!this.input.trim()) return;
