@@ -2,7 +2,9 @@ import { AfterViewChecked, Component, OnInit, ViewChild, ElementRef } from '@ang
 import { ChatMessage } from '../../../core/models/chat-message';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { MicrophoneService } from '../../../core/services/mic/microphone.service';
 
+import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf, NgClass } from '@angular/common';
 
@@ -18,8 +20,13 @@ export class ChatInputResponseComponent implements AfterViewChecked {
   input: string = '';
   messages: ChatMessage[] = [];
   mode: 'conversation' | 'learning' = 'conversation';
+  private micSub?: Subscription;
 
-  constructor(private chatService: ChatService, private authService: AuthService) { }
+  constructor(
+    private chatService: ChatService, 
+    private authService: AuthService,
+    private micService: MicrophoneService
+  ) { }
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
