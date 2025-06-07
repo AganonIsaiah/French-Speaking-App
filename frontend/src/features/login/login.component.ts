@@ -21,7 +21,7 @@ export class LoginComponent {
   onLogin() {
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
-        console.log(res)
+      
         if (res.success) {
           this.authService.saveUser(res.user);
           this.router.navigate(['/home']);

@@ -1,0 +1,40 @@
+.dock {
+
+    background-color: #2f3136;
+    width: 70vw;
+    height: 10vh;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    border-radius: 16px;
+    margin: 1rem;
+
+    button {
+        background-color: #007aff;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+
+        &:hover {
+            background-color: #005bb5;
+        }
+
+        &:active {
+            transform: scale(0.96);
+        }
+
+        &:disabled {
+            background-color: #a3c4f3;
+            cursor: not-allowed;
+        }
+    }
+}

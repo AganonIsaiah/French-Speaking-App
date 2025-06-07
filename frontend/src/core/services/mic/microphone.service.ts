@@ -10,14 +10,13 @@ export class MicrophoneService {
   private recognition: any;
   private silenceTimeout: any;
   private silenceDelay = 2000;
-  private manualOverride = false;
   private isVoiceDetected = false;
-  private autoRecognitionEnabled = true;
-
   private isListening = false;
 
   currentTranscript$ = new BehaviorSubject<string>('');
   isSpeaking$ = new BehaviorSubject<boolean>(false);
+  chatResponse$ = new BehaviorSubject<string>('');
+
 
   constructor(
     private zone: NgZone,
@@ -60,7 +59,8 @@ export class MicrophoneService {
           const updatedCurrentTranscript: string = this.currentTranscript$.value + finalTranscript;
           this.currentTranscript$.next(updatedCurrentTranscript);
           if (/[a-zA-ZÀ-ÿ]/.test(updatedCurrentTranscript)) {
-            console.log('📝 Current transcript:', updatedCurrentTranscript);
+            // console.log('📝 Current transcript:', updatedCurrentTranscript);
+
 
 
             this.chatService.conversation(
@@ -68,10 +68,15 @@ export class MicrophoneService {
               this.authService.getUser().proficiency,
               this.authService.getUser().username
             ).subscribe({
-              next: (response) => console.log('Chat API response:', response),
-              error: (err) => console.error('Chat API error:', err)
-            })
-
+              next: (response) => {
+                this.chatResponse$.next(response); 
+                // console.log('Chat API response:', response)
+              },
+              error: (err) => {
+                // console.error('Chat API error:', err);
+                this.chatResponse$.next('Une erreur s\'est produite');
+              }
+            });
           }
         }
 
@@ -81,31 +86,18 @@ export class MicrophoneService {
 
     this.recognition.onend = () => {
       this.isListening = false;
-      console.log('⏹️ Recognition ended');
-
-      if (this.autoRecognitionEnabled && !this.manualOverride) {
-        console.log('🔄 Auto-restarting recognition...');
-        setTimeout(() => {
-          this.startListening();
-        }, 100);
-      }
+      this.zone.run(() => {
+        this.isSpeaking$.next(false);
+      });
+      // console.log('⏹️ Recognition ended');
+      // No auto-restart!
     };
 
     this.recognition.onerror = (event: any) => {
-      console.error('🚨 Speech recognition error:', event.error);
-      if (event.error === 'no-speech' && this.autoRecognitionEnabled) {
-        console.log('🔄 No speech detected, restarting...');
-        setTimeout(() => {
-          this.startListening();
-        }, 1000);
-      }
+      // console.error('🚨 Speech recognition error:', event.error);
+      // No auto-restart!
     };
-
-    if (this.autoRecognitionEnabled) {
-      this.startListening();
-    }
   }
-
 
   private resetSilenceTimeout() {
     clearTimeout(this.silenceTimeout);
@@ -116,43 +108,18 @@ export class MicrophoneService {
     }, this.silenceDelay);
   }
 
-
-
   private startListening() {
     if (!this.isListening) {
       try {
         this.recognition.start();
         this.isListening = true;
-        console.log('🎙️ Listening started...');
+        // console.log('🎙️ Listening started...');
       } catch (e) {
-        console.warn('⚠️ Recognition already started?', e);
+        // console.warn('⚠️ Recognition already started?', e);
       }
     }
   }
 
-  private onVoiceDetected() {
-    if (!this.isVoiceDetected) {
-      this.isVoiceDetected = true;
-      this.zone.run(() => {
-        this.isSpeaking$.next(true);
-      });
-      console.log('🗣️ Voice detected, starting new transcript');
-      this.currentTranscript$.next('');
-    }
-  }
-
-  private onSilenceDetected() {
-    if (this.isVoiceDetected) {
-      console.log('😶 Silence detected, transcript ready');
-      this.isVoiceDetected = false;
-      this.zone.run(() => {
-        this.isSpeaking$.next(false);
-      });
-    }
-    clearTimeout(this.silenceTimeout);
-  }
-
-  // Modify the stopListening method to also update isSpeaking$
   private stopListening() {
     if (this.isListening) {
       this.recognition.stop();
@@ -162,24 +129,38 @@ export class MicrophoneService {
         this.isSpeaking$.next(false);
       });
       clearTimeout(this.silenceTimeout);
-      console.log('🛑 Listening stopped.');
+      // console.log('🛑 Listening stopped.');
     }
   }
 
-  toggle() {
-    this.manualOverride = !this.manualOverride;
+  private onVoiceDetected() {
+    if (!this.isVoiceDetected) {
+      this.isVoiceDetected = true;
+      this.zone.run(() => {
+        this.isSpeaking$.next(true);
+      });
+      // console.log('🗣️ Voice detected, starting new transcript');
+      this.currentTranscript$.next('');
+    }
+  }
 
-    if (this.manualOverride) {
-      console.log('🟢 Manual mode: start');
-      this.autoRecognitionEnabled = false;
-      this.startListening();
-    } else {
-      console.log('🔴 Manual mode: stop');
+  private onSilenceDetected() {
+    if (this.isVoiceDetected) {
+      // console.log('😶 Silence detected, transcript ready');
+      this.isVoiceDetected = false;
+      this.zone.run(() => {
+        this.isSpeaking$.next(false);
+      });
+    }
+    clearTimeout(this.silenceTimeout);
+  }
+
+  // Only toggle listening on button press
+  toggle() {
+    if (this.isListening) {
       this.stopListening();
-      this.autoRecognitionEnabled = true;
-      setTimeout(() => {
-        this.startListening();
-      }, 100);
+    } else {
+      this.startListening();
     }
   }
 }

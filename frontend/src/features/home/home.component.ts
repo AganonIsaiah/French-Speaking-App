@@ -17,6 +17,5 @@ export class HomeComponent {
 
   ngOnInit() {
     this.user = this.authService.getUser();
-    console.log(this.user)
   }
 }

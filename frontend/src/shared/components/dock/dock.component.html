@@ -1,0 +1,11 @@
+<div class="dock">
+
+    <button (click)="onMic()">
+        {{ (micService.isSpeaking$) ? 'Parler' : 'Silence' }}
+    </button>
+
+
+    <button (click)="onQuit()">
+        Quitter
+    </button>
+</div>

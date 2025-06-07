@@ -1,0 +1,10 @@
+<div class="header">
+    <h1 class="title"> {{ title }}</h1>
+
+    <div class="user-info">
+        <span *ngFor="let item of userInfoList; let i = index">
+            {{ item() }}
+        </span>
+    </div>
+
+</div>

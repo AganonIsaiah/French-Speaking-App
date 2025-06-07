@@ -1,24 +1,15 @@
 <div class="main-content">
-    <div class="sidebar">
-        <app-sidebar [title]="pageTitle" [links]="modes" />
+    <!-- <div class="header">
+        <app-header [title]="pageTitle" />
     </div>
-
-    <div class="screens">
-        <app-screen 
-            class="screen-vous" 
-            username="Vous" />
-
-
-        <app-screen 
-            class="screen-ia"
-            username="L'IA" />
-
-        <app-microphone />
-    
-    </div>
-
-
+     -->
     <div class="text-chat">
         <app-chat-input-response />
+    </div> 
+    
+    <div class="dock">
+        <app-dock />
     </div>
+
+
 </div>
