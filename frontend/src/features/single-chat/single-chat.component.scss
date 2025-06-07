@@ -1,12 +1,31 @@
- .main-content {
-    margin: 0;
-    padding: 0;
-    height: 100vh; 
-
-    overflow-y: hidden;
-
+.main-content {
+    background: linear-gradient(135deg,
+        #2a2a2e 0%,
+        #38383d 20%,
+        #4a4a4f 40%,
+        #ff6611 60%,
+        #9059ff 80%,
+        #0c0c0d 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease-in-out infinite;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    
+    // padding: 20px;
+    gap: 20px;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Chat section - takes remaining space */
+.text-chat {
+    flex: 1;
+    overflow: hidden;
 }

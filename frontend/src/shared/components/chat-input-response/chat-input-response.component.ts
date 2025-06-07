@@ -28,12 +28,7 @@ export class ChatInputResponseComponent implements AfterViewChecked, OnInit, OnD
     private authService: AuthService,
     private micService: MicrophoneService,
     private ttsService: TtsService
-  ) { 
-
-    this.messages.push({ sender: 'Vous', text: "Lorem " });
-    this.messages.push({ sender: 'IA', text: "Lorem " });
-    this.messages.push({ sender: 'Vous', text: "Lorem " });
-    this.messages.push({ sender: 'IA', text: "Lorem " });
+  ) {   
   }
 
 
