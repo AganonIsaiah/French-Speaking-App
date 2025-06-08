@@ -1,12 +1,18 @@
 <div class="home-container">
     <h1>Accueil</h1>
 
-    <nav class="navbar">
-        <ul class="nav-list">
-            <li class="nav-item"><a routerLink="/single" routerLinkActive="active" class="nav-link">Chat Simple</a></li>
-            <li class="nav-item"><a href="/multi" routerLinkActive="active" class="nav-link">Chat Multiple</a></li>
-        </ul>
-    </nav>
+    <div class="dropdowns">
+        <select (change)="navToSingle($event)" placeholder>
+            <option value="" disabled selected>Chat Simple</option>
+            <option *ngFor="let mode of singleChat" [value]="mode">{{ mode }}</option>
+        </select>
+
+        <select (change)="navToMulti($event)" placeholder>
+            <option value="" disabled selected>Chat Multiple</option>
+            <option *ngFor="let mode of multiChat" [value]="mode">{{ mode }}</option>
+        </select>
+    </div>
+
 
     <div class="user-info">
         <p>Bienvenue, {{ user.username }}!</p>
