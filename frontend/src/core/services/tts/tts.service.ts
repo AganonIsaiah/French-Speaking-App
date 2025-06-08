@@ -29,11 +29,11 @@ export class TtsService {
       )
     ) || voices.find(voice => voice.lang.startsWith('fr')) || null;
 
-    if (!this.frenchVoice) {
-      console.warn('⚠️ French voice not found. Default system voice will be used.');
-    } else {
-      console.log("✅ Selected voice:", this.frenchVoice.name);
-    }
+    // if (!this.frenchVoice) {
+    //   console.warn('⚠️ French voice not found. Default system voice will be used.');
+    // } else {
+    //   console.log("✅ Selected voice:", this.frenchVoice.name);
+    // }
   }
 
   speak(text: string) {

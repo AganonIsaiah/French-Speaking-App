@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   saveUser(user: any) {
-    console.log("Save user:", user);
+    // console.log("Save user:", user);
     localStorage.setItem('user', JSON.stringify(user));
   }
 
