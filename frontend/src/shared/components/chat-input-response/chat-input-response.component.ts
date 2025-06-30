@@ -33,6 +33,7 @@ export class ChatInputResponseComponent implements AfterViewChecked, OnInit, OnD
 
 
   ngOnInit(): void {
+  
     this.micSub = this.micService.currentTranscript$.subscribe((transcript) => {
       if (transcript.trim()) {
         this.messages.push({ sender: 'Vous', text: transcript });
