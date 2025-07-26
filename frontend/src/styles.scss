@@ -1,15 +1,1 @@
-* {
-  margin: 0;
-  padding: 0;
-  border-style: border-box;
-}
-
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  // overflow: hidden;
-  height: 100%;
-  font-family: 'Roboto', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-}
+@use 'tailwindcss';
