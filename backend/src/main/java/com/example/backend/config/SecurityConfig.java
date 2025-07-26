@@ -28,7 +28,9 @@ public class SecurityConfig {
 
                 // Permit signup and login endpoints
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/api/auth/**", "/api/chat/**").permitAll()
+                        .requestMatchers("/","/api/auth/**", "/api/chat/**",  "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
 

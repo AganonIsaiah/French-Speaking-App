@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-main-page',
+  selector: 'main-page',
   imports: [],
-  templateUrl: './main-page.html',
-  styleUrl: './main-page.scss'
+  templateUrl: './main-page.html'
 })
 export class MainPage {
 
