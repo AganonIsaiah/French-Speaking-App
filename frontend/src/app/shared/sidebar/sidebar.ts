@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'sidebar',
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './sidebar.html'
 })
 export class Sidebar {

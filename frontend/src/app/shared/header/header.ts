@@ -9,6 +9,6 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 export class Header {
   username = 'isaiah';
   level = 'Niveau B2';
-  points = 100;
+  points = 70;
 
 }

@@ -4,28 +4,28 @@
 // components according to the Material 3 design spec.
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
+// @use '@angular/material' as mat;
 
-html {
-  @include mat.theme((color: (primary: mat.$magenta-palette,
-        tertiary: mat.$violet-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    ));
+// html {
+//   @include mat.theme((color: (primary: mat.$magenta-palette,
+//         tertiary: mat.$violet-palette,
+//       ),
+//       typography: Roboto,
+//       density: 0,
+//     ));
 
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
+//   // Default the application to a light color theme. This can be changed to
+//   // `dark` to enable the dark color theme, or to `light dark` to defer to the
+//   // user's system settings.
+//   color-scheme: light;
 
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-}
+//   // Set a default background, font and text colors for the application using
+//   // Angular Material's system-level CSS variables. Learn more about these
+//   // variables at https://material.angular.dev/guide/system-variables
+//   background-color: var(--mat-sys-surface);
+//   color: var(--mat-sys-on-surface);
+//   font: var(--mat-sys-body-medium);
+// }
 
 * {
   margin: 0;
@@ -46,12 +46,41 @@ body {
   overflow: hidden;
 }
 
-$main-green: #008060;
+
 $text-gray: #6d7175;
 
 
 h1 {
   font-size: 1.8rem;
   font-weight: 700;
+}
 
+h2 {
+  color: #6d7175;
+  font-size: 14px;
+  text-transform: uppercase;
+  padding-left: 0.3rem;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  margin: 0.2rem 0;
+  transition: all 0.15s ease;
+}
+
+a {
+  color: #6d7175;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 14px;
+  letter-spacing: 0.9px;
+  font-weight: 500;
+}
+
+a:hover {
+  background-color: #ffffff;
+}
+
+a:active {
+  background-color: #008060;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 128, 96, 0.2);
 }
