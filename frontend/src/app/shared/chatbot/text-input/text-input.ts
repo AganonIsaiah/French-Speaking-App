@@ -21,8 +21,6 @@ export class TextInput {
   msgControl = new FormControl('', Validators.required);
   readonly res = output<string>();
 
-
-
   onSubmitMsg(): void {
     const msg = this.msgControl.value;
     if (!msg) return;

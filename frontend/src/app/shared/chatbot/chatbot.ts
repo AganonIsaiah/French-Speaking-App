@@ -7,13 +7,19 @@ import { ViewResponse } from './view-response/view-response';
 @Component({
   selector: 'chatbot',
   imports: [Microphone, TextInput, ViewResponse],
-  templateUrl: './chatbot.html'
+  templateUrl: './chatbot.html',
+  styleUrls: ['./chatbot.scss']
 })
 export class Chatbot {
   readonly resList = signal<string[]>([]);
+  showText: boolean = false;
 
   handleRes(res: string) {
     this.resList.update(prev => [...prev, res]);
+  }
+
+  onSwitch() {
+    this.showText = !this.showText;
   }
 
 }
