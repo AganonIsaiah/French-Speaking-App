@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-microphone',
+  selector: 'microphone',
   imports: [],
-  templateUrl: './microphone.html',
-  styleUrl: './microphone.scss'
+  templateUrl: './microphone.html'
 })
 export class Microphone {
 

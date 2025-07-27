@@ -16,7 +16,7 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    @PostMapping("/conversation")
+    @PostMapping("/generate")
     public String generateChat(@RequestBody ChatRequest chatRequest) {
         System.out.println("--------------\nUsername: " + chatRequest.getUsername());
         System.out.println("Level: "+chatRequest.getLevel());
