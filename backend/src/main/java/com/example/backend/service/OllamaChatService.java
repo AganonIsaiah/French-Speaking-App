@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ChatService {
+public class OllamaChatService {
 
-    private final ChatClient chatClient;
+   private final ChatClient chatClient;
 
     // Store previous conversation messages
     private final List<String> memory = new ArrayList<>();
 
     private final int maxMemory = 100;
 
-    public ChatService(ChatClient.Builder chatClient) {
+    public OllamaChatService(ChatClient.Builder chatClient) {
         this.chatClient = chatClient.build();
     }
 

@@ -4,7 +4,7 @@ export interface EnvironmentModel {
 }
 
 export enum ApiEndpoint {
-  CHAT = 'api/chat/generate',
+  CHAT = 'api/chat/gemini',
   ASSIST = 'api/chat/assist',
   LOGIN =  'api/auth/login',
   SIGNUP = 'api/auth/signup'

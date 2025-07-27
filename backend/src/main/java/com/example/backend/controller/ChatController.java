@@ -2,21 +2,30 @@ package com.example.backend.controller;
 
 
 import com.example.backend.dto.ChatRequest;
-import com.example.backend.service.ChatService;
 
+import com.example.backend.service.GeminiChatService;
+import com.example.backend.service.OllamaChatService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/chat")
 public class ChatController {
 
-    private final ChatService chatService;
+    private final OllamaChatService chatService;
+    private final GeminiChatService geminiChatService;
 
-    public ChatController(ChatService chatService) {
+    public ChatController(OllamaChatService chatService, GeminiChatService geminiChatService) {
         this.chatService = chatService;
+        this.geminiChatService = geminiChatService;
     }
 
-    @PostMapping("/generate")
+    @PostMapping("/gemini")
+    public String sendGeminiChat(@RequestBody ChatRequest chatRequest) {
+
+        return geminiChatService.genRes(chatRequest.getMessage());
+    }
+
+    @PostMapping("/ollama")
     public String generateChat(@RequestBody ChatRequest chatRequest) {
         System.out.println("--------------\nUsername: " + chatRequest.getUsername());
         System.out.println("Level: "+chatRequest.getLevel());
