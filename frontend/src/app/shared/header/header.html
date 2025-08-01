@@ -1,15 +1,15 @@
 <div class="flex gap-4 justify-center items-center">
   <span class="flex justify-center items-center bg-[#008060] w-9 h-9 text-2xl rounded-md">🇫🇷</span>
-  <h1 class="hidden sm:block">FrançaisPro</h1>
+  <h2 class="hidden md:block">FrançaisPro</h2>
 </div>
 <div class="flex flex-row justify-center items-center gap-4">
   <p class="text-[#667]">{{ username }}</p>
-  <p class="w-60 bg-[#f3f4f6] !px-3 !py-2 rounded-xl">{{ level }}</p>
+  <p class="w-60 bg-[#f3f4f6] !px-3 !py-1 rounded-xl !text-sm text-center">{{ level }}</p>
 
   <span class="w-full bg-gray-200 rounded">
     <div class="bg-[#008060] h-2 rounded" [style.width.%]="points"></div>
   </span>
 
-  <p class="text-[#008060]">{{ points }}%</p>
+  <p class="text-[#008060] text-sm">{{ points }}%</p>
 
 </div>

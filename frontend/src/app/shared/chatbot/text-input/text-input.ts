@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ChatbotService } from '../../../services/chatbot-service';
-import { ChatReqDTO } from '../../../services/chatbot.model';
+import { ChatReqDTO } from '../../../models/chatbot.model';
 
 @Component({
   selector: 'text-input',
@@ -19,7 +19,6 @@ import { ChatReqDTO } from '../../../services/chatbot.model';
 export class TextInput {
   private chatbotService = inject(ChatbotService);
   msgControl = new FormControl('', Validators.required);
-  readonly res = output<string>();
 
   onSubmitMsg(): void {
     const msg = this.msgControl.value;
@@ -33,7 +32,6 @@ export class TextInput {
 
     this.chatbotService.generateChat(req).subscribe({
       next: (res: string) => {
-        this.res.emit(res);
         this.msgControl.reset();
         console.log('Response:', res);
       },

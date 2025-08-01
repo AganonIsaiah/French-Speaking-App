@@ -22,7 +22,10 @@ public class ChatController {
     @PostMapping("/gemini")
     public String sendGeminiChat(@RequestBody ChatRequest chatRequest) {
 
-        return geminiChatService.genRes(chatRequest.getMessage());
+        String res = geminiChatService.genRes(chatRequest.getMessage());
+        System.out.println("Message: "+chatRequest.getMessage());
+        System.out.println("Response: "+res);
+        return res;
     }
 
     @PostMapping("/ollama")

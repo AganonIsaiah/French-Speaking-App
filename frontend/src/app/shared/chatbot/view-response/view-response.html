@@ -1,5 +1,5 @@
-<div>
-  @for (res of resView(); track $index) {
-    <li> {{res }} </li>
+<div class="list-none !p-4">
+  @for (item of chatbotService.resList(); track $index) {
+    <li class="!mr-2"> {{item }} </li>
   }
 </div>

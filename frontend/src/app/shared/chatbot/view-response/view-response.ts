@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, input, inject, Injectable } from '@angular/core';
+import { ChatbotService } from '../../../services/chatbot-service';
 
 @Component({
   selector: 'view-response',
@@ -6,5 +7,5 @@ import { Component, input } from '@angular/core';
   templateUrl: './view-response.html'
 })
 export class ViewResponse {
-  readonly resView = input<string[]>();
+  public chatbotService = inject(ChatbotService);
 }

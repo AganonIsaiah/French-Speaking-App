@@ -46,16 +46,17 @@ body {
   overflow: hidden;
 }
 
-
-$text-gray: #6d7175;
-
-
 h1 {
   font-size: 1.8rem;
   font-weight: 700;
 }
 
 h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+h3 {
   color: #6d7175;
   font-size: 14px;
   text-transform: uppercase;
@@ -66,8 +67,15 @@ h2 {
   transition: all 0.15s ease;
 }
 
+p {
+  color: #6d7175;
+  letter-spacing: 0.8px;
+}
+
 a {
   color: #6d7175;
+  display:flex;
+  align-items: center;
   padding: 0.6rem 1rem;
   border-radius: 6px;
   font-size: 14px;
@@ -83,4 +91,22 @@ a:active {
   background-color: #008060;
   color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 128, 96, 0.2);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+*:hover::-webkit-scrollbar-thumb,
+*:hover::-webkit-scrollbar-thumb:hover {
+  background: #008060;
 }

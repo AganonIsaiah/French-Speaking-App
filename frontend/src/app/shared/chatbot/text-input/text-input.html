@@ -1,10 +1,4 @@
-<div class="flex">
-  <mat-form-field class="flex-1">
-    <input 
-      matInput 
-      [formControl]="msgControl" 
-      placeholder="Enter your message..." 
-      (keydown.enter)="onSubmitMsg()"
-      />
-  </mat-form-field>
+<div class="flex hover:none">
+  <input class="!w-80 !h-10 !px-2 focus:outline-none" matInput [formControl]="msgControl" placeholder="Entre votre message..."
+    (keydown.enter)="onSubmitMsg()" />
 </div>

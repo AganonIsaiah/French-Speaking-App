@@ -1,20 +1,25 @@
 import { Routes } from '@angular/router';
 
-import { LoginPage } from './components/login-page/login-page';
-import { MainPage } from './components/main-page/main-page';
+import { LoginPage } from './pages/login-page/login-page';
+import { MainPage } from './pages/main-page/main-page';
+import { Conversations } from './components/conversations/conversations';
 
 export const routes: Routes = [
   {
-    path: 'main',
+    path: 'accueil',
     component: MainPage
   },
   {
-    path: 'login',
+    path: 'connexion',
     component: LoginPage
   },
   {
+    path: 'conversations',
+    component: Conversations
+  },
+  {
     path: '',
-    redirectTo: 'main',
+    redirectTo: 'accueil',
     pathMatch: 'full'
   }
 ];

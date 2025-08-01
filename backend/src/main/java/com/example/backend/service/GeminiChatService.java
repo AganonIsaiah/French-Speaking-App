@@ -15,12 +15,14 @@ public class GeminiChatService {
     }
 
     public String genRes(String prompt) {
+
         GenerateContentResponse res =
                 chatClient.models.generateContent(
                         "gemini-2.5-flash",
                         prompt,
                         null
                 );
+
         return res.text();
 
     }

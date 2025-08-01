@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
+
 @Component({
   selector: 'sidebar',
   imports: [MatIconModule],
   templateUrl: './sidebar.html'
 })
 export class Sidebar {
+
+  
 
   /**
    * 1. Verb conjugations (typed/with voice) Creates sentences, with verb fill in the blank, user must properly conjugate
