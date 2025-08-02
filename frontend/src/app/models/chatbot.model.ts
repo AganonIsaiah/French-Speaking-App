@@ -5,3 +5,8 @@ export interface ChatReqDTO {
   message: string;
   level: Level;
 }
+
+export interface ChatMessage {
+  sender: 'Ai' | 'Vous';
+  message: string;
+}

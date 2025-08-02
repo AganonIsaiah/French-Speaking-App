@@ -15,7 +15,7 @@ public class GeminiChatService {
     private final Client chatClient;
     private static final String FRENCH_SYSTEM_PROMPT =
             "Tu es un assistant rapide en français. " +
-                    "Si l'utilisateur fait une erreur grammaticale, corrigez-le et expliquez-lui succinctement pourquoi. " +
+                    "Si l'utilisateur fait une erreur grammaticale, corrigez-le et expliquez-lui succinctement pourquoi. Ignorer la casse et les signes de ponctuation manquants" +
                     "Utilise un français simple et naturel. ";
 
 
