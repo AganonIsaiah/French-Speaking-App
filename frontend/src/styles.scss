@@ -46,8 +46,6 @@ body {
   overflow: hidden;
 }
 
-
-
 .material-icons,
 mat-icon {
   font-family: "Material Icons" !important;
@@ -74,13 +72,9 @@ h3 {
   transition: all 0.15s ease;
 }
 
-p {
-  color: #6d7175;
-  letter-spacing: 0.8px;
-}
-
 li,
-input {
+input,
+p {
   color: #6d7175;
   font-size: 14px;
   letter-spacing: 0.9px;

@@ -5,7 +5,11 @@ import com.example.backend.dto.ChatRequest;
 
 import com.example.backend.service.GeminiChatService;
 import com.example.backend.service.OllamaChatService;
+import com.google.genai.Chat;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/chat")
