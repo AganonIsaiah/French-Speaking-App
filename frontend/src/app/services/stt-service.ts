@@ -5,7 +5,7 @@ declare var webkitSpeechRecognition: any;
 @Injectable({
   providedIn: 'root'
 })
-export class MicService {
+export class STTService {
   recognition = new webkitSpeechRecognition();
   private isListening: boolean = true;
   public text: string = '';
@@ -47,8 +47,6 @@ export class MicService {
     this.wordConcat();
     this.recognition.stop();
     console.log('Speech recognition stopped');
-    this.text = '';
-    this.tempWords = '';
   }
 
   wordConcat() {

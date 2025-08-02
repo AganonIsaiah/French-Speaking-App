@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { signal } from '@angular/core';
 
 import { ChatReqDTO } from '../../../models/chatbot.model';
-import { MicService } from '../../../services/mic-service';
+import { STTService } from '../../../services/stt-service';
 import { ChatbotService } from '../../../services/chatbot-service';
 
 
@@ -16,21 +16,21 @@ export class Microphone implements OnInit {
   isMicOn = signal<boolean>(false);
   userTranscript: string = '';
 
-  private micService = inject(MicService);
+  private sttService = inject(STTService);
   private chatService = inject(ChatbotService);
 
   ngOnInit(): void {
-    this.micService.init();
+    this.sttService.init();
   }
 
   onToggleMic() {
     this.isMicOn.set(!this.isMicOn());
 
     if (this.isMicOn()) {
-      this.micService.start();
+      this.sttService.start();
     } else {
-      this.micService.stop();
-      this.userTranscript = this.micService.text;
+      this.sttService.stop();
+      this.userTranscript = this.sttService.text;
       const userModel: ChatReqDTO = {
         username: 'Isaiah',
         message: this.userTranscript,
@@ -41,6 +41,8 @@ export class Microphone implements OnInit {
         next: (response) => console.log('Chat response:', response),
         error: (err) => console.error('Chat error:', err),
       });
+
+      this.sttService.text = '';
     }
 
     console.warn(`Transcript : ${this.userTranscript}`)
