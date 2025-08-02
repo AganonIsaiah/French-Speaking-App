@@ -46,6 +46,13 @@ body {
   overflow: hidden;
 }
 
+
+
+.material-icons,
+mat-icon {
+  font-family: "Material Icons" !important;
+}
+
 h1 {
   font-size: 1.8rem;
   font-weight: 700;
@@ -77,6 +84,10 @@ input {
   color: #6d7175;
   font-size: 14px;
   letter-spacing: 0.9px;
+}
+
+mat-icon {
+  @apply text-gray-300 !text-sm;
 }
 
 a {

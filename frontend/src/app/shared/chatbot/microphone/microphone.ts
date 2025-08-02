@@ -41,8 +41,6 @@ export class Microphone implements OnInit {
         next: (response) => console.log('Chat response:', response),
         error: (err) => console.error('Chat error:', err),
       });
-      
-      this.micService.text = '';
     }
 
     console.warn(`Transcript : ${this.userTranscript}`)
