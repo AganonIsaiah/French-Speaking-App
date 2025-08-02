@@ -21,6 +21,7 @@ export class ChatbotService {
       .pipe(tap(res => this.addResponse(res)));
   }
 
+  
   addResponse(res: string) {
     this.resList.update(prev => [...prev, res]);
   }

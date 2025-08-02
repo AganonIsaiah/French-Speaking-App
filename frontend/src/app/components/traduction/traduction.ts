@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { TitleTemplate } from '../title-template/title-template';
 
@@ -8,5 +8,6 @@ import { TitleTemplate } from '../title-template/title-template';
   templateUrl: './traduction.html'
 })
 export class Traduction {
+  translatedResponse = signal<string>('Testing');
 
-}
+} 

@@ -1,16 +1,14 @@
-<div>
+<div class="flex flex-col">
   <title-template [title]="'Traduction'" [generatedType]="'Traduction générée'"/>
 
-
-
   <!-- English <-> French -->
-  <div>
+  <div class="flex justify-center border !h-50">
     <input 
     type="text"
     placeholder="Entrer ici"
     >
 
-    <p>French</p>
+    <p>{{translatedResponse()}}</p>
   </div>
 
   <!-- Dictionary -->
