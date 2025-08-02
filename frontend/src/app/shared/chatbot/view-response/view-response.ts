@@ -1,4 +1,4 @@
-import { Component, input, inject, Injectable } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ChatbotService } from '../../../services/chatbot-service';
 
 @Component({

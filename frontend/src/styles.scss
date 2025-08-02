@@ -72,15 +72,21 @@ p {
   letter-spacing: 0.8px;
 }
 
+li,
+input {
+  color: #6d7175;
+  font-size: 14px;
+  letter-spacing: 0.9px;
+}
+
 a {
   color: #6d7175;
-  display:flex;
+  display: flex;
   align-items: center;
   padding: 0.6rem 1rem;
   border-radius: 6px;
   font-size: 14px;
   letter-spacing: 0.9px;
-  font-weight: 500;
 }
 
 a:hover {
@@ -109,4 +115,38 @@ a:active {
 *:hover::-webkit-scrollbar-thumb,
 *:hover::-webkit-scrollbar-thumb:hover {
   background: #008060;
+}
+
+.mic-container {
+  background: linear-gradient(110deg,
+      #00ffe1,
+      #00d4aa,
+      #008f76,
+      #005f4f,
+      #003d33);
+  background-size: 400% 400%;
+  animation: gradientShift 6s ease-in-out infinite;
+
+  height: 40px;
+  width: 40px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  place-items: center;
+  border-radius: 8px;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }

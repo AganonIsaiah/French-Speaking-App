@@ -1,17 +1,17 @@
 import { Routes } from '@angular/router';
 
-import { LoginPage } from './pages/login-page/login-page';
-import { MainPage } from './pages/main-page/main-page';
+import { Login } from './components/login/login';
+import { Accueil } from './components/accueil/accueil';
 import { Conversations } from './components/conversations/conversations';
 
 export const routes: Routes = [
   {
     path: 'accueil',
-    component: MainPage
+    component: Accueil
   },
   {
     path: 'connexion',
-    component: LoginPage
+    component: Login
   },
   {
     path: 'conversations',
