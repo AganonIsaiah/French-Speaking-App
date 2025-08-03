@@ -24,7 +24,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'accueil',
+    redirectTo: 'connexion',
     pathMatch: 'full'
   }
 ];

@@ -10,16 +10,18 @@ import { Header } from './shared/header/header';
 import { Sidebar } from './shared/sidebar/sidebar';
 import { TextInput } from './shared/chatbot/text-input/text-input';
 import { Microphone } from './shared/chatbot/microphone/microphone';
+import { Login } from './components/login/login';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Header, Sidebar, TextInput, Microphone, MatIconModule],
+  imports: [RouterOutlet, Header, Sidebar, TextInput, Microphone, MatIconModule, Login],
   templateUrl: './app.html'
 })
 export class App implements OnInit {
   openSidebar = signal<boolean>(true);
   showMicTextInput = signal<boolean>(true);
+  showLogin = signal<boolean>(true);
 
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
@@ -33,10 +35,8 @@ export class App implements OnInit {
       .subscribe((event: NavigationEnd) => {
         const currentUrl = event.urlAfterRedirects;
         this.showMicTextInput.set(currentUrl !== '/traduction');
+        this.showLogin.set(currentUrl === '/connexion');
       });
   }
 
-  toggleSidebar() {
-    this.openSidebar.set(!this.openSidebar());
-  }
 }

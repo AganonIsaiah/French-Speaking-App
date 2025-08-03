@@ -22,7 +22,7 @@ export class TextInput {
 
   msgControl = new FormControl('', Validators.required);
   openSuggestions = signal<boolean>(false);
-  suggestions =  signal<string>('')
+  suggestions =  signal<string[]>(["suggest 1", "suggest 2", "suggest 3"])
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
