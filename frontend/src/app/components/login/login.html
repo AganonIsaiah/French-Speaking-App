@@ -1,8 +1,8 @@
 <div class="flex items-center justify-between">
-  <div class="login-container flex flex-col gap-6 flex-1 justify-center items-center min-h-screen">
+  <div class="login-container flex flex-col gap-6 flex-1 justify-center items-center min-h-screen min-w-90">
     <span class=" flex gap-4 justify-center items-center">
       <span
-        class="flex justify-center items-center bg-[#00b894] w-12 h-12 text-3xl rounded-xl border-[0.1px] border-white text-white font-bold">🇫🇷</span>
+        class="flex justify-center items-center bg-[#00b894] w-12 h-12 text-3xl rounded-xl border-[0.1px] border-gray-300 text-white font-bold">🇫🇷</span>
       <h2 class="!text-white !text-4xl !font-semibold">FrançaisPro</h2>
     </span>
 
@@ -39,7 +39,7 @@
       <span class="grid grid-cols-3 bg-gray-100 !p-2 gap-3 rounded-md">
         @for(item of ['A1','A2','B1','B2','C1','C2']; track item) {
         <button 
-        class="{{isLevelSelected(item) ? 'green-btn  shadow-md' : '!py-1'}}"
+        class="{{isLevelSelected(item) ? 'green-btn  shadow-md' : '!py-1 cursor-pointer'}}"
          (click)="onToggleLevel(item)"
         >{{item}}</button>
         }
