@@ -1,1 +1,56 @@
-<p>login works!</p>
+<div class="flex items-center justify-between">
+  <div class="login-container flex flex-col gap-6 flex-1 justify-center items-center min-h-screen">
+    <span class=" flex gap-4 justify-center items-center">
+      <span
+        class="flex justify-center items-center bg-[#00b894] w-12 h-12 text-3xl rounded-xl border-[0.1px] border-white text-white font-bold">🇫🇷</span>
+      <h2 class="!text-white !text-4xl !font-semibold">FrançaisPro</h2>
+    </span>
+
+    <h2 class="!mt-4 text-center !text-white !text-5xl max-w-120">Apprenez le français naturellement</h2>
+    <p class="!text-base max-w-125 !text-center !text-gray-100 !text-lg">Maîtrisez le français avec notre méthode
+      personnalisée et interactive</p>
+  </div>
+
+  <div class="flex flex-col justify-center items-center w-100 min-w-100 min-h-screen">
+    <h2>Commencer</h2>
+    <p>{{ loginType() === 'login' ? 'Connectez-vous à votre compte' : 'Créez votre nouveau compte' }}</p>
+    <span class="flex justify-center items-center !mt-8 !mb-4 gap-1 bg-gray-200 !p-1 !font-bold w-80 h-12 rounded-md">
+      <button class="w-1/2 !h-10 cursor-pointer {{loginType() === 'login' ? 'active-login-btn' : ''}}"
+        (click)="onToggleAuthMethod('login')">Connexion</button>
+      <button class="w-1/2 !h-10 cursor-pointer {{loginType() === 'signup' ? 'active-login-btn' : ''}}"
+        (click)="onToggleAuthMethod('signup')">Inscription</button>
+    </span>
+
+    <div class="flex flex-col gap-1">
+      @if(loginType() === 'login') {
+      <label for="username">Nom d'utilisateur</label>
+      <input class="login-input" formControlName="username" id="username" placeholder="votre nom" />
+
+      <label for="password">Code d'accès</label>
+      <input class="login-input" formControlName="password" id="password" placeholder="••••••••" />
+      } @else {
+      <label for="">Nom d'utilisateur</label>
+      <input class="login-input" placeholder="votre nom" />
+
+      <label for="">Région</label>
+      <input class="login-input" placeholder="votre région" />
+
+      <label for="">Niveau</label>
+      <span class="grid grid-cols-3 bg-gray-100 !p-2 gap-3 rounded-md">
+        @for(item of ['A1','A2','B1','B2','C1','C2']; track item) {
+        <button 
+        class="{{isLevelSelected(item) ? 'green-btn  shadow-md' : '!py-1'}}"
+         (click)="onToggleLevel(item)"
+        >{{item}}</button>
+        }
+      </span>
+
+      <label for="">Code d'accès</label>
+      <input class="login-input" placeholder="••••••••" />
+      }
+    </div>
+
+    <button class="!mt-8 green-btn w-80 h-12" (click)="onLogin()">{{loginType() === 'login' ? 'Se connecter' : 'Créer
+      un compte'}}</button>
+  </div>
+</div>
