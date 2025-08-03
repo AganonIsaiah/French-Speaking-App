@@ -1,11 +1,7 @@
-<div class="list-none flex gap-2 max-h-[calc(100vh-14.5rem)] overflow-y-auto">
-
-  <div class="flex flex-col gap-2">
-    @for (item of chatbotService.resList(); track $index) {
-    <li>
-      {{ item.sender }}: {{ item.message }}
-    </li>
-    }
-  </div>
-
+<div class="list-none flex flex-col gap-2 max-h-[calc(100vh-18.5rem)] overflow-y-auto">
+  @for (item of chatbotService.resList(); track $index) {
+  <li>
+    {{ item.sender }}: {{ item.message }}
+  </li>
+  }
 </div>

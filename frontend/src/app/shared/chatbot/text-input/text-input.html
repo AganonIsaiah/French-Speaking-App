@@ -1,4 +1,18 @@
-<div class="flex hover:none">
-  <input class="!w-80 !h-10 !px-2 focus:outline-none" matInput [formControl]="msgControl" placeholder="Entre votre message..."
-    (keydown.enter)="onSubmitMsg()" />
+<div class="flex flex-col hover:none">
+  @if(openSuggestions()) {
+  <div class="flex flex-col bg-white shadow-md !mb-4 items-center rounded-md !p-2 gap-2 list-none cursor-pointer">
+    @for(item of suggestions(); track item) {
+      <li (click)="selectSuggestion(item)">{{ item }}</li>
+    }
+  </div>
+  }
+
+   <input
+    class="!w-80 !h-10 !px-2 focus:outline-none rounded-md"
+    matInput
+    [formControl]="msgControl"
+    placeholder="Entrez votre message..."
+    (keydown.enter)="onSubmitMsg()"
+    (focus)="openSuggestions.set(true)"
+  />
 </div>
