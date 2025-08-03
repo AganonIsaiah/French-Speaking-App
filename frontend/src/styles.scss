@@ -72,12 +72,30 @@ h3 {
   transition: all 0.15s ease;
 }
 
+
 li,
 input,
-p {
+p,
+button,
+label {
   color: #6d7175;
   font-size: 14px;
   letter-spacing: 0.9px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #008060;
+}
+
+input:not(:placeholder-shown) {
+  color: black;
+}
+
+label {
+  color: black;
+  font-weight: 600;
+  margin-top: 1rem;
 }
 
 mat-icon {
@@ -120,6 +138,23 @@ a:active {
 *:hover::-webkit-scrollbar-thumb,
 *:hover::-webkit-scrollbar-thumb:hover {
   background: #008060;
+}
+
+.green-btn {
+  @apply text-center !text-white bg-[#008060] !px-2 !py-1 rounded-md cursor-pointer hover:bg-[#00664d] font-semibold;
+}
+
+.active-login-btn {
+  @apply bg-white rounded-md !text-[#008060] shadow-md;
+}
+
+.login-input {
+  @apply w-80 !h-10 !px-2 border border-gray-300 rounded-lg;
+}
+
+.login-container {
+   background: linear-gradient(135deg, #008060 0%, #00b894 100%);
+
 }
 
 .mic-container {
