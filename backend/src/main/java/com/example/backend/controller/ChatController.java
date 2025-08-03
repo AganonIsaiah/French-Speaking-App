@@ -11,6 +11,9 @@ import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequestMapping("/api/chat")
 public class ChatController {
@@ -23,6 +26,8 @@ public class ChatController {
         this.geminiChatService = geminiChatService;
     }
 
+
+
     @PostMapping("/gemini")
     public String sendGeminiChat(@RequestBody ChatRequest chatRequest) {
 
@@ -32,13 +37,11 @@ public class ChatController {
         return res;
     }
 
-    @PostMapping("/ollama")
+    @PostMapping("/assist")
     public String generateChat(@RequestBody ChatRequest chatRequest) {
-        System.out.println("--------------\nUsername: " + chatRequest.getUsername());
-        System.out.println("Level: "+chatRequest.getLevel());
-        System.out.println("Message: "+chatRequest.getMessage());
 
-        return chatService.generateResponse(chatRequest.getUsername(), chatRequest.getMessage(), chatRequest.getLevel());
+        System.out.println("MessageTESTING: "+chatRequest.getMessage());
+        return chatService.generateResponse(chatRequest.getMessage());
     }
 
 

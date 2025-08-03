@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import com.google.genai.Client;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class GeminiChatService {
 
@@ -32,6 +31,7 @@ public class GeminiChatService {
         this.chatClient = chatClient;
     }
 
+
     public String genRes(String prompt) {
 
         String optimizedPrompt = FRENCH_SYSTEM_PROMPT + "\n\nUtilisateur: " + prompt;
@@ -51,9 +51,5 @@ public class GeminiChatService {
         responseStream.close();
 
         return response.toString();
-
-
     }
-
-
 }

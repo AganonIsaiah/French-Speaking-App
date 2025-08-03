@@ -8,7 +8,7 @@ import { TitleTemplate } from '../title-template/title-template';
   template: `
   <div class="flex flex-col">
     <title-template [title]="'Une conversation sans fin...'"/>
-    <view-response />
+    <view-response  />
   </div>
   `
 })

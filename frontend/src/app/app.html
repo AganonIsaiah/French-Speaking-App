@@ -6,12 +6,9 @@
   <div class="flex-1 !p-6 relative">
     <router-outlet />
 
-     @if(showMicTextInput()) {
-    <div class="flex absolute gap-4 bottom-30 left-1/2 transform -translate-x-1/2 z-30">
-      <text-input />
-      <microphone />
-    </div>
-  }
-    
+    @if(showMicTextInput()) {
+      <text-input class="flex absolute gap-4 bottom-30 left-1/2 transform -translate-x-1/2 z-30" />
+      <microphone class="flex absolute gap-4 bottom-30 left-2/3 transform -translate-x-1/2 z-30" />
+    }
   </div>
 </div>

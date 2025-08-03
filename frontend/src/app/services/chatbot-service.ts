@@ -11,16 +11,21 @@ import { Observable, tap } from 'rxjs';
 export class ChatbotService {
   private http = inject(HttpClient);
   private readonly envConfig: EnvironmentModel = inject(ENVIRONMENT_TOKEN);
-  private readonly baseUrl = `${this.envConfig.apiUrl}/${ApiEndpoint.CHAT}`;
+  private readonly baseUrl = this.envConfig.apiUrl;
 
   resList = signal<ChatMessage[]>([]);
+  suggestList = signal<string[]>([]);
+
+  generateSuggestions(req: ChatReqDTO): Observable<string> {
+    return this.http.post(
+      `${this.baseUrl}/${ApiEndpoint.ASSIST}`, req, { responseType: 'text' });
+  }
 
   generateChat(req: ChatReqDTO): Observable<string> {
     return this.http.post(
-      `${this.baseUrl}`, req, { responseType: 'text' })
+      `${this.baseUrl}/${ApiEndpoint.CHAT}`, req, { responseType: 'text' })
       .pipe(tap(res => this.addResponse(req, res)));
   }
-
 
   addResponse(req: ChatReqDTO, res: string) {
     this.resList.update(prev => [

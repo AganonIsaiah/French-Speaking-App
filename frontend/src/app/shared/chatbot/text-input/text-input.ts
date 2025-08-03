@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, signal, ElementRef, HostListener } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,9 +18,24 @@ import { ChatReqDTO } from '../../../models/chatbot.model';
 })
 export class TextInput {
   private chatbotService = inject(ChatbotService);
-  msgControl = new FormControl('', Validators.required);
+  private eltRef = inject(ElementRef);
 
-  onSubmitMsg(): void {
+  msgControl = new FormControl('', Validators.required);
+  openSuggestions = signal<boolean>(false);
+  suggestions =  signal<string>('')
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.eltRef.nativeElement.contains(event.target as Node)) this.openSuggestions.set(false);
+  }
+
+  selectSuggestion(suggestion: string) {
+    this.msgControl.setValue(suggestion);
+    this.openSuggestions.set(false);
+  }
+
+
+  onSubmitMsg() {
     const msg = this.msgControl.value;
     if (!msg) return;
 
