@@ -1,8 +1,12 @@
 <div class="flex gap-4 justify-center items-center">
-  <span class="flex justify-center items-center bg-[#008060] w-9 h-9 text-2xl rounded-md hidden sm:block text-center">🇫🇷</span>
+  <span
+    class="flex justify-center items-center bg-[#008060] w-9 h-9 text-2xl rounded-md hidden sm:block text-center">🇫🇷</span>
   <h2 class="hidden md:block">FrançaisPro</h2>
 </div>
+
 <div class="flex flex-row justify-center items-center gap-4">
+
+
   <p class="text-[#667]">{{ username }}</p>
   <p class="w-60 bg-[#f3f4f6] !px-3 !py-1 rounded-xl !text-sm text-center whitespace-nowrap ">{{ level }}</p>
 
@@ -12,7 +16,6 @@
 
   <p class="text-[#008060] text-sm">{{ points }}%</p>
 
-  <button class="green-btn"
-  (click)="onLogout()">Déconnexion</button>
+  <button class="green-btn" (click)="onLogout()">Déconnexion</button>
 
 </div>

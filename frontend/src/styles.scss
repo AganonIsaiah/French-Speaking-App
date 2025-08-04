@@ -156,6 +156,10 @@ a:active {
   background: linear-gradient(135deg, #008060 0%, #00b894 100%);
 }
 
+.unset {
+  all:unset;
+}
+
 .mic-container {
   background: linear-gradient(110deg,
       #00ffe1,
