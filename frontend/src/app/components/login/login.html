@@ -1,5 +1,5 @@
 <div class="flex items-center justify-between">
-  <div class="login-container flex flex-col gap-6 flex-1 justify-center items-center min-h-screen min-w-90">
+  <div class="login-container flex flex-col gap-6 flex-1 justify-center items-center min-h-screen min-w-90 border-r border-[#e1e3e5] shadow-2xl">
     <span class=" flex gap-4 justify-center items-center">
       <span
         class="flex justify-center items-center bg-[#00b894] w-12 h-12 text-3xl rounded-xl border-[0.1px] border-gray-300 text-white font-bold">🇫🇷</span>
@@ -50,7 +50,6 @@
       }
     </div>
 
-    <button class="!mt-8 green-btn w-80 h-12" (click)="onLogin()">{{loginType() === 'login' ? 'Se connecter' : 'Créer
-      un compte'}}</button>
+    <button class="!mt-8 green-btn w-80 h-12" (click)="onLogin()">{{loginType() === 'login' ? 'Se connecter' : 'Créer un compte'}}</button>
   </div>
 </div>

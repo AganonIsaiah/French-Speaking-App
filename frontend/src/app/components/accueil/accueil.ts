@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 
+import { TitleTemplate } from '../title-template/title-template';
+
 @Component({
   selector: 'app-accueil',
-  imports: [],
-  templateUrl: './accueil.html',
-  styleUrl: './accueil.scss'
+  imports: [TitleTemplate],
+  templateUrl: './accueil.html'
 })
 export class Accueil {
 

@@ -12,6 +12,8 @@ import { TextInput } from './shared/chatbot/text-input/text-input';
 import { Microphone } from './shared/chatbot/microphone/microphone';
 import { Login } from './components/login/login';
 
+import { TTSService } from './services/tts-service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -25,6 +27,7 @@ export class App implements OnInit {
 
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private ttsService = inject(TTSService);
 
   ngOnInit() {
     this.router.events
@@ -33,10 +36,18 @@ export class App implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((event: NavigationEnd) => {
+        this.ttsService.cancel();
         const currentUrl = event.urlAfterRedirects;
-        this.showMicTextInput.set(currentUrl !== '/traduction');
+        this.showMicTextInput.set(this.hideOnUrl(currentUrl));
         this.showLogin.set(currentUrl === '/connexion');
       });
+
+    window.addEventListener('beforeunload', () => {
+      this.ttsService.cancel();
+    })
   }
 
+  hideOnUrl(url: string): boolean {
+    return !['/traduction', '/accueil'].includes(url);
+  }
 }
