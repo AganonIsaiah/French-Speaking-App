@@ -23,6 +23,7 @@ export class Login {
   levelType = signal<UserLevel>('A1');
   showPassword = signal<boolean>(false);
   showLoginError = signal<string>('');
+  showSignupMsg = signal<string>('');
 
   form = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -44,7 +45,6 @@ export class Login {
   }
 
   onSignup() {
-
     const { username, password, email, region } = this.form.value;
     const level = this.levelType();
 
@@ -56,7 +56,8 @@ export class Login {
     this.authService.signup(username, email, region, level, password).subscribe({
     next: (response) => {
       console.log('Signup successful:', response);
-
+      this.loginType.set('login');
+      this.showSignupMsg.set('Inscription réussie!');
     },
     error: (error) => {
       this.handleLoginError(error);
