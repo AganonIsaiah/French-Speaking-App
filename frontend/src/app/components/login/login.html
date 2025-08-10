@@ -1,5 +1,6 @@
 <div class="flex items-stretch justify-between min-h-screen">
-  <div class="login-container flex flex-col flex-1 gap-6 justify-center items-center min-h-screen min-w-90 border-r-1 border-gray-400 shadow-2xl">
+  <div
+    class="login-container flex flex-col flex-1 gap-6 justify-center items-center min-h-screen min-w-90 border-r-1 border-gray-400 shadow-2xl">
     <span class=" flex gap-4 justify-center items-center">
       <span
         class="flex justify-center items-center bg-[#00b894] w-12 h-12 text-3xl rounded-xl border-[0.1px] border-gray-300 text-white font-bold">🇫🇷</span>
@@ -14,14 +15,14 @@
   <div class="flex flex-col justify-center items-center w-100 min-w-100 min-h-screen">
     <h2>Commencer</h2>
     <p>{{ loginType() === 'login' ? 'Connectez-vous à votre compte' : 'Créez votre nouveau compte' }}</p>
-    <span class="flex justify-center items-center !mt-8 !mb-4 gap-1 bg-gray-200 !p-1 !font-bold w-80 h-12 rounded-md">
+    <span class="flex justify-center items-center !mt-4 !mb-2 gap-1 bg-gray-200 !p-1 !font-bold w-80 h-12 rounded-md">
       <button class="w-1/2 !h-10 cursor-pointer {{loginType() === 'login' ? 'active-login-btn' : ''}}"
         (click)="onToggleAuthMethod('login')">Connexion</button>
       <button class="w-1/2 !h-10 cursor-pointer {{loginType() === 'signup' ? 'active-login-btn' : ''}}"
         (click)="onToggleAuthMethod('signup')">Inscription</button>
     </span>
 
-    <div class="flex flex-col gap-1">
+    <div class="flex flex-col gap-1" [formGroup]="form">
       @if(loginType() === 'login') {
       <label for="username">Nom d'utilisateur</label>
       <input class="login-input" formControlName="username" id="username" placeholder="votre nom" />
@@ -29,29 +30,33 @@
       <label for="password">Code d'accès</label>
       <input class="login-input" formControlName="password" id="password" placeholder="••••••••" />
       } @else {
-      <label for="">Nom d'utilisateur</label>
-      <input class="login-input" placeholder="votre nom" />
+      <label for="signup-username">Nom d'utilisateur</label>
+      <input class="login-input" formControlName="username" id="signup-username" placeholder="votre nom" />
 
-      <label for="">Région</label>
-      <input class="login-input" placeholder="votre région" />
+      <label for="email">Courriel</label>
+      <input class="login-input" formControlName="email" id="email" type="email" placeholder="votre courriel" />
+
+      <label for="region">Région</label>
+      <input class="login-input" formControlName="region" id="region" placeholder="votre région" />
 
       <label for="">Niveau</label>
       <span class="grid grid-cols-3 bg-gray-100 !p-2 gap-3 rounded-md">
         @for(item of levels; track item) {
-        <button 
-        class="{{isLevelSelected(item) ? 'green-btn  shadow-md' : '!py-1 cursor-pointer'}}"
-         (click)="onToggleLevel(item)"
-        >{{item}}</button>
+        <button type="button" class="{{isLevelSelected(item) ? 'green-btn  shadow-md' : '!py-1 cursor-pointer'}}"
+          (click)="onToggleLevel(item)">{{item}}</button>
         }
       </span>
 
-      <label for="">Code d'accès</label>
-      <input class="login-input" placeholder="••••••••" />
+      <label for="signup-password">Code d'accès</label>
+      <input class="login-input" formControlName="password" id="signup-password" type="password"
+        placeholder="••••••••" />
       }
     </div>
 
-    <button class="!mt-8 green-btn w-80 h-12" (click)="onSubmit()">{{loginType() === 'login' ? 'Se connecter' : 'Créer un compte'}}</button>
-  
+    <button class="!mt-6 green-btn w-80 h-12" (click)="
+      loginType() === 'login' ? onLogin() : onSignup()
+    ">{{loginType() === 'login' ? 'Se connecter' : 'Créer un compte'}}</button>
+
     <span class="!mt-4 !text-red-500 !font-semibold w-70 text-center">{{ showLoginError() }}</span>
 
   </div>

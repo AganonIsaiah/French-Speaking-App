@@ -1,55 +1,36 @@
 package com.example.backend.service;
 
 import com.google.genai.types.GenerateContentResponse;
-import com.google.genai.types.GenerateContentConfig;
-import com.google.genai.ResponseStream;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import com.google.genai.Client;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class GeminiChatService {
 
-    private final Client chatClient;
+    private final Client client;
+
+
+
     private static final String FRENCH_SYSTEM_PROMPT =
             "Tu es un assistant rapide en français. " +
-                    "Générer les réponses avec une ponctuation correcte, ne pas ajouter d'astérisques inutiles."+
+                    "Générer les réponses avec une ponctuation correcte, ne pas ajouter d'astérisques inutiles." +
                     "Utilise un français simple et naturel. ";
 
 
-    @Value("${gemini.model:gemini-2.5-flash}")
-    private String modelName;
+    public String genRes(String message) {
 
-    private final GenerateContentConfig config = GenerateContentConfig.builder()
-            .temperature(0.0f)
-            .topP(0.7f)
-            .topK(10.0f)
-            .build();
+        String prompt = FRENCH_SYSTEM_PROMPT + "\n" + message;
+        GenerateContentResponse res =
+                client.models.generateContent(
+                        "gemini-2.5-flash",
+                        message,
+                        null);
 
-    public GeminiChatService(Client chatClient) {
-        this.chatClient = chatClient;
+        return res.text();
     }
 
 
-    public String genRes(String prompt) {
-
-        String optimizedPrompt = FRENCH_SYSTEM_PROMPT + "\n\nUtilisateur: " + prompt;
-
-
-        ResponseStream<GenerateContentResponse> responseStream =
-                chatClient.models.generateContentStream(
-                        modelName,
-                        optimizedPrompt,
-                        config);
-
-        StringBuilder response = new StringBuilder();
-        for (GenerateContentResponse res : responseStream) {
-            response.append(res.text());
-        }
-
-        responseStream.close();
-
-        return response.toString();
-    }
 }

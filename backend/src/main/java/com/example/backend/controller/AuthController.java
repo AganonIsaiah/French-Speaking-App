@@ -1,0 +1,130 @@
+package com.example.backend.controller;
+
+import com.example.backend.dto.AuthResponse;
+import com.example.backend.dto.LoginRequest;
+import com.example.backend.dto.SignupRequest;
+import com.example.backend.dto.SignupResponse;
+import com.example.backend.model.User;
+import com.example.backend.repository.UserRepository;
+import com.example.backend.service.UserPrincipal;
+import com.example.backend.utils.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @PostMapping("/signup")
+    public ResponseEntity<SignupResponse> registerUser(@RequestBody SignupRequest signUpRequest) {
+        System.out.println("Signup request received for username: " + signUpRequest.getUsername());
+
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity.badRequest()
+                    .body(new SignupResponse("Error: Username is already taken!", null));
+        }
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity.badRequest()
+                    .body(new SignupResponse("Error: Email is already in use!", null));
+        }
+
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getRegion(),
+                signUpRequest.getLevel(),
+                signUpRequest.getPoints() != null ? signUpRequest.getPoints() : 0L
+        );
+
+        userRepository.save(user);
+
+        System.out.println("User registered successfully: " + user.getUsername());
+
+        return ResponseEntity.ok(new SignupResponse("User registered successfully!", user.getUsername()));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        System.out.println("Login attempt for username: " + loginRequest.getUsername());
+
+        try {
+            // Authenticate user using Spring Security's AuthenticationManager
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+                            loginRequest.getPassword()));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(loginRequest.getUsername());
+
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+            System.out.println("User logged in successfully: " + userPrincipal.getUsername());
+
+            // Return complete user data including region, level, and points
+            return ResponseEntity.ok(new AuthResponse(jwt,
+                    userPrincipal.getId(),
+                    userPrincipal.getUsername(),
+                    userPrincipal.getEmail(),
+                    userPrincipal.getRegion(),
+                    userPrincipal.getLevel(),
+                    userPrincipal.getPoints()));
+        } catch (Exception e) {
+            System.out.println("Authentication failed for user: " + loginRequest.getUsername() + ". Error: " + e.getMessage());
+            return ResponseEntity.badRequest()
+                    .body("Error: Invalid username or password!");
+        }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+            System.out.println("Current user accessed: " + userPrincipal.getUsername());
+
+            // Also return complete user data for /me endpoint
+            return ResponseEntity.ok(new AuthResponse(null,
+                    userPrincipal.getId(),
+                    userPrincipal.getUsername(),
+                    userPrincipal.getEmail(),
+                    userPrincipal.getRegion(),
+                    userPrincipal.getLevel(),
+                    userPrincipal.getPoints()));
+        } catch (Exception e) {
+            System.out.println("Error getting current user: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/test-protected")
+    public ResponseEntity<?> testProtectedEndpoint() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        System.out.println("Protected endpoint accessed by: " + userPrincipal.getUsername());
+
+        return ResponseEntity.ok("Hello " + userPrincipal.getUsername() + "! This is a protected endpoint. Your level: " + userPrincipal.getLevel() + ", Points: " + userPrincipal.getPoints());
+    }
+}

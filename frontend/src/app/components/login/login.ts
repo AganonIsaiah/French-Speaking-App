@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ type AuthMethod = 'login' | 'signup';
 
 @Component({
   selector: 'login',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.html'
 })
 export class Login {
@@ -26,7 +26,9 @@ export class Login {
 
   form = new FormGroup({
     username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required])
+    password: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    region: new FormControl('', [Validators.required])  
   })
 
   onToggleAuthMethod(type: AuthMethod) {
@@ -41,8 +43,33 @@ export class Login {
     return this.levelType() === type;
   }
 
-  onSubmit() {
+  onSignup() {
+
+    const { username, password, email, region } = this.form.value;
+    const level = this.levelType();
+
+     if (!username || !password || !email || !region) {
+      this.showLoginError.set('Veuillez remplir tous les champs obligatoires.');
+      return;
+    }
+
+    this.authService.signup(username, email, region, level, password).subscribe({
+    next: (response) => {
+      console.log('Signup successful:', response);
+
+    },
+    error: (error) => {
+      this.handleLoginError(error);
+    }
+  });
+
+
+  }
+
+  onLogin() {
     const { username, password } = this.form.value;
+
+    console.log(`Login: ${username}, ${password}`)
     this.showLoginError.set('');
 
     this.authService.login(username, password).subscribe({

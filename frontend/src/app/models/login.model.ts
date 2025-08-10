@@ -1,7 +1,7 @@
 import { UserData } from "./common.model";
 
 export const JWT_TOKEN = 'jwt_token';
-export const USER_DATA_STR = 'user_data';
+export const USER_DATA_STR = 'user';
 
 export interface LoginData {
   username: string;
@@ -9,7 +9,26 @@ export interface LoginData {
 };
 
 export interface LoginAPIResponse {
-  jwt_token: string;
+  token: string;
+  type: string;
+  id: number;
+  username: string;
+  email: string;
+  region: string;
+  level: string;
+  points: number;
+}
+
+export interface SignupRequest { 
+  username: string;
+  email: string;
+  password: string;
+  region: string;
+  level: string;
+  points: number;
+}
+
+export interface SignupResponse {
   message: string;
-  user: UserData;
+  username: string;
 }
