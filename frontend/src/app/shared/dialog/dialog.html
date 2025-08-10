@@ -1,0 +1,17 @@
+<div class="flex flex-col justify-center items-center !w-90 !h-40 gap-2">
+  <p class="font-bold !text-lg"> {{ dialogData.title }}</p>
+
+  <p class="w-80 !text-md text-center"> {{ dialogData.message }}</p>
+  
+  <span class="flex flex-row-reverse gap-8 !mt-2">
+    <button
+    class="green-btn"
+    (click)="dialogRef.close(closeOk)"
+    >Ok</button>
+
+    <button
+    (click)="dialogRef.close()"
+    class="green-btn"
+    >Cancel</button>
+  </span>
+</div>

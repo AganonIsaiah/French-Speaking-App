@@ -15,17 +15,17 @@ export const routes: Routes = [
   {
     path: 'accueil',
     component: Accueil,
-    // canActivate: [authGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'conversations',
     component: Conversations,
-    // canActivate: [authGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'traduction',
     component: Traduction,
-    // canActivate: [authGuard]
+    canActivate: [authGuard]
   },
   {
     path: '',

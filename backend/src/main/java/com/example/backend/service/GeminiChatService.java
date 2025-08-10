@@ -2,17 +2,18 @@ package com.example.backend.service;
 
 import com.google.genai.types.GenerateContentResponse;
 
-import lombok.RequiredArgsConstructor;
 import com.google.genai.Client;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class GeminiChatService {
 
     private final Client client;
 
 
+    public GeminiChatService(Client client) {
+        this.client = client;
+    }
 
     private static final String FRENCH_SYSTEM_PROMPT =
             "Tu es un assistant rapide en français. " +

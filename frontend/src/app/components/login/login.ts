@@ -29,7 +29,7 @@ export class Login {
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    region: new FormControl('', [Validators.required])  
+    region: new FormControl('', [Validators.required])
   })
 
   onToggleAuthMethod(type: AuthMethod) {
@@ -48,21 +48,27 @@ export class Login {
     const { username, password, email, region } = this.form.value;
     const level = this.levelType();
 
-     if (!username || !password || !email || !region) {
+    if (!username || !password || !email || !region) {
       this.showLoginError.set('Veuillez remplir tous les champs obligatoires.');
       return;
     }
 
     this.authService.signup(username, email, region, level, password).subscribe({
-    next: (response) => {
-      console.log('Signup successful:', response);
-      this.loginType.set('login');
-      this.showSignupMsg.set('Inscription réussie!');
-    },
-    error: (error) => {
-      this.handleLoginError(error);
-    }
-  });
+      next: (response) => {
+        console.log('Signup successful:', response);
+        this.loginType.set('login');
+        this.showSignupMsg.set('Inscription réussie!');
+      },
+      error: (error) => {
+        this.handleLoginError(error);
+      },
+      complete: () => {
+        this.form.get('password')?.reset();
+        this.form.get('email')?.reset();
+        this.form.get('region')?.reset();
+        this.levelType.set('A1');
+      }
+    });
 
 
   }
@@ -75,9 +81,8 @@ export class Login {
 
     this.authService.login(username, password).subscribe({
       next: () => console.log('login success'),
-      error: (err) => {
-        this.handleLoginError(err);
-      }
+      error: (err) => this.handleLoginError(err),
+      complete: () => this.form.reset()
     });
   }
 
@@ -86,7 +91,7 @@ export class Login {
       case 0:
         this.showLoginError.set('A Network Error has Occurred, Try Again Later.');
         break;
-      case 401 | 403: 
+      case 401 | 403:
         this.showLoginError.set('Invalid Login Credentials.');
         break;
       default:
