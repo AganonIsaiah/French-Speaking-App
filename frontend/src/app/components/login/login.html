@@ -37,7 +37,7 @@
 
       <label for="">Niveau</label>
       <span class="grid grid-cols-3 bg-gray-100 !p-2 gap-3 rounded-md">
-        @for(item of ['A1','A2','B1','B2','C1','C2']; track item) {
+        @for(item of levels; track item) {
         <button 
         class="{{isLevelSelected(item) ? 'green-btn  shadow-md' : '!py-1 cursor-pointer'}}"
          (click)="onToggleLevel(item)"
@@ -50,6 +50,9 @@
       }
     </div>
 
-    <button class="!mt-8 green-btn w-80 h-12" (click)="onLogin()">{{loginType() === 'login' ? 'Se connecter' : 'Créer un compte'}}</button>
+    <button class="!mt-8 green-btn w-80 h-12" (click)="onSubmit()">{{loginType() === 'login' ? 'Se connecter' : 'Créer un compte'}}</button>
+  
+    <span class="!mt-4 !text-red-500 !font-semibold w-70 text-center">{{ showLoginError() }}</span>
+
   </div>
 </div>
