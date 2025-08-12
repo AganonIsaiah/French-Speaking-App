@@ -20,7 +20,7 @@ export const httpInterceptor: HttpInterceptorFn = (
 
       console.log(isLoggedIn);
       if (!isLoggedIn && (err.status === HttpStatusCode.Unauthorized || err.status === HttpStatusCode.Forbidden || err.status === HttpStatusCode.BadRequest))
-        return next(req);
+        throw err;
 
       const errorTitle = err.status === 0 ? 'Internal Server Error' : `Error ${err.status}`;
       const errorMsg = isJwtInvalid ? 'Token is Invalid. You will be redirected to the Login page.' : 'An unexpected error occurred. Please try again later.';

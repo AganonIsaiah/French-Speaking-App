@@ -27,8 +27,6 @@
       <label for="username">Nom d'utilisateur</label>
       <input class="login-input" formControlName="username" id="username" placeholder="votre nom" />
 
-      <label for="password">Code d'accès</label>
-      <input class="login-input" formControlName="password" id="password" placeholder="••••••••" />
       } @else {
       <label for="signup-username">Nom d'utilisateur</label>
       <input class="login-input" formControlName="username" id="signup-username" placeholder="votre nom" />
@@ -46,11 +44,10 @@
           (click)="onToggleLevel(item)">{{item}}</button>
         }
       </span>
-
-      <label for="signup-password">Code d'accès</label>
-      <input class="login-input" formControlName="password" id="signup-password" type="password"
-        placeholder="••••••••" />
       }
+
+      <label for="password">Code d'accès</label>
+      <input class="login-input" formControlName="password" id="password" placeholder="••••••••" />
     </div>
 
     <button class="!mt-6 green-btn w-80 h-12" (click)="

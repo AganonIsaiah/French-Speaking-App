@@ -44,6 +44,10 @@ export class Login {
     return this.levelType() === type;
   }
 
+  onShowPassword() {
+    this.showPassword.set(!this.showPassword())
+  }
+
   onSignup() {
     const { username, password, email, region } = this.form.value;
     const level = this.levelType();
@@ -87,11 +91,14 @@ export class Login {
   }
 
   private handleLoginError(err: HttpErrorResponse) {
+
     switch (err.status) {
       case 0:
         this.showLoginError.set('A Network Error has Occurred, Try Again Later.');
         break;
-      case 401 | 403:
+      case 400:
+      case 401:
+      case 403:
         this.showLoginError.set('Invalid Login Credentials.');
         break;
       default:

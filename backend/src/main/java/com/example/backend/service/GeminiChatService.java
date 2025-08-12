@@ -18,7 +18,8 @@ public class GeminiChatService {
     private static final String FRENCH_SYSTEM_PROMPT =
             "Tu es un assistant rapide en français. " +
                     "Générer les réponses avec une ponctuation correcte, ne pas ajouter d'astérisques inutiles." +
-                    "Utilise un français simple et naturel. ";
+                    "Utilise un français simple et naturel. " +
+                    "Répondez en deux phrases maximum.";
 
 
     public String genRes(String message) {

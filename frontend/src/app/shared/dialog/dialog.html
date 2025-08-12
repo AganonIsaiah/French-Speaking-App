@@ -3,15 +3,15 @@
 
   <p class="w-80 !text-md text-center"> {{ dialogData.message }}</p>
   
-  <span class="flex flex-row-reverse gap-8 !mt-2">
+  <span class="flex flex-row-reverse gap-6 !mt-2">
     <button
-    class="green-btn"
+    class="green-btn !w-20"
     (click)="dialogRef.close(closeOk)"
     >Ok</button>
 
     <button
     (click)="dialogRef.close()"
-    class="green-btn"
+    class="green-btn !w-20"
     >Cancel</button>
   </span>
 </div>
