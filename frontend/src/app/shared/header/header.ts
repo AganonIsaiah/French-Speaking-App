@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AuthService } from '../../services/auth-service';
@@ -11,7 +11,7 @@ import { UserData } from '../../models/common.model';
   imports: [MatProgressBarModule],
   templateUrl: './header.html'
 })
-export class Header {
+export class Header implements OnInit {
   userData: any;
   username: string = '';
   level: string = '';
@@ -19,7 +19,7 @@ export class Header {
 
   private authService = inject(AuthService);
 
-  constructor() {
+  ngOnInit(): void {
     const userData = localStorage.getItem('user');
     if (userData) {
       this.userData = JSON.parse(userData);
@@ -27,7 +27,6 @@ export class Header {
       this.level = this.userData.level;
       this.points = this.userData.points;
     }
-
   }
 
   onLogout() {

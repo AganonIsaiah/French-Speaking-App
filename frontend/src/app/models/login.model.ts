@@ -9,14 +9,15 @@ export interface LoginData {
 };
 
 export interface LoginAPIResponse {
-  token: string;
-  type: string;
-  id: number;
-  username: string;
-  email: string;
-  region: string;
-  level: string;
-  points: number;
+  jwt_token: string;
+  message: string;
+  user: {
+    username: string;
+    email: string;
+    region: string;
+    level: string;
+    points: number;
+  };
 }
 
 export interface SignupRequest { 

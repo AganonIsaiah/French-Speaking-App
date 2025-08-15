@@ -141,7 +141,7 @@ a:active {
 }
 
 .green-btn {
-  @apply text-center !text-white bg-[#008060] !px-2 !py-1 rounded-md cursor-pointer hover:bg-[#00664d] font-semibold;
+  @apply text-center !text-white bg-[#008060] !px-2 !py-1 rounded-md cursor-pointer hover:bg-[#00664d] font-semibold !shadow-md;
 }
 
 .active-login-btn {

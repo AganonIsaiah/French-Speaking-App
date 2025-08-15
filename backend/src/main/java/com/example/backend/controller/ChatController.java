@@ -36,7 +36,9 @@ public class ChatController {
                         .body("Invalid or expired JWT token");
             }
 
-            String res = geminiChatService.genRes(chatRequest.getMessage());
+            String res = geminiChatService.genRes(chatRequest);
+            System.out.println("Username: " + chatRequest.getUsername());
+            System.out.println("Level: " + chatRequest.getLevel());
             System.out.println("Message: " + chatRequest.getMessage());
             System.out.println("Response: " + res);
 

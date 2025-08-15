@@ -69,7 +69,6 @@ public class AuthController {
         System.out.println("Login attempt for username: " + loginRequest.getUsername());
 
         try {
-            // Authenticate user using Spring Security's AuthenticationManager
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                             loginRequest.getPassword()));
@@ -81,42 +80,22 @@ public class AuthController {
 
             System.out.println("User logged in successfully: " + userPrincipal.getUsername());
 
-            // Return complete user data including region, level, and points
-            return ResponseEntity.ok(new AuthResponse(jwt,
-                    userPrincipal.getId(),
+            AuthResponse.UserDTO userDTO = new AuthResponse.UserDTO(
                     userPrincipal.getUsername(),
                     userPrincipal.getEmail(),
                     userPrincipal.getRegion(),
                     userPrincipal.getLevel(),
-                    userPrincipal.getPoints()));
+                    userPrincipal.getPoints()
+            );
+
+            return ResponseEntity.ok(new AuthResponse(jwt, "Successful login", userDTO));
         } catch (Exception e) {
             System.out.println("Authentication failed for user: " + loginRequest.getUsername() + ". Error: " + e.getMessage());
             return ResponseEntity.badRequest()
-                    .body("Error: Invalid username or password!");
+                    .body(Map.of("message", "Error: Invalid username or password!"));
         }
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<?> getCurrentUser() {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-
-            System.out.println("Current user accessed: " + userPrincipal.getUsername());
-
-            // Also return complete user data for /me endpoint
-            return ResponseEntity.ok(new AuthResponse(null,
-                    userPrincipal.getId(),
-                    userPrincipal.getUsername(),
-                    userPrincipal.getEmail(),
-                    userPrincipal.getRegion(),
-                    userPrincipal.getLevel(),
-                    userPrincipal.getPoints()));
-        } catch (Exception e) {
-            System.out.println("Error getting current user: " + e.getMessage());
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
-    }
 
     @GetMapping("/test-protected")
     public ResponseEntity<?> testProtectedEndpoint() {

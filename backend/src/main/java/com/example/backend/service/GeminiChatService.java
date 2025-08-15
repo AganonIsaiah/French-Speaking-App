@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.ChatRequest;
 import com.google.genai.types.GenerateContentResponse;
 
 import com.google.genai.Client;
@@ -22,13 +23,17 @@ public class GeminiChatService {
                     "Répondez en deux phrases maximum.";
 
 
-    public String genRes(String message) {
+    public String genRes(ChatRequest chatRequest) {
 
-        String prompt = FRENCH_SYSTEM_PROMPT + "\n" + message;
+        String prompt = FRENCH_SYSTEM_PROMPT +
+                "\nUtilisateur: " + chatRequest.getUsername() +
+                " (niveau: " + chatRequest.getLevel() + ")" +
+                "\nMessage: " + chatRequest.getMessage();
+
         GenerateContentResponse res =
                 client.models.generateContent(
                         "gemini-2.5-flash",
-                        message,
+                        prompt,
                         null);
 
         return res.text();

@@ -7,14 +7,16 @@
 
 <div class="flex flex-row min-h-screen">
   <sidebar
-    class="sticky top-0 left-0 h-screen w-1/6 min-w-65 z-10 bg-[#f6f6f7] p-6 border-r border-[#e1e3e5] hidden sm:block" />
+    class="sticky top-0 left-0 h-screen w-75 min-w-75 z-10 bg-[#f6f6f7] p-6 border-r border-[#e1e3e5] hidden md:block" />
   <div class="flex-1 !p-6 relative">
     <router-outlet />
 
     @if(showMicTextInput()) {
-    <text-input class="flex absolute gap-4 bottom-30 left-1/2 transform -translate-x-1/2 z-30" />
-    <microphone class="flex absolute gap-4 bottom-30 left-2/3 transform -translate-x-1/2 z-30" />
-    }
+      <span class="flex absolute gap-4 bottom-30 left-1/2 transform -translate-x-1/2 z-30">
+        <text-input />
+        <microphone />
+      </span>
+  }
   </div>
 </div>
 }

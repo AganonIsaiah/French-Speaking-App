@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 
-import { TitleTemplate } from '../title-template/title-template';
+import { TitleTemplate } from '../../shared/title-template/title-template';
 
 @Component({
   selector: 'traduction',

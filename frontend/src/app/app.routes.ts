@@ -6,6 +6,7 @@ import { Login } from './components/login/login';
 import { Accueil } from './components/accueil/accueil';
 import { Conversations } from './components/conversations/conversations';
 import { Traduction } from './components/traduction/traduction';
+import { TraductionsRapides } from './components/traductions-rapides/traductions-rapides';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,14 @@ export const routes: Routes = [
     component: Traduction,
     canActivate: [authGuard]
   },
+  {
+    path: 'traductions-rapides',
+    component: TraductionsRapides,
+    canActivate: [authGuard]
+  },
+
+
+
   {
     path: '',
     redirectTo: 'connexion',

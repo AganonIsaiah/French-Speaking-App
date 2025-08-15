@@ -1,9 +1,7 @@
-import {UserLevel } from "./common.model";
-
 export interface ChatReqDTO {
   username: string;
   message: string;
-  level: UserLevel;
+  level: string;
 }
 
 export interface ChatMessage {

@@ -76,18 +76,18 @@ export class AuthService {
       take(1),
       tap((apiData: LoginAPIResponse) => {
         const userData: UserData = {
-          username: apiData.username,
-          email: apiData.email,
-          region: apiData.region,
-          level: apiData.level,
-          points: apiData.points
+          username: apiData.user.username,
+          email: apiData.user.email,
+          region: apiData.user.region,
+          level: apiData.user.level,
+          points: apiData.user.points
         }
 
         this.isAuthenticated.set(true);
         this.userData.set(userData);
         this.loginError.set(undefined);
 
-        localStorage.setItem(JWT_TOKEN, apiData.token);
+        localStorage.setItem(JWT_TOKEN, apiData.jwt_token);
         localStorage.setItem(USER_DATA_STR, JSON.stringify(userData));
 
         this.router.navigate(['/accueil']);

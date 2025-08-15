@@ -12,7 +12,7 @@ import { ChatReqDTO } from '../../../models/chatbot.model';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule
   ],
   templateUrl: './text-input.html'
 })
@@ -22,7 +22,7 @@ export class TextInput {
 
   msgControl = new FormControl('', Validators.required);
   openSuggestions = signal<boolean>(false);
-  suggestions =  signal<string[]>(["suggest 1", "suggest 2", "suggest 3"])
+  suggestions = signal<string[]>(["suggest 1", "suggest 2", "suggest 3"])
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -39,13 +39,15 @@ export class TextInput {
     const msg = this.msgControl.value;
     if (!msg) return;
 
-    const req : ChatReqDTO = {
-      username: 'Isaiah',
-      message: msg,
-      level: 'A2',
-    }
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : { username: 'Guest', level: 'A1' };
 
-    this.chatbotService.generateChat(req).subscribe({
+    const userModel: ChatReqDTO = {
+      username: user.username || 'Guest',
+      message: msg,
+      level: user.level || 'A1'
+    }
+    this.chatbotService.generateChat(userModel).subscribe({
       next: (res: string) => {
         this.msgControl.reset();
         console.log('Response:', res);

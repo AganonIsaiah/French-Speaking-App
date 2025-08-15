@@ -31,11 +31,15 @@ export class Microphone implements OnInit {
     } else {
       this.sttService.stop();
       this.userTranscript = this.sttService.text;
+
+      const userString = localStorage.getItem('user');
+      const user = userString ? JSON.parse(userString) : { username: 'Guest', level: 'A1' };
+
       const userModel: ChatReqDTO = {
-        username: 'Isaiah',
+        username: user.username || 'Guest',
         message: this.userTranscript,
-        level: 'B2'
-      }
+        level: user.level || 'A1'
+      };
 
       this.chatService.generateChat(userModel).subscribe({
         next: (response) => console.log('Chat response:', response),
