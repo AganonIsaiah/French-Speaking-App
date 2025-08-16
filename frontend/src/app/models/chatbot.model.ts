@@ -1,6 +1,12 @@
 export interface ChatMessage {
   sender: 'Ai' | 'Vous';
   message: string;
+  points?: number;
+}
+
+export interface TradRapidesResult {
+  points: number;
+  feedback: string;
 }
 
 export class TradCorrigeeReqDto {

@@ -36,6 +36,7 @@ export class Header implements OnInit {
       next: (response) => console.log('Level updated successfully:', response),
       error: (err) => console.error('Failed to update level:', err),
     });
+     
   }
 
   onMenuOpen() {

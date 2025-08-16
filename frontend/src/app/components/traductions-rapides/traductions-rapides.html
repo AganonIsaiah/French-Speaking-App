@@ -1,16 +1,37 @@
 <title-template [title]="'Traductions Rapides'"
   [generatedType]=" showLoader() ? 'Génération de phrases...' : 'Jeu généré'" [points]="points()" />
 
-<div class="flex flex-col h-[calc(100vh-15rem)]">
+<div class="flex flex-col  h-[calc(100vh-15rem)]">
   @if(isPhrasesLoaded()) {
   <div class=" overflow-y-auto flex flex-col  text-center list-none gap-4">
     <h3 class="!text-lg">{{ dixPhrases()[0]}}</h3>
 
-    <!-- @for(item of dixPhrases().slice(1); track $index) { -->
-      <span class="ai-bubble">
-        {{index()}}: {{ dixPhrases()[index()] }}
+    
+    <span class="!mx-auto ai-bubble !max-w-380">
+      {{index()}}: {{ dixPhrases()[index()] }}
+    </span>
+
+    @if (isResponseLoading()) {
+      <span class="list-none flex text-center">
+        <li>L'IA: </li>
+        <ngx-skeleton-loader count="10" 
+        [theme]="{ width: '16px', height: '16px' }" 
+        appearance="circle" />
       </span>
-    <!-- } -->
+    } 
+
+    @for (item of chatService.resList(); track $index) {
+    <li class="list-none font-medium">
+      @if (item.sender === 'Vous') {
+      TRADUCTION PAR L'UTILISATEUR: {{ item.message }}
+      } @else if (item.sender === 'Ai') {
+
+      <p class="!text-[#008060]">ANALYSE PAR L'IA: {{ item.message }} </p>
+      <p class="!mx-auto !mt-4 flex !justify-center !text-[#008060] font-bold bg-gray-200 w-[80%] max-w-120 rounded-md !p-2">SCORE: {{ item.points }}</p>
+      }
+    </li>
+    }
+
   </div>
 
   } @else if (showLoader() && !isPhrasesLoaded()) {
@@ -18,7 +39,8 @@
   }
 
   <span class="flex flex-col justify-center items-center gap-2">
-    @if(dixPhrases().length <= 0) { <button class="green-btn !p-2 !py-3 w-50  !text-[16px]" (click)="onReq10Phrases()">
+    @if(dixPhrases().length <= 0) { <button class="green-btn !mt-8 !p-2 !py-3 w-50  !text-[16px]"
+      (click)="onReq10Phrases()">
       Générer des phrases</button>
       } @else {
       <hr class="!my-3 !w-[90%] !mx-auto" />

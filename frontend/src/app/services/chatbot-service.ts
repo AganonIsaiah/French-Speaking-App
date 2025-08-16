@@ -4,8 +4,7 @@ import { Observable, tap, catchError, throwError } from 'rxjs';
 
 import { EnvironmentModel, ApiEndpoint } from '../models/environment.model';
 import { ENVIRONMENT_TOKEN } from '../../environments/environment.token';
-import { ChatReqDTO, ChatMessage, TradCorrigeeReqDto } from '../models/chatbot.model';
-import { UserLevel } from '../models/common.model';
+import { ChatReqDTO, ChatMessage, TradCorrigeeReqDto, TradRapidesResult } from '../models/chatbot.model';
 
 import { TTSService } from './tts-service';
 
@@ -19,16 +18,15 @@ export class ChatbotService {
   private readonly baseUrl = this.envConfig.apiUrl;
 
   resList = signal<ChatMessage[]>([]);
-  suggestList = signal<string[]>([]);
 
-  gen10Sentences(level: string, endpoint: ApiEndpoint ): Observable<string[]> {
+  gen10Sentences(level: string, endpoint: ApiEndpoint): Observable<string[]> {
     return this.http.post<string[]>(`${this.baseUrl}/${endpoint}`, { level })
-    .pipe (
-      tap(sentences => {
-        console.log('Received sentences:', sentences);
+      .pipe(
+        tap(sentences => {
+          console.log('Received sentences:', sentences);
 
-      }),
-       catchError(error => {
+        }),
+        catchError(error => {
           if (error.status === 401) {
             console.warn('Unauthorized - please login again');
           }
@@ -37,13 +35,13 @@ export class ChatbotService {
       );
   }
 
-  genTradCorrections(req: TradCorrigeeReqDto, endpoint: ApiEndpoint): Observable<string> {
-    return this.http.post(
-      `${this.baseUrl}/${endpoint}`, req, { responseType: 'text' })
+  genTradCorrections(req: TradCorrigeeReqDto, endpoint: ApiEndpoint): Observable<TradRapidesResult> {
+    return this.http.post<TradRapidesResult>(`${this.baseUrl}/${endpoint}`, req)
       .pipe(
         tap(res => {
-          this.addResponse(req.translatedEnglish, res);
-          this.ttsService.speak(res);
+          this.addResponse(req.translatedEnglish, res.feedback, res.points);
+          this.ttsService.speak(`${res.feedback} + Le score est de ${res.points}`);
+          console.log(`Score: ${res.points}`, `Feedback: ${res.feedback}`);
         }),
         catchError(error => {
           if (error.status === 401) {
@@ -72,11 +70,11 @@ export class ChatbotService {
       );
   }
 
-  addResponse(req: string, res: string) {
+  addResponse(req: string, res: string, points?: number) {
     this.resList.update(prev => [
       ...prev,
       { sender: 'Vous', message: req },
-      { sender: 'Ai', message: res }
+      { sender: 'Ai', message: res, points: points }
     ]);
   }
 }

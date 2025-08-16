@@ -16,11 +16,10 @@ import { STTService } from '../../services/stt-service';
 import { ChatReqDTO, TradCorrigeeReqDto } from '../../models/chatbot.model';
 import { ApiEndpoint } from '../../models/environment.model';
 
-
 @Component({
   selector: 'traductions-rapides',
-  imports: [TitleTemplate,  MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatIconModule
-    ,NgxSkeletonLoaderComponent, MatProgressBarModule
+  imports: [TitleTemplate, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatIconModule
+    , NgxSkeletonLoaderComponent, MatProgressBarModule
   ],
   templateUrl: './traductions-rapides.html'
 })
@@ -30,9 +29,9 @@ export class TraductionsRapides implements OnInit {
   dixPhrases = signal<string[]>([]);
   isMicOn = signal<boolean>(false);
   userTranscript = signal<string>('');
-  points = signal<number>(-1); 
+  points = signal<number>(-1);
   index = signal<number>(1);
-
+  isResponseLoading = signal<boolean>(false);
 
   chatService = inject(ChatbotService);
   private sttService = inject(STTService);
@@ -45,6 +44,7 @@ export class TraductionsRapides implements OnInit {
 
   onToggleMic() {
     this.isMicOn.set(!this.isMicOn());
+    this.isResponseLoading.set(true);
 
     if (this.isMicOn()) {
       this.sttService.start();
@@ -56,8 +56,12 @@ export class TraductionsRapides implements OnInit {
       const userModel = TradCorrigeeReqDto.buildModel(french, this.userTranscript());
 
       this.chatService.genTradCorrections(userModel, ApiEndpoint.TRADUCTIONSRAPIDESCORRIGEES).subscribe({
-        next: (response) => console.log('Chat response:', response),
+        next: (res) => {
+          console.log('Chat response:', res);
+          this.points.set(this.points() + res.points)
+        },
         error: (err) => console.error('Chat error:', err),
+        complete: () => this.isResponseLoading.set(false),
       });
 
       this.sttService.text = '';
@@ -70,15 +74,18 @@ export class TraductionsRapides implements OnInit {
     const english = this.msgControl.value;
     if (!english) return;
 
-    const french: string = this.dixPhrases()[0];
+    this.isResponseLoading.set(true);
+    const french: string = this.dixPhrases()[1];
     const userModel = TradCorrigeeReqDto.buildModel(french, english);
- 
+
     this.chatService.genTradCorrections(userModel, ApiEndpoint.TRADUCTIONSRAPIDESCORRIGEES).subscribe({
-      next: (res: string) => {
+      next: (res) => {
         this.msgControl.reset();
         console.log('Response:', res);
+        this.points.set(res.points)
       },
       error: (err) => console.error('Error:', err),
+      complete: () => this.isResponseLoading.set(false)
     });
   }
 

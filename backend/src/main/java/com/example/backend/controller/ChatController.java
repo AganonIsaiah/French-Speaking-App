@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.ChatRequest;
 import com.example.backend.dto.TradRapidesCorrigeesRequest;
+import com.example.backend.dto.TradRapidesResult;
 import com.example.backend.service.GeminiChatService;
 import com.example.backend.utils.JwtUtils;
 import org.springframework.http.HttpHeaders;
@@ -78,19 +79,22 @@ public class ChatController {
             @RequestBody TradRapidesCorrigeesRequest request) {
         try {
             if (!isAuthorized(authHeader)) {
-                System.out.println("[Traductions-rapides-corrigees] Unauthorized request received.");
+                System.out.println("[Traductions-rapides] Unauthorized request received.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("Missing, invalid, or expired JWT token");
             }
 
-            System.out.println("[Traductions-rapides-corrigees] Authorized request received.");
-            System.out.println("[Traductions-rapides-corrigees] Original French: " + request.getOriginalFrench());
-            System.out.println("[Traductions-rapides-corrigees] Translated English: " + request.getTranslatedEnglish());
+            System.out.println("[Traductions-rapides] Authorized request received.");
+            System.out.println("[Traductions-rapides] Original French: " + request.getOriginalFrench());
+            System.out.println("[Traductions-rapides] Translated English: " + request.getTranslatedEnglish());
 
-            String res = geminiChatService.genTradRapidesCorrigees(request);
+            TradRapidesResult result = geminiChatService.genTradRapidesCorrigees(request);
 
-            System.out.println("[Traductions-rapides-corrigees] Response generated: " + res);
-            return ResponseEntity.ok(res);
+            // Log the result
+            System.out.println("[Traductions-rapides] Points: " + result.getPoints());
+            System.out.println("[Traductions-rapides] Feedback: " + result.getFeedback());
+
+            return ResponseEntity.ok(result);
 
         } catch (Exception e) {
             return handleException("Traductions-rapides-corrigees", e);
