@@ -7,6 +7,7 @@ export enum ApiEndpoint {
   LOGIN =  'api/auth/login',
   SIGNUP = 'api/auth/signup',
   CONVERSATIONS = 'api/chat/conversations',
-  TRADUCTIONRAPIDES = 'api/chat/traduction-rapides'
+  DIXPHRASES = 'api/chat/dix-phrases',
+  TRADUCTIONSRAPIDESCORRIGEES = 'api/chat/traduction-rapides'
 }
          

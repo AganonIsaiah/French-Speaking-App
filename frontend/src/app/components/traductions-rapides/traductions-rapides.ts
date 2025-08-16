@@ -1,22 +1,97 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 import { TitleTemplate } from '../../shared/title-template/title-template';
 
+import { ChatbotService } from '../../services/chatbot-service';
+import { STTService } from '../../services/stt-service';
+
+import { ChatReqDTO, TradCorrigeeReqDto } from '../../models/chatbot.model';
+import { ApiEndpoint } from '../../models/environment.model';
+
+
 @Component({
   selector: 'traductions-rapides',
-  imports: [TitleTemplate],
+  imports: [TitleTemplate,  MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatIconModule
+    ,NgxSkeletonLoaderComponent
+  ],
   templateUrl: './traductions-rapides.html'
 })
-export class TraductionsRapides {
+export class TraductionsRapides implements OnInit {
+  isPhrasesLoaded = signal<boolean>(false);
+  showLoader = signal<boolean>(false);
+  dixPhrases = signal<string[]>([]);
+  isMicOn = signal<boolean>(false);
+  userTranscript = signal<string>('');
 
+  chatService = inject(ChatbotService);
+  private sttService = inject(STTService);
 
+  msgControl = new FormControl('', Validators.required);
 
-   /**
-    * PAGE LAYOUT - SOLO/DUO MODE
-    * - TOP-MIDDLE ALIGNED UNDER TITLE (AI GENERATED PROMPT)
-    * - LEFT/RIGHT for user1 vs user2
-    * - INCLUDES POINTS
-    * - OUT OF 10
-    * - Winner wins
-    */
+  ngOnInit(): void {
+    this.sttService.init();
+  }
+
+  onToggleMic() {
+    this.isMicOn.set(!this.isMicOn());
+
+    if (this.isMicOn()) {
+      this.sttService.start();
+    } else {
+      this.sttService.stop();
+      this.userTranscript.set(this.sttService.text);
+
+      const french: string = this.dixPhrases()[0];
+      const userModel = TradCorrigeeReqDto.buildModel(french, this.userTranscript());
+
+      this.chatService.genTradCorrections(userModel, ApiEndpoint.TRADUCTIONSRAPIDESCORRIGEES).subscribe({
+        next: (response) => console.log('Chat response:', response),
+        error: (err) => console.error('Chat error:', err),
+      });
+
+      this.sttService.text = '';
+    }
+
+    console.warn(`Transcript : ${this.userTranscript()}`);
+  }
+
+  onSubmitMsg() {
+    const english = this.msgControl.value;
+    if (!english) return;
+
+    const french: string = this.dixPhrases()[0];
+    const userModel = TradCorrigeeReqDto.buildModel(french, english);
+ 
+    this.chatService.genTradCorrections(userModel, ApiEndpoint.TRADUCTIONSRAPIDESCORRIGEES).subscribe({
+      next: (res: string) => {
+        this.msgControl.reset();
+        console.log('Response:', res);
+      },
+      error: (err) => console.error('Error:', err),
+    });
+  }
+
+  onReq10Phrases() {
+    this.isPhrasesLoaded.set(false);
+    this.showLoader.set(true);
+    const userModel = ChatReqDTO.buildModel();
+
+    this.chatService.gen10Sentences(userModel.level, ApiEndpoint.DIXPHRASES).subscribe({
+      next: (res) => {
+        console.log("Response:", res);
+        this.dixPhrases.set(res);
+      },
+      error: (err) => console.error('Error:', err),
+      complete: () => {
+        this.isPhrasesLoaded.set(true);
+        this.showLoader.set(false);
+      }
+    });
+  }
 }

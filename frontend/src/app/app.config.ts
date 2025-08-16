@@ -1,6 +1,8 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideNgxSkeletonLoader } from 'ngx-skeleton-loader';
+
 import { routes } from './app.routes';
 
 import { jwtTokenInterceptor } from './interceptors/jwt-token-interceptor';
@@ -14,6 +16,13 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([jwtTokenInterceptor, httpInterceptor])),
-    { provide: ENVIRONMENT_TOKEN, useValue: environment }
+    { provide: ENVIRONMENT_TOKEN, useValue: environment },
+    provideNgxSkeletonLoader({
+      theme: {
+        extendsFromRoot: true,
+        height: '30px',
+        width: '100%'
+      },
+    }),
   ]
 };

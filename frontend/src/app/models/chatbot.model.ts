@@ -3,6 +3,20 @@ export interface ChatMessage {
   message: string;
 }
 
+export class TradCorrigeeReqDto {
+  constructor (
+    public originalFrench: string,
+    public translatedEnglish: string
+  ) {}
+
+  static buildModel(french: string, english: string): TradCorrigeeReqDto {
+    return new TradCorrigeeReqDto(
+      french,
+      english
+    );
+  }
+}
+
 export class ChatReqDTO {
   constructor(
     public username: string,
@@ -10,7 +24,7 @@ export class ChatReqDTO {
     public level: string
   ) {}
 
-  static buildModel(message: string): ChatReqDTO {
+  static buildModel(message?: string): ChatReqDTO {
     const userString = localStorage.getItem('user');
     const user = userString
       ? JSON.parse(userString)
@@ -18,7 +32,7 @@ export class ChatReqDTO {
 
     return new ChatReqDTO(
       user.username || 'Guest',
-      message,
+      message || 'Aucun message',
       user.level || 'A1'
     );
   }

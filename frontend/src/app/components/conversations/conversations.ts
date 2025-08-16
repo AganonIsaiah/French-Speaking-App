@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 
+import { ApiEndpoint } from '../../models/environment.model';
+
 import { TitleTemplate } from '../../shared/title-template/title-template';
 import { ChatReqDTO } from '../../models/chatbot.model';
 
@@ -25,11 +27,9 @@ export class Conversations implements OnInit {
 
   msgControl = new FormControl('', Validators.required);
 
-
   ngOnInit(): void {
     this.sttService.init();
   }
-
 
   onToggleMic() {
     this.isMicOn.set(!this.isMicOn());
@@ -42,7 +42,7 @@ export class Conversations implements OnInit {
 
       const userModel = ChatReqDTO.buildModel(this.userTranscript());
 
-      this.chatService.generateChat(userModel).subscribe({
+      this.chatService.genChat(userModel, ApiEndpoint.CONVERSATIONS).subscribe({
         next: (response) => console.log('Chat response:', response),
         error: (err) => console.error('Chat error:', err),
       });
@@ -59,7 +59,7 @@ export class Conversations implements OnInit {
 
     const userModel = ChatReqDTO.buildModel(msg);
 
-    this.chatService.generateChat(userModel).subscribe({
+    this.chatService.genChat(userModel, ApiEndpoint.CONVERSATIONS).subscribe({
       next: (res: string) => {
         this.msgControl.reset();
         console.log('Response:', res);

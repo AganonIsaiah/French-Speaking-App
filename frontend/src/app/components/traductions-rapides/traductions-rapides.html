@@ -1,9 +1,47 @@
 <title-template [title]="'Traductions Rapides'" [generatedType]="'Jeu généré'" />
 
-<div class="!mt-4 flex flex-col justify-center items-center text-center gap-4">
-  <h3 class="!text-lg ">Translate below</h3>
-  <span class="ai-bubble">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias id voluptatum, velit alias blanditiis magni excepturi accusamus accusantium consequuntur, similique ad minus neque tempore rerum aut atque! Odit, a quis!</span>
-  <li>SAMPLE RESPONSE: Lorem ipsum dolor sit amet Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo veniam illum impedit velit perspiciatis minus consequuntur, repellat alias libero eligendi culpa nam deserunt molestias, facere non laudantium tempora eos hic.consectetur adipisicing elit. Voluptatibus minima rerum unde itaque odio modi, maxime perferendis maiores omnis quia eius ducimus quos, recusandae eveniet ad enim totam mollitia neque!</li>
-<p class="!text-[#008060] font-semibold">SAMPLE AI ANALYSIS + SCORE: Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti alias sed quia quasi consectetur consequuntur officia ducimus accusamus tempore velit. Cupiditate ipsa eaque molestias odio sequi corporis possimus porro natus.</p>
+
+<div class="flex flex-col h-[calc(100vh-14rem)]">
+  @if(isPhrasesLoaded()) {
+  <div class=" overflow-y-auto flex flex-col  text-center list-none gap-4">
+    <h3 class="!text-lg ">Translate below</h3>
+    <span class="ai-bubble">SAMPLE AI SENTENCE: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias id
+      voluptatum, velit alias blanditiis magni excepturi accusamus accusantium consequuntur, similique ad minus neque
+      tempore rerum aut atque! Odit, a quis!</span>
+    <li>SAMPLE RESPONSE: Lorem ipsum dolor sit amet Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo
+      veniam illum impedit velit perspiciatis minus consequuntur, repellat alias libero eligendi culpa nam deserunt
+      molestias, facere non laudantium tempora eos hic.consectetur adipisicing elit. Voluptatibus minima rerum unde
+      itaque
+      odio modi, maxime perferendis maiores omnis quia eius ducimus quos, recusandae eveniet ad enim totam mollitia
+      neque!
+    </li>
+    <p class="!text-[#008060] font-semibold">SAMPLE AI ANALYSIS + SCORE: Lorem ipsum dolor sit amet consectetur
+      adipisicing elit. Deleniti alias sed quia quasi consectetur consequuntur officia ducimus accusamus tempore velit.
+      Cupiditate ipsa eaque molestias odio sequi corporis possimus porro natus.</p>
+
+
+  
+    </div>
+  } @else if (showLoader() && !isPhrasesLoaded()) {
+    <div class="item">
+      <ngx-skeleton-loader count="10" appearance="line"/>
+    </div>
+  }
+
+  <span class="flex flex-col justify-center items-center gap-2">
+    @if(dixPhrases().length <= 0) { 
+      <button class="green-btn" (click)="onReq10Phrases()">Get Phrases</button>
+      } @else {
+      <hr class="!my-3 !w-[90%] !mx-auto" />
+      <span class="flex gap-8">
+        <input class="green-input" [formControl]="msgControl" placeholder="Entrez votre message..."
+          (keydown.enter)="onSubmitMsg()" />
+
+        <button class="mic-container" (click)="onToggleMic()">
+          <mat-icon>{{ isMicOn() ? 'mic' : 'mic_off'}}</mat-icon>
+        </button>
+      </span>
+      }
+  </span>
 
 </div>
