@@ -3,8 +3,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AuthService } from '../../services/auth-service';
 
-import { UserData } from '../../models/common.model';
-
 @Component({
 
   selector: 'header',
@@ -14,8 +12,7 @@ import { UserData } from '../../models/common.model';
 export class Header implements OnInit {
   userData: any;
   username: string = '';
-  level: string = '';
-  points: number = 0;
+  level: string = ''; 
 
   private authService = inject(AuthService);
 
@@ -24,8 +21,7 @@ export class Header implements OnInit {
     if (userData) {
       this.userData = JSON.parse(userData);
       this.username = this.userData.username;
-      this.level = this.userData.level;
-      this.points = this.userData.points;
+      this.level = this.userData.level; 
     }
   }
 

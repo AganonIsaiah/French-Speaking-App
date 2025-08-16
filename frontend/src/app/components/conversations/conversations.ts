@@ -4,6 +4,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 import { ApiEndpoint } from '../../models/environment.model';
 
@@ -15,12 +16,13 @@ import { ChatbotService } from '../../services/chatbot-service';
 
 @Component({
   selector: 'conversations',
-  imports: [TitleTemplate, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatIconModule],
+  imports: [TitleTemplate, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatIconModule, NgxSkeletonLoaderComponent],
   templateUrl: 'conversations.html'
 })
 export class Conversations implements OnInit {
   isMicOn = signal<boolean>(false);
   userTranscript = signal<string>('');
+  isResponseLoading = signal<boolean>(false);
 
   chatService = inject(ChatbotService);
   private sttService = inject(STTService);
@@ -33,6 +35,7 @@ export class Conversations implements OnInit {
 
   onToggleMic() {
     this.isMicOn.set(!this.isMicOn());
+    this.isResponseLoading.set(true);
 
     if (this.isMicOn()) {
       this.sttService.start();
@@ -45,6 +48,7 @@ export class Conversations implements OnInit {
       this.chatService.genChat(userModel, ApiEndpoint.CONVERSATIONS).subscribe({
         next: (response) => console.log('Chat response:', response),
         error: (err) => console.error('Chat error:', err),
+        complete: () => this.isResponseLoading.set(false),
       });
 
       this.sttService.text = '';
@@ -57,6 +61,7 @@ export class Conversations implements OnInit {
     const msg = this.msgControl.value;
     if (!msg) return;
 
+    this.isResponseLoading.set(true);
     const userModel = ChatReqDTO.buildModel(msg);
 
     this.chatService.genChat(userModel, ApiEndpoint.CONVERSATIONS).subscribe({
@@ -65,6 +70,7 @@ export class Conversations implements OnInit {
         console.log('Response:', res);
       },
       error: (err) => console.error('Error:', err),
+      complete: () => this.isResponseLoading.set(false)
     });
   }
 }

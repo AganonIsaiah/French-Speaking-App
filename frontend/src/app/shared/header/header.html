@@ -4,18 +4,11 @@
   <h2 class="hidden md:block">FrançaisPro</h2>
 </div>
 
-<div class="flex flex-row justify-center items-center gap-4">
+<div class="flex flex-row justify-center items-center gap-6">
 
 
   <p class="text-[#667] hidden sm:block">{{ username }}</p>
-  <p class="w-60 bg-[#f3f4f6] !px-3 !py-1 rounded-xl !text-sm text-center whitespace-nowrap !shadow-sm">Niveau {{ level }}</p>
-
-  <span class="w-full bg-gray-200 rounded">
-    <div class="bg-[#008060] h-2 rounded" [style.width.%]="points"></div>
-  </span>
-
-  <p class="text-[#008060] text-sm">{{ points }}%</p>
-
+  <p class=" bg-[#f3f4f6] !px-3 !py-1 rounded-xl !text-sm text-center whitespace-nowrap !shadow-sm">Niveau {{ level }} </p>
   <button class="green-btn" (click)="onLogout()">Déconnexion</button>
 
 </div>

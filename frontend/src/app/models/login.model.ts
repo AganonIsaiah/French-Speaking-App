@@ -16,7 +16,6 @@ export interface LoginAPIResponse {
     email: string;
     region: string;
     level: string;
-    points: number;
   };
 }
 
@@ -26,7 +25,6 @@ export interface SignupRequest {
   password: string;
   region: string;
   level: string;
-  points: number;
 }
 
 export interface SignupResponse {

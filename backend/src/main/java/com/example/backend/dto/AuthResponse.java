@@ -35,20 +35,17 @@ public class AuthResponse {
         this.user = user;
     }
 
-    // Nested DTO for user data (no id, no token)
     public static class UserDTO {
         private String username;
         private String email;
         private String region;
         private String level;
-        private Long points;
 
-        public UserDTO(String username, String email, String region, String level, Long points) {
+        public UserDTO(String username, String email, String region, String level) {
             this.username = username;
             this.email = email;
             this.region = region;
             this.level = level;
-            this.points = points;
         }
 
         public String getUsername() { return username; }
@@ -63,7 +60,5 @@ public class AuthResponse {
         public String getLevel() { return level; }
         public void setLevel(String level) { this.level = level; }
 
-        public Long getPoints() { return points; }
-        public void setPoints(Long points) { this.points = points; }
     }
 }

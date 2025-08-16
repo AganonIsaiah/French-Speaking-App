@@ -17,12 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([jwtTokenInterceptor, httpInterceptor])),
     { provide: ENVIRONMENT_TOKEN, useValue: environment },
-    provideNgxSkeletonLoader({
-      theme: {
-        extendsFromRoot: true,
-        height: '30px',
-        width: '100%'
-      },
-    }),
+    provideNgxSkeletonLoader(),
   ]
 };

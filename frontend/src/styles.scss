@@ -138,7 +138,7 @@ a:active {
   background-color: transparent;
 }
 
-:hover::-webkit-scrollbar-thumb{
+:hover::-webkit-scrollbar-thumb {
   background: #008060;
 }
 
@@ -159,11 +159,11 @@ a:active {
 }
 
 .ai-bubble {
-  @apply w-[100%] !p-2 !shadow-md !text-base !text-center !text-white bg-[#008060] rounded-md !font-semibold;
+  @apply w-[100%] !py-2 !px-1 !shadow-md !text-base !text-center !text-white bg-[#008060] rounded-md !font-semibold;
 }
 
 .unset {
-  all:unset;
+  all: unset;
 }
 
 .mic-container {
@@ -186,6 +186,18 @@ a:active {
   border-radius: 8px;
 
   @apply text-black !text-lg cursor-pointer;
+}
+
+.progress-bar {
+  @apply h-4 rounded-lg;  
+
+  .mdc-linear-progress__buffer {
+    @apply bg-gray-200;  
+  }
+
+  .mdc-linear-progress__bar-inner {
+    @apply text-[#008060];
+  }
 }
 
 @keyframes gradientShift {

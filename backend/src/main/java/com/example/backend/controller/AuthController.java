@@ -53,8 +53,7 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getRegion(),
-                signUpRequest.getLevel(),
-                signUpRequest.getPoints() != null ? signUpRequest.getPoints() : 0L
+                signUpRequest.getLevel()
         );
 
         userRepository.save(user);
@@ -84,8 +83,7 @@ public class AuthController {
                     userPrincipal.getUsername(),
                     userPrincipal.getEmail(),
                     userPrincipal.getRegion(),
-                    userPrincipal.getLevel(),
-                    userPrincipal.getPoints()
+                    userPrincipal.getLevel()
             );
 
             return ResponseEntity.ok(new AuthResponse(jwt, "Successful login", userDTO));
@@ -96,14 +94,4 @@ public class AuthController {
         }
     }
 
-
-    @GetMapping("/test-protected")
-    public ResponseEntity<?> testProtectedEndpoint() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-
-        System.out.println("Protected endpoint accessed by: " + userPrincipal.getUsername());
-
-        return ResponseEntity.ok("Hello " + userPrincipal.getUsername() + "! This is a protected endpoint. Your level: " + userPrincipal.getLevel() + ", Points: " + userPrincipal.getPoints());
-    }
 }

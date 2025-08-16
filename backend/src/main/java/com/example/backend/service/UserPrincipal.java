@@ -18,11 +18,10 @@ public class UserPrincipal implements UserDetails {
     private String password;
     private String region;
     private String level;
-    private Long points;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserPrincipal(Long id, String username, String email, String password,
-                         String region, String level, Long points,
+                         String region, String level,
                          Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -30,7 +29,6 @@ public class UserPrincipal implements UserDetails {
         this.password = password;
         this.region = region;
         this.level = level;
-        this.points = points;
         this.authorities = authorities;
     }
 
@@ -44,7 +42,6 @@ public class UserPrincipal implements UserDetails {
                 user.getPassword(),
                 user.getRegion(),
                 user.getLevel(),
-                user.getPoints(),
                 authorities
         );
     }
@@ -78,10 +75,6 @@ public class UserPrincipal implements UserDetails {
 
     public String getLevel() {
         return level;
-    }
-
-    public Long getPoints() {
-        return points;
     }
 
     @Override

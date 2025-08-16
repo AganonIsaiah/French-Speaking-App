@@ -49,8 +49,7 @@ export class AuthService {
     email: email || '',
     password: password || '',
     region: region || '',
-    level: level || '',
-    points: 0
+    level: level || ''
   }
 
   return this.httpClient.post<SignupResponse>(signupUrl, signupData).pipe(
@@ -79,8 +78,7 @@ export class AuthService {
           username: apiData.user.username,
           email: apiData.user.email,
           region: apiData.user.region,
-          level: apiData.user.level,
-          points: apiData.user.points
+          level: apiData.user.level
         }
 
         this.isAuthenticated.set(true);

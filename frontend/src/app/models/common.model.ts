@@ -5,5 +5,4 @@ export interface UserData {
   email: string;
   region?: string;
   level?: string;
-  points?: number;
 }

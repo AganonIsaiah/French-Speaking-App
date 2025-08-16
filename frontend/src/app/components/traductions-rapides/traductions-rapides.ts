@@ -4,6 +4,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 import { TitleTemplate } from '../../shared/title-template/title-template';
@@ -18,7 +20,7 @@ import { ApiEndpoint } from '../../models/environment.model';
 @Component({
   selector: 'traductions-rapides',
   imports: [TitleTemplate,  MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatIconModule
-    ,NgxSkeletonLoaderComponent
+    ,NgxSkeletonLoaderComponent, MatProgressBarModule
   ],
   templateUrl: './traductions-rapides.html'
 })
@@ -28,6 +30,9 @@ export class TraductionsRapides implements OnInit {
   dixPhrases = signal<string[]>([]);
   isMicOn = signal<boolean>(false);
   userTranscript = signal<string>('');
+  points = signal<number>(-1); 
+  index = signal<number>(1);
+
 
   chatService = inject(ChatbotService);
   private sttService = inject(STTService);
@@ -91,6 +96,7 @@ export class TraductionsRapides implements OnInit {
       complete: () => {
         this.isPhrasesLoaded.set(true);
         this.showLoader.set(false);
+        this.points.set(70);
       }
     });
   }

@@ -72,7 +72,7 @@ public class ChatController {
         }
     }
 
-    @PostMapping("/traductions-rapides-corrigees")
+    @PostMapping("/traductions-rapides")
     public ResponseEntity<?> sendGeminiTradRapidesCorrigees(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
             @RequestBody TradRapidesCorrigeesRequest request) {
