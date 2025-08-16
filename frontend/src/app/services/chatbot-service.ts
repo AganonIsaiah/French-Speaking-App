@@ -18,14 +18,9 @@ export class ChatbotService {
   resList = signal<ChatMessage[]>([]);
   suggestList = signal<string[]>([]);
 
-  generateSuggestions(req: ChatReqDTO): Observable<string> {
-    return this.http.post(
-      `${this.baseUrl}/${ApiEndpoint.ASSIST}`, req, { responseType: 'text' });
-  }
-
   generateChat(req: ChatReqDTO): Observable<string> {
   return this.http.post(
-    `${this.baseUrl}/${ApiEndpoint.CHAT}`, req, { responseType: 'text' })
+    `${this.baseUrl}/${ApiEndpoint.CONVERSATIONS}`, req, { responseType: 'text' })
     .pipe(
       tap(res => {
         res = res.replace(/\*/g, '');

@@ -25,17 +25,17 @@
     <div class="flex flex-col gap-1" [formGroup]="form">
       @if(loginType() === 'login') {
       <label for="username">Nom d'utilisateur</label>
-      <input class="login-input" formControlName="username" id="username" placeholder="votre nom" />
+      <input class="green-input" formControlName="username" id="username" placeholder="votre nom" />
 
       } @else {
       <label for="signup-username">Nom d'utilisateur</label>
-      <input class="login-input" formControlName="username" id="signup-username" placeholder="votre nom" />
+      <input class="green-input" formControlName="username" id="signup-username" placeholder="votre nom" />
 
       <label for="email">Courriel</label>
-      <input class="login-input" formControlName="email" id="email" type="email" placeholder="votre courriel" />
+      <input class="green-input" formControlName="email" id="email" type="email" placeholder="votre courriel" />
 
       <label for="region">Région</label>
-      <input class="login-input" formControlName="region" id="region" placeholder="votre région" />
+      <input class="green-input" formControlName="region" id="region" placeholder="votre région" />
 
       <label for="">Niveau</label>
       <span class="grid grid-cols-3 bg-gray-100 !p-2 gap-3 rounded-md">
@@ -47,7 +47,7 @@
       }
 
       <label for="password">Code d'accès</label>
-      <input class="login-input" formControlName="password" id="password" placeholder="••••••••" />
+      <input class="green-input" type="{{ loginType() === 'login' ? 'password' : 'text'}}" formControlName="password" id="password" placeholder="••••••••" />
     </div>
 
     <button class="!mt-6 green-btn w-80 h-12" (click)="

@@ -1,0 +1,23 @@
+<title-template [title]="'Une conversation sans fin...'" [generatedType]="'Conversation générée'" />
+
+<div class="flex flex-col h-[calc(100vh-14rem)]">
+  <span class="flex-1 overflow-y-auto list-none flex flex-col gap-2">
+    @for (item of chatService.resList(); track $index) {
+    <li>
+      {{ item.sender }}: {{ item.message }}
+     </li>
+    }
+  </span>
+
+  <hr class="!my-3 !w-[90%] !mx-auto" />
+
+  <span class="flex justify-center items-center gap-8">
+    <input class="green-input" [formControl]="msgControl" placeholder="Entrez votre message..."
+      (keydown.enter)="onSubmitMsg()" />
+
+    <button class="mic-container" (click)="onToggleMic()">
+      <mat-icon>{{ isMicOn() ? 'mic' : 'mic_off'}}</mat-icon>
+    </button>
+  </span>
+
+</div>

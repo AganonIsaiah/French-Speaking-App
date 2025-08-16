@@ -20,7 +20,7 @@ public class ChatController {
         this.jwtUtils = jwtUtils;
     }
 
-    @PostMapping("/gemini")
+    @PostMapping("/conversations")
     public ResponseEntity<?> sendGeminiChat(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
             @RequestBody ChatRequest chatRequest) {

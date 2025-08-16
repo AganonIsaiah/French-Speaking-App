@@ -72,7 +72,6 @@ h3 {
   transition: all 0.15s ease;
 }
 
-
 li,
 input,
 p,
@@ -112,6 +111,10 @@ a {
   letter-spacing: 0.9px;
 }
 
+hr {
+  @apply border-[#e1e3e5];
+}
+
 a:hover {
   background-color: #ffffff;
 }
@@ -132,11 +135,10 @@ a:active {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 6px;
-  transition: background-color 0.2s ease;
+  background-color: transparent;
 }
 
-*:hover::-webkit-scrollbar-thumb,
-*:hover::-webkit-scrollbar-thumb:hover {
+:hover::-webkit-scrollbar-thumb{
   background: #008060;
 }
 
@@ -148,12 +150,16 @@ a:active {
   @apply bg-white rounded-md !text-[#008060] shadow-md;
 }
 
-.login-input {
+.green-input {
   @apply w-80 !h-10 !px-2 border border-gray-300 rounded-lg;
 }
 
 .login-container {
   background: linear-gradient(135deg, #008060 0%, #00b894 100%);
+}
+
+.ai-bubble {
+  @apply w-[95%] !px-4 !py-2 !shadow-md !text-base !text-center !text-white bg-[#008060] !px-2 !py-1 rounded-md cursor-pointer hover:bg-[#00664d] font-semibold;
 }
 
 .unset {
@@ -178,6 +184,8 @@ a:active {
   justify-content: center;
   place-items: center;
   border-radius: 8px;
+
+  @apply text-black !text-lg cursor-pointer;
 }
 
 @keyframes gradientShift {

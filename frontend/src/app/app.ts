@@ -8,8 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { Header } from './shared/header/header';
 import { Sidebar } from './shared/sidebar/sidebar';
-import { TextInput } from './shared/chatbot/text-input/text-input';
-import { Microphone } from './shared/chatbot/microphone/microphone';
 import { Login } from './components/login/login';
 
 import { TTSService } from './services/tts-service';
@@ -17,12 +15,10 @@ import { TTSService } from './services/tts-service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Header, Sidebar, TextInput, Microphone, MatIconModule, Login],
+  imports: [RouterOutlet, Header, Sidebar, MatIconModule, Login],
   templateUrl: './app.html'
 })
 export class App implements OnInit {
-  openSidebar = signal<boolean>(true);
-  showMicTextInput = signal<boolean>(true);
   showLogin = signal<boolean>(true);
 
   private router = inject(Router);
@@ -38,16 +34,11 @@ export class App implements OnInit {
       .subscribe((event: NavigationEnd) => {
         this.ttsService.cancel();
         const currentUrl = event.urlAfterRedirects;
-        this.showMicTextInput.set(this.hideOnUrl(currentUrl));
         this.showLogin.set(currentUrl === '/connexion');
       });
 
     window.addEventListener('beforeunload', () => {
       this.ttsService.cancel();
     })
-  }
-
-  hideOnUrl(url: string): boolean {
-    return !['/traduction', '/accueil'].includes(url);
   }
 }
