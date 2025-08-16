@@ -5,10 +5,27 @@
 </div>
 
 <div class="flex flex-row justify-center items-center gap-6">
+  <p class="text-[#667] hidden sm:block">{{ username() }}</p>
 
+  <button 
+    matButton 
+    [matMenuTriggerFor]="menu"
+    (menuOpened)="onMenuOpen()"
+    (menuClosed)="onMenuClose()"
+    class="flex !bg-[#f3f4f6] !h-8 !w-28 !px-3 !py-1 !rounded-xl !text-sm !text-center !whitespace-nowrap !shadow-md">
+    <p>Niveau {{ level() }}</p>
+    <mat-icon class="!text-md">{{ !menuOpen() ? 'expand_more' : 'expand_less' }}</mat-icon>
+  </button>
 
-  <p class="text-[#667] hidden sm:block">{{ username }}</p>
-  <p class=" bg-[#f3f4f6] !px-3 !py-1 rounded-xl !text-sm text-center whitespace-nowrap !shadow-sm">Niveau {{ level }} </p>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onChangeLevel('A1')">A1</button>
+    <button mat-menu-item (click)="onChangeLevel('A2')">A2</button>
+    <button mat-menu-item (click)="onChangeLevel('B1')">B1</button>
+    <button mat-menu-item (click)="onChangeLevel('B2')">B2</button>
+    <button mat-menu-item (click)="onChangeLevel('C1')">C1</button>
+    <button mat-menu-item (click)="onChangeLevel('C2')">C2</button>
+  </mat-menu>
+
   <button class="green-btn" (click)="onLogout()">Déconnexion</button>
 
 </div>

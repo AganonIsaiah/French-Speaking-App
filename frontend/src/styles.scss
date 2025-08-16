@@ -189,10 +189,10 @@ a:active {
 }
 
 .progress-bar {
-  @apply h-4 rounded-lg;  
+  @apply h-4 rounded-lg;
 
   .mdc-linear-progress__buffer {
-    @apply bg-gray-200;  
+    @apply bg-gray-200;
   }
 
   .mdc-linear-progress__bar-inner {
@@ -212,4 +212,12 @@ a:active {
   100% {
     background-position: 0% 50%;
   }
+}
+ 
+.mat-mdc-menu-panel {
+  @apply mt-2 !rounded-xl !shadow-xl font-medium text-[#008060] !bg-white !text-sm;
+}
+
+.mat-mdc-menu-content .mat-mdc-menu-item:hover {
+  @apply text-white !bg-[#008060] !font-medium !rounded-md ;
 }

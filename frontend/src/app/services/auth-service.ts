@@ -7,7 +7,7 @@ import { catchError, Observable, take, tap, throwError } from 'rxjs';
 import { UserData } from '../models/common.model';
 import { ApiEndpoint, EnvironmentModel } from '../models/environment.model';
 import { ENVIRONMENT_TOKEN } from '../../environments/environment.token';
-import { JWT_TOKEN, LoginAPIResponse, USER_DATA_STR, SignupRequest, SignupResponse } from '../models/login.model';
+import { JWT_TOKEN, LoginAPIResponse, USER_DATA_STR, SignupRequest, SignupResponse, UpdateLevelResponse } from '../models/login.model';
 
 
 type prop = null | undefined
@@ -42,29 +42,29 @@ export class AuthService {
     }
   }
 
- signup(username: string | null | undefined, email: string | null | undefined, region: string | null | undefined, level: string | null | undefined, password: string | null | undefined): Observable<SignupResponse> {
-  const signupUrl = `${this.envConfig.apiUrl}/${ApiEndpoint.SIGNUP}`;
-  const signupData: SignupRequest = {
-    username: username || '',
-    email: email || '',
-    password: password || '',
-    region: region || '',
-    level: level || ''
-  }
+  signup(username: string | null | undefined, email: string | null | undefined, region: string | null | undefined, level: string | null | undefined, password: string | null | undefined): Observable<SignupResponse> {
+    const signupUrl = `${this.envConfig.apiUrl}/${ApiEndpoint.SIGNUP}`;
+    const signupData: SignupRequest = {
+      username: username || '',
+      email: email || '',
+      password: password || '',
+      region: region || '',
+      level: level || ''
+    }
 
-  return this.httpClient.post<SignupResponse>(signupUrl, signupData).pipe(
-    take(1),
-    tap(response => {
-      console.log('Signup success message:', response.message);
-      this.router.navigate(['/connexion']);
-    }),
-    catchError((httpError: HttpErrorResponse) => {
-      this.isAuthenticated.set(false);
-      this.userData.set(undefined);
-      return throwError(() => httpError);
-    })
-  );
-}
+    return this.httpClient.post<SignupResponse>(signupUrl, signupData).pipe(
+      take(1),
+      tap(response => {
+        console.log('Signup success message:', response.message);
+        this.router.navigate(['/connexion']);
+      }),
+      catchError((httpError: HttpErrorResponse) => {
+        this.isAuthenticated.set(false);
+        this.userData.set(undefined);
+        return throwError(() => httpError);
+      })
+    );
+  }
 
 
   login(username: string | prop, password: string | prop): Observable<LoginAPIResponse> {
@@ -108,4 +108,38 @@ export class AuthService {
     localStorage.removeItem(USER_DATA_STR);
     this.router.navigate(['/connexion']);
   }
+
+  updateLevel(newLevel: string): Observable<UpdateLevelResponse> {
+    const updateUrl = `${this.envConfig.apiUrl}/${ApiEndpoint.UPDATELEVEL}`;
+    const token = localStorage.getItem(JWT_TOKEN);
+
+    if (!token) {
+      console.warn('No JWT token found, user may not be logged in');
+      return throwError(() => new Error('User not authenticated'));
+    }
+
+    const body = { level: newLevel };
+
+    return this.httpClient.put<UpdateLevelResponse>(updateUrl, body, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).pipe(
+      take(1),
+      tap(response => {
+        const currentUser = this.userData();
+        if (currentUser) {
+          const updatedUser: UserData = { ...currentUser, level: response.level };
+          this.userData.set(updatedUser);
+          localStorage.setItem(USER_DATA_STR, JSON.stringify(updatedUser));
+        }
+        console.log('Level updated successfully:', response);
+      }),
+      catchError((httpError: HttpErrorResponse) => {
+        console.error('Failed to update level:', httpError);
+        return throwError(() => httpError);
+      })
+    );
+  }
+
 }

@@ -59,7 +59,7 @@
     @if (showLoginError()) {
       <span class="!text-red-500"> {{ showLoginError() }} </span> 
     }
-    @if (showSignupMsg()) {
+    @if (showSignupMsg() && !showLoginError()) {
       <span class="!text-green-500"> {{showSignupMsg()}}</span>
     }
     </div>

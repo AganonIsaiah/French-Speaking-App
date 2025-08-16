@@ -31,3 +31,9 @@ export interface SignupResponse {
   message: string;
   username: string;
 }
+
+export interface UpdateLevelResponse {
+  message: string;
+  username: string;
+  level: string;
+}

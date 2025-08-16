@@ -94,4 +94,29 @@ public class AuthController {
         }
     }
 
+    @PutMapping("/update-level")
+    public ResponseEntity<?> updateUserLevel(@RequestBody Map<String, String> request) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Error: User not found."));
+
+        String newLevel = request.get("level");
+        if (newLevel == null || newLevel.isBlank()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "Error: Level is required"));
+        }
+
+        user.setLevel(newLevel);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(Map.of(
+                "message", "Level updated successfully!",
+                "username", user.getUsername(),
+                "newLevel", user.getLevel()
+        ));
+    }
+
 }
