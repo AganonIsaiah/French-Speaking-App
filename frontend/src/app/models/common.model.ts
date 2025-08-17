@@ -6,3 +6,8 @@ export interface UserData {
   region?: string;
   level?: string;
 }
+
+export interface LanguageCard {
+  en: string;
+  fr: string;
+}
