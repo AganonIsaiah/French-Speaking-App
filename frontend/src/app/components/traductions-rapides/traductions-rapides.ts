@@ -47,7 +47,7 @@ export class TraductionsRapides implements OnInit {
     • You must translate each sentence (with the microphone or text input component).
     • After each translation, you will receive a score and feedback based on your accuracy.
     `,
-    fr: `Bienvenue dans le mode de jeu Traductions rapides!
+    fr: `Bienvenue dans le mode de jeu Traductions rapides !
     • Dans ce mode de jeu, 10 phrases françaises aléatoires seront générées en fonction de votre niveau de compétence.
     • Vous devez traduire chaque phrase (à l'aide du microphone ou du composant de saisie de texte).
     • Après chaque traduction, vous recevrez une note et des commentaires basés sur votre précision.`

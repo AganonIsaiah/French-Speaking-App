@@ -8,24 +8,25 @@ import com.example.backend.dto.TradRapidesCorrigeesRequest;
 import com.google.genai.Client;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class GeminiChatService {
 
     private final Client client;
-
-
-    public GeminiChatService(Client client) {
-        this.client = client;
-    }
+    private final Map<String, List<String>> conversationMemory = new HashMap<>();
+    private final int MAX_MESSAGE = 20;
 
     private static final String FRENCH_SYSTEM_PROMPT =
             "Tu es un assistant rapide en français. " +
                     "Générer les réponses avec une ponctuation correcte, ne pas ajouter d'astérisques inutiles." +
                     "Utilise un français simple et naturel. " +
                     "Répondez en deux phrases maximum.";
+
+    public GeminiChatService(Client client) {
+        this.client = client;
+    }
+
 
     public TradRapidesResult genTradRapidesCorrigees(TradRapidesCorrigeesRequest request) {
         String prompt = FRENCH_SYSTEM_PROMPT +
@@ -81,20 +82,33 @@ public class GeminiChatService {
     }
 
     public String genConvo(ChatRequest chatRequest) {
+        List<String> history = conversationMemory.computeIfAbsent(chatRequest.getUsername(), k -> new ArrayList<>());
+        history.add("Utilisateur: " + chatRequest.getMessage());
 
-        String prompt = FRENCH_SYSTEM_PROMPT +
-                "\nUtilisateur: " + chatRequest.getUsername() +
-                " (niveau: " + chatRequest.getLevel() + ")" +
-                "\nMessage: " + chatRequest.getMessage();
+        if (history.size() > MAX_MESSAGE) {
+            history = history.subList(history.size() - MAX_MESSAGE, history.size());
+            conversationMemory.put(chatRequest.getUsername(), history);
+        }
 
-        GenerateContentResponse res =
-                client.models.generateContent(
-                        "gemini-2.5-flash",
-                        prompt,
-                        null);
+        StringBuilder promptBuilder = new StringBuilder(FRENCH_SYSTEM_PROMPT)
+                .append("\nNiveau: ").append(chatRequest.getLevel())
+                .append("\nConversation:");
 
-        return res.text();
+        for (String message : history) {
+            promptBuilder.append("\n").append(message);
+        }
+
+        GenerateContentResponse res = client.models.generateContent(
+                "gemini-2.5-flash",
+                promptBuilder.toString(),
+                null
+        );
+
+        String aiResponse = res.text().trim();
+
+        history.add("Assistant: " + aiResponse);
+
+        return aiResponse;
     }
-
 
 }
