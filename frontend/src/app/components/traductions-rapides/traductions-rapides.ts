@@ -70,22 +70,42 @@ export class TraductionsRapides implements OnInit {
     console.warn(`Transcript : ${this.userTranscript()}`);
   }
 
+  invalidSentences(): boolean {
+    if (this.index() > 11) {
+      this.isPhrasesLoaded.set(false);
+
+      return true;
+    }
+
+    return false;
+  }
+
   onSubmitMsg() {
     const english = this.msgControl.value;
-    if (!english) return;
+    if (!english || this.invalidSentences()) return;
 
     this.isResponseLoading.set(true);
-    const french: string = this.dixPhrases()[1];
+    
+    const french: string = this.dixPhrases()[this.index()];
     const userModel = TradCorrigeeReqDto.buildModel(french, english);
+    
 
     this.chatService.genTradCorrections(userModel, ApiEndpoint.TRADUCTIONSRAPIDESCORRIGEES).subscribe({
       next: (res) => {
         this.msgControl.reset();
         console.log('Response:', res);
-        this.points.set(res.points)
+        this.points.set(this.points() + (res.points / 10));
+
+        this.chatService.resList.update(prev => [
+          ...prev,
+          { sender: 'gen', message: this.dixPhrases()[this.index() + 1] }]);
+
       },
       error: (err) => console.error('Error:', err),
-      complete: () => this.isResponseLoading.set(false)
+      complete: () => {
+        this.isResponseLoading.set(false);
+        this.index.set(this.index() + 1);
+      }
     });
   }
 
@@ -98,12 +118,14 @@ export class TraductionsRapides implements OnInit {
       next: (res) => {
         console.log("Response:", res);
         this.dixPhrases.set(res);
+        this.chatService.resList.set([{ sender: 'gen', message: res[1] }]);
       },
       error: (err) => console.error('Error:', err),
       complete: () => {
         this.isPhrasesLoaded.set(true);
         this.showLoader.set(false);
-        this.points.set(70);
+        this.points.set(0);
+        this.index.set(1);
       }
     });
   }

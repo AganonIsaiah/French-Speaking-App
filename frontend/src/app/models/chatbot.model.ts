@@ -1,7 +1,7 @@
 export interface ChatMessage {
-  sender: 'Ai' | 'Vous';
-  message: string;
-  points?: number;
+  sender: 'Ai' | 'Vous' | 'gen';
+  message?: string;
+  points?: number; 
 }
 
 export interface TradRapidesResult {

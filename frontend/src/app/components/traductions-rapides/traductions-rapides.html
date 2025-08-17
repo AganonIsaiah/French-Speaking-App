@@ -1,51 +1,58 @@
 <title-template [title]="'Traductions Rapides'"
   [generatedType]=" showLoader() ? 'Génération de phrases...' : 'Jeu généré'" [points]="points()" />
 
-<div class="flex flex-col  h-[calc(100vh-15rem)]">
+<div class="flex flex-col  h-[calc(100vh-15rem)] ">
   @if(isPhrasesLoaded()) {
   <div class=" overflow-y-auto flex flex-col  text-center list-none gap-4">
     <h3 class="!text-lg">{{ dixPhrases()[0]}}</h3>
 
-    
-    <span class="!mx-auto ai-bubble !max-w-380">
-      {{index()}}: {{ dixPhrases()[index()] }}
-    </span>
-
-    @if (isResponseLoading()) {
-      <span class="list-none flex text-center">
-        <li>L'IA: </li>
-        <ngx-skeleton-loader count="10" 
-        [theme]="{ width: '16px', height: '16px' }" 
-        appearance="circle" />
-      </span>
-    } 
-
     @for (item of chatService.resList(); track $index) {
+
+    @if(item.sender === 'gen') {
+    <span class="!mx-auto ai-bubble !max-w-380">
+      {{ item.message }}
+    </span>
+    }
+
     <li class="list-none font-medium">
       @if (item.sender === 'Vous') {
       TRADUCTION PAR L'UTILISATEUR: {{ item.message }}
       } @else if (item.sender === 'Ai') {
 
       <p class="!text-[#008060]">ANALYSE PAR L'IA: {{ item.message }} </p>
-      <p class="!mx-auto !mt-4 flex !justify-center !text-[#008060] font-bold bg-gray-200 w-[80%] max-w-120 rounded-md !p-2">SCORE: {{ item.points }}</p>
+      <p
+        class="!mx-auto !my-4 flex !justify-center !text-[#008060] font-bold bg-gray-200 w-[80%] max-w-120 rounded-md !p-2">
+        SCORE: {{ item.points }}</p>
+      <hr class="!my-3 !mt-5 !w-[90%] !mx-auto !border-[#008060]" />
       }
     </li>
     }
 
+    @if (isResponseLoading()) {
+    <span class="list-none flex text-center">
+      <li>L'IA: </li>
+      <ngx-skeleton-loader count="10" [theme]="{ width: '16px', height: '16px' }" appearance="circle" />
+    </span>
+    }
+
   </div>
 
-  } @else if (showLoader() && !isPhrasesLoaded()) {
+  }
+
+  @else if (showLoader() && !isPhrasesLoaded()) {
   <ngx-skeleton-loader count="10" appearance="line" [theme]="{ width: '100%', height: '30px' }" />
   }
 
   <span class="flex flex-col justify-center items-center gap-2">
-    @if(dixPhrases().length <= 0) { <button class="green-btn !mt-8 !p-2 !py-3 w-50  !text-[16px]"
+    @if(dixPhrases().length <= 0 || index() > 11) {
+      
+      <button class="green-btn !mt-8 !p-2 !py-3 w-50  !text-[16px]"
       (click)="onReq10Phrases()">
       Générer des phrases</button>
+
       } @else {
-      <hr class="!my-3 !w-[90%] !mx-auto" />
-      <span class="flex gap-8">
-        <input class="green-input" [formControl]="msgControl" placeholder="Entrez votre message..."
+      <span class="!my-4 flex gap-8">
+        <input class="green-input" [formControl]="msgControl" placeholder="Traduisez le message en anglais..."
           (keydown.enter)="onSubmitMsg()" />
 
         <button class="mic-container" (click)="onToggleMic()">
