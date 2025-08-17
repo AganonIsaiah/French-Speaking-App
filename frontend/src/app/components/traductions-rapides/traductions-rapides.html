@@ -34,9 +34,14 @@
       <ngx-skeleton-loader count="10" [theme]="{ width: '16px', height: '16px' }" appearance="circle" />
     </span>
     }
-
   </div>
 
+  }
+
+  @else if (showStartMsg()) {
+  <span class="!mb-8">
+    <bilingual-card [card]="startMessage" />
+  </span>
   }
 
   @else if (showLoader() && !isPhrasesLoaded()) {
@@ -44,11 +49,10 @@
   }
 
   <span class="flex flex-col justify-center items-center gap-2">
-    @if(dixPhrases().length <= 0 || index() > 11) {
-      
-      <button class="green-btn !mt-8 !p-2 !py-3 w-50  !text-[16px]"
-      (click)="onReq10Phrases()">
-      Générer des phrases</button>
+    @if(dixPhrases().length <= 0 || index()>= 11) {
+
+      <button class="green-btn !p-2 !py-3 w-50  !text-[16px]" (click)="onReq10Phrases()">
+        Générer des phrases</button>
 
       } @else {
       <span class="!my-4 flex gap-8">
