@@ -49,7 +49,7 @@
   }
 
   <span class="flex flex-col justify-center items-center gap-2">
-    @if(dixPhrases().length <= 0 || index()>= 11) {
+    @if(dixPhrases().length <= 0 || !dixPhrases()[index()]) {
 
       <button class="green-btn !p-2 !py-3 w-50  !text-[16px]" (click)="onReq10Phrases()">
         Générer des phrases</button>
