@@ -56,10 +56,10 @@
 
     
     <div class="!mt-4 w-70 text-center font-semibold">
-    @if (showLoginError()) {
+    @if (showLoginError() && !showSignupMsg()) {
       <span class="!text-red-500"> {{ showLoginError() }} </span> 
     }
-    @if (showSignupMsg() && !showLoginError()) {
+    @else {
       <span class="!text-green-500"> {{showSignupMsg()}}</span>
     }
     </div>
