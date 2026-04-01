@@ -1,0 +1,64 @@
+<title-template [title]="selectedScenario() ? selectedScenario()!.title : 'Scénarios'" [generatedType]="'Jeu de rôle généré'" />
+
+@if (!selectedScenario()) {
+  <!-- Scenario selection -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    @for (scenario of scenarios; track scenario.key) {
+    <button class="scenario-card" (click)="onSelectScenario(scenario)">
+      <div class="scenario-card-icon">
+        <mat-icon>{{ scenario.icon }}</mat-icon>
+      </div>
+      <div class="flex flex-col items-start gap-1">
+        <h2 class="!text-base !font-semibold !text-[#202223]">{{ scenario.title }}</h2>
+        <p class="!text-sm !text-[#6d7175] !text-left !leading-relaxed">{{ scenario.description }}</p>
+      </div>
+    </button>
+    }
+  </div>
+}
+
+@else {
+  <!-- Conversation view -->
+  <div class="flex flex-col h-[calc(100vh-17rem)]">
+
+    <button class="back-btn !mb-4" (click)="onBackToSelection()">
+      <mat-icon>arrow_back</mat-icon> Changer de scénario
+    </button>
+
+    <span class="flex-1 overflow-y-auto flex flex-col gap-2">
+      @for (item of chatService.resList(); track $index) {
+      <li class="list-none"
+        [class.self-end]="item.sender === 'Vous'"
+        [class.self-start]="item.sender === 'Ai'">
+        @if (item.sender === 'Vous') {
+          <span class="user-bubble">{{ item.message }}</span>
+        } @else {
+          <span class="ai-bubble !text-left !inline-block !max-w-[80%]">{{ item.message }}</span>
+        }
+      </li>
+      }
+
+      @if (isResponseLoading()) {
+      <span class="list-none flex items-center gap-1">
+        <li class="!text-[#6d7175] !text-sm">L'IA:</li>
+        <ngx-skeleton-loader count="6" [theme]="{ width: '16px', height: '16px' }" appearance="circle" />
+      </span>
+      }
+    </span>
+
+    <hr class="!my-3 !w-[90%] !mx-auto" />
+
+    <span class="flex justify-center items-center gap-4">
+      <input
+        class="green-input"
+        [formControl]="msgControl"
+        placeholder="Répondez en français..."
+        (keydown.enter)="onSubmitMsg()" />
+
+      <button class="mic-container" (click)="onToggleMic()">
+        <mat-icon>{{ isMicOn() ? 'mic' : 'mic_off' }}</mat-icon>
+      </button>
+    </span>
+
+  </div>
+}

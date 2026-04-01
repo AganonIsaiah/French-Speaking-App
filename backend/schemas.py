@@ -55,3 +55,12 @@ class TradRapidesCorrigeesRequest(BaseModel):
 class TradRapidesResult(BaseModel):
     points: int
     feedback: str
+
+
+class ScenarioRequest(BaseModel):
+    message: str
+    level: str
+    username: str
+    scenario: str
+    character: str
+    reset: bool = False

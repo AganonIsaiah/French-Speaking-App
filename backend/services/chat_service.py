@@ -3,8 +3,10 @@ import re
 from typing import List
 
 from openai import OpenAI
+from sqlalchemy.orm import Session
 
-from schemas import ChatRequest, TradRapidesCorrigeesRequest, TradRapidesResult
+from models import ConversationMemory, ScenarioMemory
+from schemas import ChatRequest, ScenarioRequest, TradRapidesCorrigeesRequest, TradRapidesResult
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
@@ -18,35 +20,35 @@ SYSTEM_PROMPT = (
 
 MAX_HISTORY = 20
 
-# Per-user conversation history: { username: [{"role": ..., "content": ...}, ...] }
-conversation_memory: dict[str, list[dict]] = {}
 
+def gen_convo(request: ChatRequest, db: Session) -> str:
+    record = db.query(ConversationMemory).filter(
+        ConversationMemory.username == request.username
+    ).first()
 
-def gen_convo(request: ChatRequest) -> str:
-    username = request.username
-    level = request.level
-    user_message = request.message
-
-    if username not in conversation_memory:
-        conversation_memory[username] = []
-
-    history = conversation_memory[username]
+    history: list[dict] = list(record.messages) if record else []
 
     messages = [
-        {"role": "system", "content": f"{SYSTEM_PROMPT}\nNiveau de l'utilisateur: {level}"}
+        {"role": "system", "content": f"{SYSTEM_PROMPT}\nNiveau de l'utilisateur: {request.level}"}
     ]
     messages.extend(history)
-    messages.append({"role": "user", "content": user_message})
+    messages.append({"role": "user", "content": request.message})
 
     response = client.chat.completions.create(model=MODEL, messages=messages)
     ai_response = response.choices[0].message.content
 
-    history.append({"role": "user", "content": user_message})
+    history.append({"role": "user", "content": request.message})
     history.append({"role": "assistant", "content": ai_response})
 
     if len(history) > MAX_HISTORY:
-        conversation_memory[username] = history[-MAX_HISTORY:]
+        history = history[-MAX_HISTORY:]
 
+    if record:
+        record.messages = history
+    else:
+        db.add(ConversationMemory(username=request.username, messages=history))
+
+    db.commit()
     return ai_response
 
 
@@ -87,7 +89,6 @@ def gen_trad_rapides_corrigees(request: TradRapidesCorrigeesRequest) -> TradRapi
     )
 
     text = response.choices[0].message.content
-
     points = 0
     feedback = text
 
@@ -100,3 +101,45 @@ def gen_trad_rapides_corrigees(request: TradRapidesCorrigeesRequest) -> TradRapi
         feedback = feedback_match.group(1).strip()
 
     return TradRapidesResult(points=points, feedback=feedback)
+
+
+def gen_scenario(request: ScenarioRequest, db: Session) -> str:
+    mem_key = f"{request.username}_{request.scenario}"
+
+    record = db.query(ScenarioMemory).filter(ScenarioMemory.id == mem_key).first()
+
+    if request.reset:
+        history: list[dict] = []
+        if record:
+            record.messages = []
+            db.commit()
+    else:
+        history = list(record.messages) if record else []
+
+    system = (
+        f"Tu joues le rôle de {request.character}. "
+        f"Guide l'utilisateur dans une conversation en français adaptée au niveau {request.level}. "
+        "Reste dans le personnage. Utilise un français simple et naturel. "
+        "Réponds en deux phrases maximum. Ne pas ajouter d'astérisques."
+    )
+
+    messages = [{"role": "system", "content": system}]
+    messages.extend(history)
+    messages.append({"role": "user", "content": request.message})
+
+    response = client.chat.completions.create(model=MODEL, messages=messages)
+    ai_response = response.choices[0].message.content
+
+    history.append({"role": "user", "content": request.message})
+    history.append({"role": "assistant", "content": ai_response})
+
+    if len(history) > MAX_HISTORY:
+        history = history[-MAX_HISTORY:]
+
+    if record:
+        record.messages = history
+    else:
+        db.add(ScenarioMemory(id=mem_key, messages=history))
+
+    db.commit()
+    return ai_response

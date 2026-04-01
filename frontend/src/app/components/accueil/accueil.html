@@ -1,7 +1,22 @@
-<title-template [title]="'Page d\'accueil'" [generatedType]="'Résumé généré'"/>
-  
-<div class="flex flex-col justify-center items-center">
-  <span class="!mt-4 ai-bubble">Recommended Action: Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum fuga vel magnam, reprehenderit a vitae corrupti at. Maiores possimus ea temporibus, rem distinctio, et odio praesentium quia fugit optio adipisci!</span>
+<div class="flex flex-col">
+  <h1 class="flex justify-center !font-semibold">Choisissez un mode</h1>
+  <span class="flex justify-center gap-4 !mt-4">
+    <p class="bg-[#008060] !px-3 rounded-xl !text-white !text-sm flex justify-center items-center">IA</p>
+    <p>Tuteur de français</p>
+  </span>
+  <hr class="!mt-5 !mb-6" />
 
-
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    @for (mode of modes; track mode.route) {
+    <a [routerLink]="mode.route" class="mode-card">
+      <div class="mode-card-icon">
+        <mat-icon>{{ mode.icon }}</mat-icon>
+      </div>
+      <span class="mode-card-badge">{{ mode.badge }}</span>
+      <h2 class="!text-lg !font-semibold !text-[#202223] !mt-3 !mb-2">{{ mode.title }}</h2>
+      <p class="!text-sm !text-[#6d7175] !leading-relaxed">{{ mode.description }}</p>
+      <div class="mode-card-cta">Commencer →</div>
+    </a>
+    }
+  </div>
 </div>

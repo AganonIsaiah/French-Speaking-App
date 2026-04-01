@@ -8,18 +8,17 @@ import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 import { ApiEndpoint } from '../../models/environment.model';
 import { LanguageCard } from '../../models/common.model';
+import { ChatReqDTO } from '../../models/chatbot.model';
 
 import { TitleTemplate } from '../../shared/title-template/title-template';
 import { BilingualCard } from '../../shared/bilingual-card/bilingual-card';
-import { ChatReqDTO } from '../../models/chatbot.model';
-
 import { STTService } from '../../services/stt-service';
 import { ChatbotService } from '../../services/chatbot-service';
 
 @Component({
   selector: 'conversations',
   imports: [TitleTemplate, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatIconModule, NgxSkeletonLoaderComponent, BilingualCard],
-  templateUrl: 'conversations.html'
+  templateUrl: 'conversations.html',
 })
 export class Conversations implements OnInit {
   isMicOn = signal<boolean>(false);
@@ -34,21 +33,20 @@ export class Conversations implements OnInit {
 
   startupText: LanguageCard = {
     en: `Welcome to the Endless Conversation mode!
-    • In this game mode, you can practice your French speaking with AI!
-    • You can use the text input or microphone component to begin your conversation.
-    `,
+• Practice your French speaking with AI.
+• Use the text input or microphone to begin.`,
     fr: `Bienvenue dans le mode Conversation sans fin !
-• Dans ce mode de jeu, vous pouvez pratiquer votre français avec l'IA !
-• Vous pouvez utiliser la saisie de texte ou le microphone pour commencer votre conversation.`
-  }
+• Pratiquez votre français avec l'IA.
+• Utilisez la saisie de texte ou le microphone pour commencer.`,
+  };
 
   ngOnInit(): void {
     this.sttService.init();
+    this.chatService.resList.set([]);
   }
 
   onToggleMic() {
     this.isMicOn.set(!this.isMicOn());
-    this.isResponseLoading.set(true);
 
     if (this.isMicOn()) {
       this.sttService.start();
@@ -56,18 +54,19 @@ export class Conversations implements OnInit {
       this.sttService.stop();
       this.userTranscript.set(this.sttService.text);
 
-      const userModel = ChatReqDTO.buildModel(this.userTranscript());
+      if (!this.userTranscript()) return;
 
-      this.chatService.genChat(userModel, ApiEndpoint.CONVERSATIONS).subscribe({
-        next: (response) => console.log('Chat response:', response),
+      this.showStartupMsg.set(false);
+      this.isResponseLoading.set(true);
+      const req = ChatReqDTO.buildModel(this.userTranscript());
+
+      this.chatService.genChat(req, ApiEndpoint.CONVERSATIONS).subscribe({
         error: (err) => console.error('Chat error:', err),
         complete: () => this.isResponseLoading.set(false),
       });
 
       this.sttService.text = '';
     }
-
-    console.warn(`Transcript : ${this.userTranscript()}`);
   }
 
   onSubmitMsg() {
@@ -76,15 +75,12 @@ export class Conversations implements OnInit {
 
     this.showStartupMsg.set(false);
     this.isResponseLoading.set(true);
-    const userModel = ChatReqDTO.buildModel(msg);
+    const req = ChatReqDTO.buildModel(msg);
 
-    this.chatService.genChat(userModel, ApiEndpoint.CONVERSATIONS).subscribe({
-      next: (res: string) => {
-        this.msgControl.reset();
-        console.log('Response:', res);
-      },
+    this.chatService.genChat(req, ApiEndpoint.CONVERSATIONS).subscribe({
+      next: () => this.msgControl.reset(),
       error: (err) => console.error('Error:', err),
-      complete: () => this.isResponseLoading.set(false)
+      complete: () => this.isResponseLoading.set(false),
     });
   }
 }

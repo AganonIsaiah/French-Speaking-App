@@ -119,6 +119,63 @@ docker run -p 8080:8080 \
 
 ---
 
+## Database Setup (Supabase)
+
+In your Supabase project, open the **SQL Editor** and run:
+
+```sql
+-- Auto-update helper (run once)
+CREATE OR REPLACE FUNCTION set_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
+    id         SERIAL PRIMARY KEY,
+    username   VARCHAR NOT NULL UNIQUE,
+    email      VARCHAR NOT NULL UNIQUE,
+    password   VARCHAR NOT NULL,
+    region     VARCHAR,
+    level      VARCHAR,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ
+);
+
+CREATE OR REPLACE TRIGGER users_updated_at
+BEFORE UPDATE ON users
+FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+-- Conversation memory (one row per user, persists across restarts)
+CREATE TABLE IF NOT EXISTS conversation_memory (
+    username   VARCHAR PRIMARY KEY,
+    messages   JSONB NOT NULL DEFAULT '[]',
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE OR REPLACE TRIGGER conversation_memory_updated_at
+BEFORE UPDATE ON conversation_memory
+FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+-- Scenario memory (one row per user+scenario combo)
+CREATE TABLE IF NOT EXISTS scenario_memory (
+    id         VARCHAR PRIMARY KEY,  -- "{username}_{scenario}"
+    messages   JSONB NOT NULL DEFAULT '[]',
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE OR REPLACE TRIGGER scenario_memory_updated_at
+BEFORE UPDATE ON scenario_memory
+FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+```
+
+Then set your `DATABASE_URL` in `.env` to the **Transaction Pooler** connection string found in Supabase under **Project Settings → Database → Connection string** (port `6543`).
+
+---
+
 ## Environment Variables
 
 | Variable | Description |

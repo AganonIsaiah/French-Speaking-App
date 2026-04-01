@@ -1,10 +1,13 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi.responses import PlainTextResponse
+from sqlalchemy.orm import Session
 
-from schemas import ChatRequest, DixPhrasesRequest, TradRapidesCorrigeesRequest, TradRapidesResult
+from database import get_db
+from schemas import ChatRequest, DixPhrasesRequest, ScenarioRequest, TradRapidesCorrigeesRequest, TradRapidesResult
 from security import get_username_from_token
-from services.chat_service import gen_convo, gen_dix_phrases, gen_trad_rapides_corrigees
+from services.chat_service import gen_convo, gen_dix_phrases, gen_scenario, gen_trad_rapides_corrigees
 
 router = APIRouter(prefix="/api/chat")
 
@@ -22,8 +25,9 @@ def require_auth(authorization: Optional[str] = Header(None)) -> str:
 def conversations(
     request: ChatRequest,
     _: str = Depends(require_auth),
-) -> str:
-    return gen_convo(request)
+    db: Session = Depends(get_db),
+):
+    return PlainTextResponse(gen_convo(request, db))
 
 
 @router.post("/dix-phrases")
@@ -40,3 +44,12 @@ def traductions_rapides(
     _: str = Depends(require_auth),
 ) -> TradRapidesResult:
     return gen_trad_rapides_corrigees(request)
+
+
+@router.post("/scenarios")
+def scenarios(
+    request: ScenarioRequest,
+    _: str = Depends(require_auth),
+    db: Session = Depends(get_db),
+):
+    return PlainTextResponse(gen_scenario(request, db))

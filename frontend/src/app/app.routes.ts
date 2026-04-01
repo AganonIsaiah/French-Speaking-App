@@ -1,38 +1,40 @@
 import { Routes } from '@angular/router';
-
 import { authGuard } from './guards/auth-guard';
 
 import { Login } from './components/login/login';
 import { Accueil } from './components/accueil/accueil';
 import { Conversations } from './components/conversations/conversations';
 import { TraductionsRapides } from './components/traductions-rapides/traductions-rapides';
+import { Scenarios } from './components/scenarios/scenarios';
 
 export const routes: Routes = [
   {
     path: 'connexion',
-    component: Login
+    component: Login,
   },
   {
     path: 'accueil',
     component: Accueil,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'conversations',
     component: Conversations,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'traductions-rapides',
     component: TraductionsRapides,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
-
-
-
+  {
+    path: 'scenarios',
+    component: Scenarios,
+    canActivate: [authGuard],
+  },
   {
     path: '',
     redirectTo: 'connexion',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
