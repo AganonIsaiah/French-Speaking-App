@@ -233,13 +233,22 @@ a:active {
 }
 
 .mode-card {
-  @apply flex flex-col p-6 bg-white rounded-xl border border-[#e1e3e5] shadow-sm cursor-pointer no-underline;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  border: 1px solid #e1e3e5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  cursor: pointer;
+  text-decoration: none;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    @apply shadow-md;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     transform: translateY(-2px);
     background-color: #ffffff;
+    color: inherit;
   }
 
   &:active {
@@ -250,29 +259,57 @@ a:active {
 }
 
 .mode-card-icon {
-  @apply flex items-center justify-center w-12 h-12 bg-[#f0faf7] rounded-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: #f0faf7;
+  border-radius: 0.75rem;
 
   mat-icon {
-    @apply !text-[#008060] !text-2xl;
+    color: #008060 !important;
+    font-size: 1.5rem !important;
   }
 }
 
 .mode-card-badge {
-  @apply inline-block !mt-3 !px-2 !py-0.5 !text-xs font-semibold text-[#008060] bg-[#f0faf7] rounded-full;
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #008060;
+  background-color: #f0faf7;
+  border-radius: 9999px;
 }
 
 .mode-card-cta {
-  @apply !mt-4 !text-sm font-semibold text-[#008060];
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #008060;
 }
 
 .scenario-card {
-  @apply flex items-start gap-4 p-5 bg-white rounded-xl border border-[#e1e3e5] shadow-sm cursor-pointer text-left w-full;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  border: 1px solid #e1e3e5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    @apply shadow-md;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     transform: translateY(-2px);
     background-color: #ffffff;
+    color: inherit;
   }
 
   &:active {
@@ -282,19 +319,32 @@ a:active {
 }
 
 .scenario-card-icon {
-  @apply flex-shrink-0 flex items-center justify-center w-12 h-12 bg-[#f0faf7] rounded-xl;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: #f0faf7;
+  border-radius: 0.75rem;
 
   mat-icon {
-    @apply !text-[#008060] !text-2xl;
+    color: #008060 !important;
+    font-size: 1.5rem !important;
   }
 }
 
 .user-bubble {
-  @apply inline-block !max-w-[80%] !px-4 !py-2 bg-[#008060] text-white rounded-2xl rounded-tr-sm !text-sm;
+  display: inline-block;
+  max-width: 80%;
+  padding: 0.5rem 1rem;
+  background-color: #008060;
+  color: #ffffff;
+  border-radius: 1rem 1rem 0.25rem 1rem;
+  font-size: 0.875rem;
 }
 
 .back-btn {
-  @apply flex items-center gap-1 !text-sm text-[#6d7175] cursor-pointer hover:text-[#008060] transition-colors;
   all: unset;
   display: flex;
   align-items: center;
@@ -302,12 +352,13 @@ a:active {
   cursor: pointer;
   color: #6d7175;
   font-size: 14px;
+  transition: color 0.15s ease;
 
   &:hover {
     color: #008060;
   }
 
   mat-icon {
-    @apply !text-base;
+    font-size: 1rem !important;
   }
 }

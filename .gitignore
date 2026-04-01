@@ -1,5 +1,11 @@
 # Environment
 .env
+**/.env
+
+# Maven / Java build artifacts
+target/
+*.class
+*.jar
 
 # Python
 __pycache__/

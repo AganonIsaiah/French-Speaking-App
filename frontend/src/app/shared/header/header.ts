@@ -28,6 +28,9 @@ export class Header implements OnInit {
     }
   }
 
+  onMenuOpen() { this.menuOpen.set(true); }
+  onMenuClose() { this.menuOpen.set(false); }
+
   onChangeLevel(newLevel: string) {
     this.level.set(newLevel);
     this.authService.updateLevel(newLevel).subscribe({
