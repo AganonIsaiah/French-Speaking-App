@@ -1,69 +1,70 @@
 <title-template [title]="'Traductions Rapides'"
-  [generatedType]=" showLoader() ? 'Génération de phrases...' : 'Jeu généré'" [points]="points()" />
+  [generatedType]="showLoader() ? 'Génération de phrases...' : 'Jeu généré'" [points]="points()" />
 
-<div class="flex flex-col  h-[calc(100vh-15rem)] ">
-  @if(isPhrasesLoaded()) {
-  <div class=" overflow-y-auto flex flex-col  text-center list-none gap-4">
-    <h3 class="!text-lg">{{ dixPhrases()[0]}}</h3>
+<div class="flex flex-col h-[calc(100vh-15rem)]">
 
-    @for (item of chatService.resList(); track $index) {
+  @if (isPhrasesLoaded()) {
 
-    @if(item.sender === 'gen') {
-    <span class="!mx-auto ai-bubble !max-w-380">
-      {{ item.message }}
-    </span>
-    }
+    <!-- Current phrase banner -->
+    <div class="!mb-4 !px-4 !py-3 rounded-xl border border-[#008060]/20 bg-[#f0faf7] flex items-center gap-3">
+      <mat-icon class="!text-[#008060] !text-base flex-shrink-0">translate</mat-icon>
+      <p class="!text-[#202223] !font-semibold !text-base !leading-snug">{{ dixPhrases()[0] }}</p>
+    </div>
 
-    <li class="list-none font-medium">
-      @if (item.sender === 'Vous') {
-      TRADUCTION PAR L'UTILISATEUR: {{ item.message }}
-      } @else if (item.sender === 'Ai') {
+    <!-- Feedback scroll area -->
+    <div class="flex-1 overflow-y-auto flex flex-col gap-4 !px-1">
+      @for (item of chatService.resList(); track $index) {
 
-      <p class="!text-[#008060]">ANALYSE PAR L'IA: {{ item.message }} </p>
-      <p
-        class="!mx-auto !my-4 flex !justify-center !text-[#008060] font-bold bg-gray-200 w-[80%] max-w-120 rounded-md !p-2">
-        SCORE: {{ item.points }}</p>
-      <hr class="!my-3 !mt-5 !w-[90%] !mx-auto !border-[#008060]" />
+        @if (item.sender === 'gen') {
+          <span class="ai-bubble !mx-auto !max-w-xl">{{ item.message }}</span>
+        }
+
+        @if (item.sender === 'Vous') {
+          <div class="flex justify-end">
+            <span class="user-bubble">{{ item.message }}</span>
+          </div>
+        }
+
+        @if (item.sender === 'Ai') {
+          <div class="rounded-xl border border-[#e1e3e5] bg-white !p-4 flex flex-col gap-2">
+            <p class="!text-[#008060] !text-sm !font-medium !leading-relaxed">{{ item.message }}</p>
+            <div class="flex items-center gap-2 !mt-1">
+              <span class="!text-xs !text-[#6d7175]">Score</span>
+              <span class="!px-3 !py-0.5 rounded-full bg-[#f0faf7] !text-[#008060] !font-bold !text-sm">{{ item.points }}%</span>
+            </div>
+          </div>
+          <hr class="!w-[90%] !mx-auto !border-[#e1e3e5]" />
+        }
       }
-    </li>
-    }
 
-    @if (isResponseLoading()) {
-    <span class="list-none flex text-center">
-      <li>L'IA: </li>
-      <ngx-skeleton-loader count="10" [theme]="{ width: '16px', height: '16px' }" appearance="circle" />
-    </span>
+      @if (isResponseLoading()) {
+        <span class="list-none flex items-center gap-1">
+          <li class="!text-[#6d7175] !text-sm">L'IA:</li>
+          <ngx-skeleton-loader count="6" [theme]="{ width: '16px', height: '16px' }" appearance="circle" />
+        </span>
+      }
+    </div>
+
+  } @else if (showStartMsg()) {
+    <div class="flex-1 flex items-center justify-center">
+      <bilingual-card [card]="startMessage" />
+    </div>
+  } @else if (showLoader() && !isPhrasesLoaded()) {
+    <ngx-skeleton-loader count="8" appearance="line" [theme]="{ width: '100%', height: '28px' }" />
+  }
+
+  <!-- Input area -->
+  <div class="flex justify-center items-center gap-4 !pt-3">
+    @if (dixPhrases().length <= 0 || !dixPhrases()[index()]) {
+      <button class="green-btn !px-6 !py-3 !text-base" (click)="onReq10Phrases()">Générer des phrases</button>
+    } @else {
+      <input class="green-input !w-full max-w-xl" [formControl]="msgControl"
+        placeholder="Traduisez le message en anglais..."
+        (keydown.enter)="onSubmitMsg()" />
+      <button class="mic-container" (click)="onToggleMic()">
+        <mat-icon>{{ isMicOn() ? 'mic' : 'mic_off' }}</mat-icon>
+      </button>
     }
   </div>
-
-  }
-
-  @else if (showStartMsg()) {
-  <span class="!mb-8">
-    <bilingual-card [card]="startMessage" />
-  </span>
-  }
-
-  @else if (showLoader() && !isPhrasesLoaded()) {
-  <ngx-skeleton-loader count="10" appearance="line" [theme]="{ width: '100%', height: '30px' }" />
-  }
-
-  <span class="flex flex-col justify-center items-center gap-2">
-    @if(dixPhrases().length <= 0 || !dixPhrases()[index()]) {
-
-      <button class="green-btn !p-2 !py-3 w-50  !text-[16px]" (click)="onReq10Phrases()">
-        Générer des phrases</button>
-
-      } @else {
-      <span class="!my-4 flex gap-8">
-        <input class="green-input" [formControl]="msgControl" placeholder="Traduisez le message en anglais..."
-          (keydown.enter)="onSubmitMsg()" />
-
-        <button class="mic-container" (click)="onToggleMic()">
-          <mat-icon>{{ isMicOn() ? 'mic' : 'mic_off'}}</mat-icon>
-        </button>
-      </span>
-      }
-  </span>
 
 </div>
